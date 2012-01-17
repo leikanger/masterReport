@@ -1,0 +1,151 @@
+
+
+% Trenger "Table of abbrevations"
+% 	- LTP, LTD, STDP
+% 	- "spike" ? (at det betyr Action potential)?
+% 	- SANN  - spiking ANN
+% 	- SN 	- Spiking Node, a node in SANN.
+% 	- KANN, KN.
+% 	- LIF neuron: 	Leaky--Integrate and Fire  neuron
+
+
+
+
+% Eller kanskje eg treng stikkordsregister: Trenger:
+% 	- Det over og:
+% 	- axo-axonic synapses
+%
+% 	- KN, KANN node : 	node based on a the consept of the $\kappa$ model of the neuron. Nodes of KANN
+% 	- SN, SANN node : 	node based on a direct simulation of a spikin neuoron. Nodes of SANN
+% 	- suptrathreshold levels : 	value higher than the firing threshold of a node.
+% 	- STDP
+% 	- LIF neuron
+% 	- synaptic weight.
+% 	- AuroSim 		:  	The implementation written in this project.
+%
+%
+
+
+\documentclass[b5paper,11 pt]{report}
+% TODO Er dette rett? Sjekk dette..
+
+
+\usepackage[utf8]{inputenc}
+\usepackage{graphicx} 
+
+% sudo apt-get install texlive
+\usepackage[font=small,format=plain,labelfont=bf,up,textfont=it,up]{caption}
+
+\usepackage{amsmath}
+\usepackage{mathrsfs} %brukt for krølle-L : laplace
+
+\usepackage{subfig}   % for subfigures.
+\usepackage{listings} %for c++ kode
+\lstset{language=c++}
+
+
+\usepackage{amsthm}
+\newtheorem{mydef}{Definition}
+
+
+%\usepackage{pstricks} % For teikning. 		FOR mykje styr å lære..
+%\usepackage{pstricks-add}
+ %\let\psgrid\relax %XXX Fjærner GRID på alle pstricks teikninger. (global removal)
+
+%\usepackage{epstopdf} % for å få med eps i pdf-latex (?)    funkerIkkje.. Gjør det manuellt for filene..
+
+
+
+%Kanskje dette er naudsynt? For metapost:
+%\DeclareGraphicsRule{*}{mps}{*}{}
+
+
+
+
+
+
+
+
+
+%%%%%%%% Fra Kristoffer sin master:
+\lstset{ %
+basicstyle=\footnotesize,       % the size of the fonts that are used for the code
+%numbers=left,                   % where to put the line-numbers
+%numberstyle=\footnotesize,      % the size of the fonts that are used for the line-numbers
+%stepnumber=1,                   % the step between two line-numbers. If it's 1 each line will be numbered
+%numbersep=5pt,                  % how far the line-numbers are from the code
+showspaces=false,               % show spaces adding particular underscores
+showstringspaces=false,         % underline spaces within strings
+showtabs=false,                 % show tabs within strings adding particular underscores
+%captionpos=b,                   % sets the caption-position to bottom
+%breakatwhitespace=false,        % sets if automatic breaks should only happen at whitespace
+%escapeinside={\%*}{*)}          % if you want to add a comment within your code
+%
+%frame=single,                % adds a frame around the code
+tabsize=4,                % sets default tabsize to 2 spaces
+%breaklines=true,                % sets automatic line breaking
+}
+
+
+\author{Per R. Leikanger}
+\title{Development and Assessment of a Novel Model for Artificial Neural Networks}
+\date{\today}     
+
+
+
+\begin{document}   
+
+
+
+% TODO Neste linje skal kanskje være over abstract og maketitle? TODO
+\pagestyle{empty} %get rid of header/footer for toc page
+
+\maketitle
+
+\begin{abstract}
+abstract: Her.
+\end{abstract}
+
+
+
+
+
+
+\pagestyle{empty} 
+
+\tableofcontents %put toc in
+\cleardoublepage %start new page %TODO Brukes dersom [report] brukes for dokumentet.
+\clearpage
+
+\setcounter{page}{1} %reset the page counter
+\pagestyle{plain} % put headers/footers back on
+
+
+
+
+
+
+
+
+
+
+
+
+
+\include{introduction}
+
+\chapter{Background Theory}
+	Introduksjon til kapittel: motiver leser til å få bakgrunnsinfo!
+	-Neurale systemet er en shitbra signal-prosesseringsenhet som har en del egenskaper som digitale signal-processore ikkje har- List opp..
+	\input{biologicalNeuralSystems}
+	\input{artificialNeuralSystms}
+% 	\input{NIM-simulations}
+
+%\include{novelModel}
+
+
+\bibliography{bibliografi}
+%\bibliographystyle{abbrvnat}
+\bibliographystyle{plain}
+\end{document}
+

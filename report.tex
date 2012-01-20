@@ -34,7 +34,9 @@
 \usepackage{graphicx} 
 
 % sudo apt-get install texlive
-\usepackage[font=small,format=plain,labelfont=bf,up,textfont=it,up]{caption}
+%\usepackage[font=small,format=plain,labelfont=bf,up,textfont=it,up]{caption}
+\usepackage[font=footnotesize,format=plain,labelfont=bf,up,textfont=it,up]{caption}
+
 
 \usepackage{amsmath}
 \usepackage{mathrsfs} %brukt for krølle-L : laplace
@@ -88,7 +90,8 @@ tabsize=4,                % sets default tabsize to 2 spaces
 
 
 \author{Per R. Leikanger}
-\title{Development and Assessment of a Novel Model for Artificial Neural Networks}
+%\title{Development and Assessment of a Novel Model for Artificial Neural Networks}
+\title{Development and Assessment of a Novel Model for Neural Simulation}
 \date{\today}     
 
 
@@ -144,8 +147,13 @@ abstract: Her.
 %\include{novelModel}
 
 
+\appendix
+	\include{appendixSynPlast}
+
+
 \bibliography{bibliografi}
 %\bibliographystyle{abbrvnat}
 \bibliographystyle{plain}
 \end{document}
 
+% // vim:fdm=marker:fmr=//{,//}

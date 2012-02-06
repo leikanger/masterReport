@@ -1,15 +1,177 @@
 
-\section{Artificial Neural Networks}
+%\section{Artificial Neural Networks}
 
-	MOTIVASJON for ANN: Electrochemical properties of the nerve cell (neuron) enables advanced signal processing in even the smallest neural creatures. Skriv om møllen, som har $1000+$ neuron, men kan ting som PC ikkje klarer..
+% SKRIV OM! FOkuser på at det er noken ting som ikkje er så bra å gjøre i PC.
+% 	Så skriv litt om pragmatic ANN (som løysing på dette)
 
-	\subsection{A Review of the History of ANN}
-	\subsection{Synaptic Plasticity and motivation for SANN}
-		- skiv om Hebbian learning: ustabilt. \\
-		- skiv om STDP og at dette er en viktig grunn til å bruke SANN. \\
-		Det er truleg at begge 'learning rules' har sannhet. Det ville difor vært bra å kunne benytte begge, ivertfall i forskningssamanheng.
+%	\subsection{A Review of ANN History}
 
-\section{Depol. Sim. by Numerical Integration}
-	%(skriv her, eller i egen fil. Avhengig av kor lang denne fila blir..)
+
+
+\section{Artificial Neural Systems : A Review of ANN History}
+	\label{ssecHistoryOfANN}
+	The pragmatic use neural network simulations started with the ``McCulloch--Pitts neuron'' in 1943.
+	%Warren McCulloch, an early neuroscientist and the young mathematician Walter Pitts formalized the models of the neuron and proposed the first artificial neuron simulator. %artificial neural network.
+	Warren McCulloch, an early neuroscientist and the young mathematician Walter Pitts initiated a formalized discussion about the mechanics of the neuron and the use of this in technology. %artificial neural network.
+	This resulted in the first neuron emulator(artificial neuron). %, later referred to as the McCulloch--Pitts neuron. 
+	%When a network of nodes consisting of the artificial neural was set up, McCulloch and Pitts created the very first artificial neural network(ANN).\cite{MccullochPittsHistorie} %TODO Sjekk referansen! TODO
+%
+	%TODO Glatt ut: Gjør slik at det eg god flyt i teksten i det som står under her! TODO
+	Artificial Neural Networks based on the McCulloch--Pitts neuron model has later been referred to as the first generation ANN\cite{Maass97networksof}.
+	%What has later been referred to as the first generation ANN is based on the McCulloch--Pitts neuron\cite{Maass97networksof}.
+	%One example of a first generation ANN is the Rosenblatt's Preceptron\cite{HaykinANNbok}.
+	Each node is modelled as a boolean device(with an on--off response), where the node sends output if the immediate input level is large enough.
+	The first generation ANN therefore can be said to be a network of simple filters called threshold gates.
+	This does not take into consideration the depolarization (state) of each node, and is a tremendous simplification of the biological neuron.
+	%The first generation ANN thus does not take into consideration the depolarization of the neuron, and is a great simplification of the biological neuron.
+	%%%The node sends output if the immediate input is large enough, and does not take into consideration the depolarization of the neuron.
+	One famous example of an ANN classified as a first generation ANN is Rosenblatt's Perceptron\cite{HaykinANNbok}.
+
+
+	The second generation ANN gives a better simulation of the neuron. % in the frequency domain.
+	%A better simulation of the neuron considers the neuron in the frequency domain.
+	Each node computes the output level as a floating point number based on the immediate input to the node.
+	From sec. \ref{secBiologicalNeuralSystems}, the biological neuron is introduced as a node that sends output when the depolarization goes to suprathreshold levels.
+	A continuous propagation of a floating point number can therefore only be said to represent the frequency of such transmissions as a function of present input.
+%%%
+	The function used for computing the output is referred to as the \emph{activation function} of the node.
+	%A common activation function is the continuously differentiable \emph{sigmoid function}, that also limits the maximal output\cite{HaykinANNbok}.
+	The activation function is found to give the best results if the function is a continuously differentiable sigmoid function\cite{HaykinANNbok}.
+	\begin{equation}
+		\sigma(x)=\frac{1}{1+e^{-x}}   %TODO TODO TODO TODO TODO TODO Lag heller en figur for å vise sigmoid function! (Bytt ut ligning med fig!) TODO TODO TODO TODO TODO TODO TODO
+	\end{equation}
+	Because it is more right to consider the neuron as stateless in the frequency domain, the stateless computation in a second generation ANN is more correct than the stateless computation in the McCulloch--Pitts neuron model.
+	As the concept of frequency only makes sense for time intervals of a certain size, precise simulations with small computational time steps does not necessarily give accurate simulation results.
+	%As the concept of frequency only makes sense for time intervals of a certain size, a second generation ANN can not be used for accurate simulations with small computational time steps.
+	%%%
+		%%the second generation ANN only give accurate simulations for computational time intervals where is makes sense to talk about mean frequency.
+%%%%%%%%%%
+	%It is intuitive that the frequency representation only give good simulation results for time intervals where it makes sense to talk about mean frequency.
+	%This model thus only gives accurate simulations for a very coarse temporal resolution(large computational time steps), and does not take into account temporal effects caused by the time of firing. %%
+	%%This simulation can therefore only be said to only give an accurate simulation for a very coarse temporal resolution(large computational time steps).
+	For more precise simulations of the neuron or simulation where temporal mechanisms in the neuron are important, the frequency representation in second generation ANNs can therefore not be used.  %TODO Finn noe å CITE!
+	%For more precise simulations of the neuron or of temporal mechanisms, the frequency representation in second generation ANNs therefore can not give good simulation results. %TODO Finn noe å CITE!
+	%%This representation therefore is unsuitable for more precise simulations of neural networks and of mechanisms that depend on temporal elements(like STDP learning rules). 
+%TODO TODO TODO TODO Cite :  Finn steder dette står/ting å cite! TODO TODO TODO TODO
+
+
+\begin{figure}[hbt!p]
+	\centering
+	\includegraphics[width=0.75\textwidth]{sigmoidCurve}
+	\caption{Sigmoid curve $\frac{1}{1+e^{-x}}$ for the domain $x\in [-5,5]$}
+	\label{figFigurAvNeuronet}
+\end{figure}
+	
+	A direct simulation of the signal propagation mechanisms of the neuron is often referred to as a ``spiking'' artificial neuron model. %\cite{Maass97networksof}.
+	The depolarization of the neuron is simulated by numerical integration of all events that change the neuron's depolarization.
+	The most commonly used model for spiking neuron simulations is the Leaky Integrate--and--Fire(LIF) neuron, where the depolarization of a neuron is simulated as a leaky integration of depolarizing input\cite{florian03}.
+	Because all aspects that are considered important in signal processing are simulated, this model can be used to test theories about neural signal propagation.
+	%TODO LINJA over: Endre litt, og cite. F.eks. Maass97networksof?? (XXX Last leddsetning does not tell what I intended..)
+
+	The LIF model describes the depolarization of a neuron as a leaky integration of the neuron's excitatory and inhibitory input, where the depolarization value diminish(towards the resting membrane potential) over time.
+	%The leaky aspect of the neuron can be implemented by subtracting a certain ration of the last computed depolarization, every time iteration.
+%%	Artificial Neural Networks that utilize this simulation model for its nodes is sometimes referred to as Spiking ANN(SANN) and belong to the \emph{third generation ANN}. %TODO Cite en art. av Wulfram Gerstner
+	%%Artificial Neural Networks that utilize this simulation model for its nodes is sometimes referred to as Spiking ANN(SANN) and belong to what is referred to as the \emph{third generation ANN}. %TODO Cite en art. av Wulfram Gerstner
+%%	
+	When the simulated depolarization of a node is excited above the firing threshold, a spike is initiates, causing transmission through all the node's output edges. %synapses.
+	The signal is propagated as discrete spikes, very similar to the signal processing of a biological neuron\cite{Kunkle02pulsedneural}.
+	Artificial Neural Networks with this simulation model for its nodes are sometimes referred to as Spiking ANN(SANN) and belong to the \emph{third generation ANN}\cite{Maass97networksof}. %TODO Cite en art. av Wulfram Gerstner
+	%%Artificial Neural Networks that utilize this simulation model for its nodes is sometimes referred to as Spiking ANN(SANN) and belong to what is referred to as the \emph{third generation ANN}. %TODO Cite en art. av Wulfram Gerstner
+	
+
+	To summarize this section about ANN history, there are three generations of artificial neural networks, each getting closer to the biological neuron in behaviour.
+	%What propagates thought the network, how this is computed and what it represents differs  
+	The first generation of artificial neurons where so--called threshold gates, with a boolean output that was [true] if the summed input were above some threshold. %TODO CITE!
+	Nodes of the second generation gave, in some respects, a better simulation of the biological neuron.
+	The output is not given as discrete states given by the input but as a continuous function that can be interpreted as the firing frequency of the node. % of the level of input to the node.
+	With this interpretation it can be said that ANNs of this generation gives a simulation that is closer to the biological neuron in behaviour.
+	%If the transmission through the output synapse of a neuron is seen as the firing frequency of that neuron, it can be said that this generation of ANN gives a simulation that is closer to the biological neuron.
+	%The third generation ANN is as supposed to be an accurate simulation of the neuron, and is as close to the biological neuron as possible.
+	The third generation ANN is as supposed to give an accurate simulation of the neuron, and achieves this by simulation the neuron's depolarization directly. 
+	The neuron has an internal state representing the depolarization and fires if this value goes to supra--threshold levels.
+	The signal is propagated in the same manner as in the biological neuron, where excitatory synapses increase the postsynaptic depolarization and inhibitory synapses decrease the postsynaptic depolarization.
+	%Errors in the simulation comes as a consequence of numerical errors or from the neuron model used.
+	Only numerical errors in the digital simulation and errors in the neuron model used separates the simulated result from the behaviour of a real neuron.
+	%Only elements like truncation errors in the digital simulation and errors in the neuron model used separates the simulated result from the behaviour of the real neuron.
+
+%%%	XXX TA MED?    Den observante leser vil dermed se at med kvar ny generasjon ANN, så kommer vi nermere bio-neuronet. 
+
+
+
+
+% 2.gen er bedre enn første, fordi begge er "state less". For tidsdomenet blir dette heilt feil. For frekvensdomenet blir det mindre feil. (Heilt rett dersom du ser bort fra syn.p. og modulatory neurotransmitters.
+
+%It is actually so close that the word ``simulation'' will occasionally be used in this report.  	% ".. actually so closa that .." DÅRLIG. Fiks?
+
+%In the third generation ANN it is the action potentials or the "spikes", that is responsible for information processing.  %TODO Skriv om slutten / Feil ord.. 		".. or the "spikes" that is responsible for the information flow.
+%This ANN model is therefore often referred to as ``Spiking Artificial Neural Network''(SANN).
+
+%If the transmissions between nodes is viewed as the firing frequency of the neuron, we can say that the continuous output value represents the output frequency as a function of the input frequency over the time step in the simulation.
+
+%The nodes of the third generation ANN became even more similar to the biological neuron, as the output of a node depend solely on the state of the node.
+
+
+
+
+
+
+%	\subsection{Synaptic Plasticity and motivation for SANN}
+%		- skiv om Hebbian learning: ustabilt. \\
+%		- skiv om STDP og at dette er en viktig grunn til å bruke SANN. \\
+%		Det er truleg at begge 'learning rules' har sannhet. Det ville difor vært bra å kunne benytte begge, ivertfall i forskningssamanheng.
+
+\subsection{Depolarization Simulation by Numerical Integration}
+	The depolarization of a node is a time integral of all depolarizing input and the total ``leakage'' of depolarization value, and can be implemented by numerical integration.
+	The effect of leakage can be implemented by subtracting a scaled version of the neuron's depolarization value every time iteration.
+	%The last computed value, that is used for computing the size of the leakage is delayed by the size of the computational time step before the leakage can be computed.
+	The size of the leakage is computed by the last computed value for the neuron's depolarization, delayed by the size of the computational time step.
+%	This cause an erroneous value for the leakage, and defines one aspect of the local truncation error.
+	%This value is delayed up The last computed value, that is used as the present value of the neuron is delayed by the size of the computational time step before the leakage can be computed.
+%%
+	%The error induced by doing it this way in discrete--time simulations is discussed in section \ref{TODO TODO TODO XXX}. %TODO TODO TODO Referer til denne plassen!
+%%%%
+	The error from each iteration, referred to as the local truncation error, thus increases with the size of the computational time step.
+	%It is possible to get accurate simulation results by decreasing the size of the computational time step.
+	Accurate simulations can therefore be designed by decreasing the size of the computational time step.
+
+	If all nodes are updated every iteration, the computational load scales linearly with the number of nodes and the inverse of the size of the computational time step.
+	By halving the size of the computational time step, the computational load therefore increase as if the number of nodes are doubled.
+	This explains that the accuracy of the simulator can be used as a good measure of efficiency, and establish the motivation for having precise simulation algorithms.
+	More sophisticated numerical integration techniques are often used to accomplish this.
+
+
+
+
+
+% 	A leaky integrator can be implemented by integrating all depolarizing input, and subtracting each iteration's leakage.
+% 	Excitatory input is cause an increase in the postsynaptic neuron's depolarization and inhibitory input cause a decrease in the postsynaptic node's value.
+% 	The leakage is computed by the current depolarization level of the neuron, scaled by a leakage constant.
+% 
+% 
+ 
+
+	The corresponding electrical circuit to the LIF neuron model consists of a capacitor $C$ in parallel with a resistor $R$. %, driven by a current $I(t)$.
+	Depolarizing input to the neuron, either in form of externally applied current or in the form of excitatory synaptic input is modelled as the $I(t)$. %    cause the membrane potential to increase(the capacitor is charged).
+	A leakage current $I_l(t) = -\frac{v(t)}{R}$ cause the depolarization value of the neuron to decrease, and can be modelled as a current through the circuit's resistor. %as a function of the node's present value.
+	The equivalent current in the RC circuit is then given by the equation
+	\begin{equation}
+		I_{tot}(t) = I(t) + I_l(t) = I(t) - \frac{v(t)}{R}
+	\end{equation}
+	
+	When implemented in a discrete--time simulator by numerical integration, discrete time cause a delay of one time step for $v(t)$.
+	%The error caused by this every time step is referred to as the local truncation error
+	As the value is integrated, the local truncation errors caused by this accumulate, giving an increasingly erroneous depolarization value for the neuron. 
+	This cause the simulated neuron to fire at the wrong time.
+	An erroneous inter--spike internal cause an error for the neuron's firing frequency with a size defined by the temporal resolution (number of time steps) of the simulation. %, and ??? XXX
+	%If the local truncation error is systematic, the erroneous inter--spike interval also produce an error for the neuron's firing frequency.
+	%%	This can be implemented in a discrete--time simulator as a discrete integration of all input ($I(t)$) minus the present leakage current $I_l(t) = \frac{v(t)}{R}$.	
+
+
+
+
+
+
+
+
 		
 % // vim:fdm=marker:fmr=//{,//}

@@ -14,7 +14,7 @@
 
 
 \section{Biological Neural Systems}
-	
+\label{secBiologicalNeuralSystems}	
 	In the late 1800s, Camillo Golgi developed a way of staining nervous tissue so that complex networks became apperent in nervous tissue.
 	%In the late 1800s, Camillo Golgi developed a way of staining nervous tissue so that complex networks of nerve cells (neurons) became apperent.
 	Santiago Ramon Y Cajal used Golgi's technique in such a way that individual neurons could be separated, and it was observed that nervous tissue was not a continuous web but a network of discrete cells. 
@@ -31,8 +31,8 @@
 	%Synapses can be exitatory or inhibitory.
 	Transmissions in excitatory synapses increase the postsynaptic membrane potential, causing that neuron to approach firing. %sending an action potential.
 	Inhibitory transmissions does the opposite, and inhibits the postsynaptic neuron with respect to firing.
-	%When a neuron fires an action potential, a transmission is eventually initialized for all the neuron's output synapses.  % redundant? eller viktig å poengtere?
-	When the neuron fires an action potential, a transmission in all the neuron's output synapses is the result.
+	% TODO Skriv at neuronet blir også resatt: Depol blir til null, og det blir klart til å lades opp på nytt!
+	When the neuron fires an action potential, a transmission in all the neuron's output synapses is the result. % redundant? eller viktig å poengtere?
 	\cite{PrinciplesOfNeuralScience4edKAP02}
 % TODO TODO TODO CITE!
 
@@ -41,7 +41,7 @@
 \begin{figure}[hbt!p]
 	\centering
 	\includegraphics[width=0.65\textwidth]{ModellAvNeuronet}
-	\caption{A illustrative model of the neuron. The signal propagation goes from the left to the right in this figure;
+	\caption{An illustrative model of the neuron. The signal propagation goes from the left to the right in this figure;
 			Synaptic integration at the dendrites, action potential through the axon and finally transmission throught the output synapses. 
 			The aspects of the cell body is not immediately relevant to signal processing, and is not taken into account in the model used. }
 	\label{figFigurAvNeuronet}
@@ -139,8 +139,11 @@
 		%In the membrane of the axon there are voltage--gated sodium and potassium channels that open if the level of depolarization is more than some value, referred to as the ``firing threshold'' of the neuron.
 %This value is referred to as the ``firing threshold'' of the neuron.
 		%When these channels are activated, the membrane potential will transiently have a large positive increase in membrane potential.
-		Through passive transmission of the electrical charge due to diffusion of ions, the membrane potential at the next site of voltage gated channels becomes more positive than the firing threshold. %, and the process is repeated.
-		The process is repeated, and the active propagation of the action potential continues until the end of the axon(the axon terminal).
+		Through passive transmission of the electrical charge due to diffusion of ions, the membrane potential at the next site of voltage gated channels becomes more positive than the firing threshold and the process is repeated.
+%TODO Skriv om: neste setning!
+		The size of the signal arriving at the axon terminal at the end of the axon is thus independent of the total distance traveled.
+		%The signal propagates actively to the end of the axon(the axon terminal); 	The size of the signal arriving at an axon terminal is independent of the travelling distance.
+		%The process is repeated, and the active propagation of the action potential continues until the end of the axon(the axon terminal).
 		\cite{PrinciplesOfNeuralScience4edKAP09}
 %%%Through passive transmission of the electrical potential, the next voltage gated channels will open as a result of going above the gate threshold. 
 		%This establishes the active aspect of action potential propagation, and results in a self carrying propagating through the axon.
@@ -154,9 +157,9 @@
 		%The highest concentration of $Na^{2+}$ ions is on the outside of the neuron, resulting in a flow of positively charged ions into the neuron.
 		The highest concentration of $Na^{2+}$ ions is on the outside of the neuron, resulting in an inflow of positively charged ions that depolarize the neuron.
 		%%
-		The potassium ion has the highest concentration inside the cell, and activation of the somewhat slower $K^+$ channel cause a flow of positively charged ions out of the cell.
-		%Because both channels close after a short while, and the $K^+$ channel is slower than the $Na^{2+}$ channel, the action potential cause a membrane potential as shown in fig. \ref{figActionPotential}. 
-		%Because both channels close after a short while, and the $K^+$ channel is slower than the $Na^{2+}$ channel, the action potential cause a transient membrane potential as shown in fig. \ref{figActionPotential}. 
+		%The potassium ion has the highest concentration inside the cell, and activation of the somewhat slower $K^+$ channel cause a flow of positively charged ions out of the cell.
+		The potassium ion has the highest concentration inside the cell, and activation of the $K^+$ channel cause a flow of positively charged ions out of the cell, repolarizing the neuron.
+		%This cause the neuron to repolarize after firing, as can be seen in fig. \ref{figActionPotential}.
 		Because the $K^+$ channel is slightly less responsive than the $Na^{2+}$ channel, and that both channels only stay open for a short while, 
 			the transient membrane potential of the action potential have a form as shown in fig. \ref{figActionPotential}. 
 		\cite{PrinciplesOfNeuralScience4edKAP09}
@@ -180,19 +183,28 @@
 % TODO Trur eg skal skrive om dette heilt sist i dette avsnittet, for å lede inn på syn.trans.
 
 
-		After a successful opening of the voltage--gated ion channels, internal mechanisms of the channels cause the ion channels to close again.
-		The channels stay closed for a short while, enabling the active sodium--potassium pump to reestablish the ionic concentration gradient over the membrane.
-		During this time, the voltage--gated channels remain closed, and it is impossible to elicit a new action potential.
-		This mechanism cause what is referred to as the absolute refraction period for the neuron, and is important both to hinder the action potential to ``travel back'' along the axon and to limit the firing frequency of the neuron.
+		After a successful opening of the voltage--gated ion channels, internal mechanisms close the ion channels after a little while.
+		%After a successful opening of the voltage--gated ion channels, internal mechanisms of the channels cause the ion channels to close again.
+		The channels stay closed long enough to enable the active sodium--potassium pump to reestablish the ionic concentration gradient over the membrane.
+		%The channels stay closed for a short while, enabling the active sodium--potassium pump to reestablish the ionic concentration gradient over the membrane.
+		During this time, it is impossible to elicit a new action potential.
+		This time interval is called the absolute refraction time for the neuron and is important both to hinder the action potential to ``travel back'' along the axon.
+		%This mechanism cause what is referred to as the absolute refraction period for the neuron, and is important both to hinder the action potential to ``travel back'' along the axon and to limit the firing frequency of the neuron.
 		\cite{NeuroscienceExploringTheBrain3edKAP4} %TODO TODO TODO Sjekk: les gjennom kapittelet, og se om alt stemmer! TODO TODO TODO
 		%TODO CITE f.eks. Bear, kap 4
 
-		%When the action potential reach the axon terminal at the distal end of the axon, 
-		The axon is organized as a tree, with a trunk by the soma called the axon hillock.
-		The branches of the ``axonic tree'' are called axon collaterals. % and split the axon in two. %%% TA MED SISTE?
-		At the far end of each axon collateral, lies the axon terminal where the neuron's output synapses are located.
-		\cite{NeuroscienceExploringTheBrain3edKAP2}
-		% TODO CITE!
+%As we will see in sec. \ref{ssecModellingRefractionTimeToLimitFiringFrequency}, the refraction time is also important to limit the maximum firing frequency of the neuron.
+
+	%TODO TODO OTDO TODO Skriv bra overgang fra det som er over! Små hopp!	
+%		At the part that lies furthest along each axon collateral of the axon is called the axon terminal.
+%		
+%		%When the action potential reach the axon terminal at the distal end of the axon, 
+%		The axon is organized as a tree, with a trunk by the soma called the axon hillock.
+%		The branches of the ``axonic tree'' are called axon collaterals. % and split the axon in two. %%% TA MED SISTE?
+%		At the far end of each axon collateral, lies the axon terminal where the neuron's output synapses are located.
+%		\cite{NeuroscienceExploringTheBrain3edKAP2}
+%		% TODO CITE!
+
 
 %		%TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO  Skriv ferdig siste avsnittet som skal lede leser over på synapsen! TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO 
 %		An important result of the active signal propagation of the action potential is that the membrane potential of the action potential is the same OVER HEILE AKSONET:
@@ -201,12 +213,14 @@
 % The release of neurotransmitters is a result of this depolarization, and the action potential enshures an equal depolarization of the presynaptic membrane.
 % This gives that the transmission is dependent only on the synaptic connection, or ``the synaptic weight''.
 % \cite{PrinciplesOfNeuralScience4edKAP09}
-
-
-
-
-
-
+	
+		An important part of the active propagation of the action potential is that the signal is independent of the distance travelled.
+		Because of this, the synapses that are located at distal parts of the axon does not receive a different transmission--initiating signal than earlier synapses along the axon.
+		%We will next consider why this is important.
+		Why this is important will be clear after the mechanisms of synaptic transmission are covered.
+		%This is important for the size of the resulting synaptic transmission 
+		%The mechanisms of synaptic transmission will be considered next.
+		%\cite{XXX} %TODO TODO CITE!!!!
 
 
 
@@ -290,14 +304,23 @@
 
 	\subsection{The Synapse}
 
-		The size of the synaptic transmission is propotional to the membrane potential at the axon terminal.
-		%TODO TODO TODO No er det for stort hopp! Gjør om, slik at det blir meir flytende overgang fra siste setninga, over, til neste setninga!
-		One important result of the active signal propagation of the action potential is that the increase in neuron potential is independent of how long the signal have to travel.
+% TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO  SKRIV Pånytt! TODO OTOD TODO DTOOTDOTGIJSO JIDKL
+
+
+
+	%	The size of the synaptic transmission is propotional to the membrane potential at the axon terminal.
+	%	%TODO TODO TODO No er det for stort hopp! Gjør om, slik at det blir meir flytende overgang fra siste setninga, over, til neste setninga!
+	%	One important result of the active signal propagation of the action potential is that the increase in neuron potential is independent of how long the signal have to travel.
 		When the action potential reach the axon terminal, voltage--gated $Ca^{2+}$ channels in the active zone of the terminal opens and $Ca^{2+}$ enters the cytosol of the axon terminal. %\cite{PrinciplesOfNeuralScience4edKAP10}.
-		The axon terminal contacts bag--like organelles called synaptic vesicles filled with different neurotransmitters.
-		%The axon terminal contains synaptic vesicles, bag--like organelles that contain different neurotransmitters.
-		When $Ca^{2+}$ enters the cytosol of the axon terminal, synaptic vesicles are pulled toward the membrane where they fuse and release its content into the synaptic cleft.
-		%The neurotransmitters diffuse out in the fluid of the synaptic cleft, and some come in contact with postsynaptic ligand--gated channels that enable different ions to flow freely into/out of the postsynaptic neuron.
+		The axon terminal contains bag--like organelles called synaptic vesicles filled with different neurotransmitters, and free $Ca^{2+}$ cause these organelles to be pulled toward the neuron membrane.
+%%		The amplitude of the presynaptic signal thus defines the size of each transmission.
+%%
+	%%	When the synaptic vesicles fuse with the neuron membrane, the content of the synaptic vesicles are released out into the synaptic cleft.
+	%%	The postsynaptic neuron membrane contains 
+%%
+	%%	The axon terminal contains bag--like organelles called synaptic vesicles filled with different neurotransmitters.
+	%%	When $Ca^{2+}$ enters the cytosol of the axon terminal, synaptic vesicles are pulled toward the membrane. % where they fuse and release its content into the synaptic cleft.
+		The synaptic vesicles fuse into the neuron membrane when close enough, causing its content to be released into the synaptic cleft.
 		The neurotransmitters diffuse out in the fluid of the synaptic cleft, and some come in contact with postsynaptic receptors. %ligand--gated channels that enable different ions to flow freely into/out of the postsynaptic neuron.
 		When the right neurotransmitter bind to a specific group of receptors called ligand--gated channels, an ionic channel is opened in the postsynaptic membrane.
 		Depending on the channel(and thus the ions that are let through), this can either depolarize(excite) or hyperpolarize(inhibit) the postsynaptic neuron.
@@ -332,6 +355,8 @@
 		%\cite{} MULIG: Neural Networks and Brain Function: KAP 1 (Introduction) s.7
 
 	\subsection{Signal Propagation in the Biological Neuron}
+		
+
 		- oppsymmer AP, spatiotemporal effekt av axon, synaptic transmission, EPSP/IPSP, ...
 
 % // vim:fdm=marker:fmr=//{,//}

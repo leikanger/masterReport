@@ -118,7 +118,7 @@ abstract: Her.
 
 \tableofcontents %put toc in
 \cleardoublepage %start new page %TODO Brukes dersom [report] brukes for dokumentet.
-\clearpage
+%\clearpage
 
 \setcounter{page}{1} %reset the page counter
 \pagestyle{plain} % put headers/footers back on
@@ -138,13 +138,48 @@ abstract: Her.
 \include{introduction}
 
 \chapter{Background Theory}
+	Before we looking av Artificial Neural Networks(ANN), different aspects of ANN history and biology have to be introduced.
+	This chapter is intended to introduce the reader to the necessary background information to make the theory in this work comprehendable.
+
+	First, theory about the simulated system is ... OSV (sjå FDP)...
+
 	Introduksjon til kapittel: motiver leser til å få bakgrunnsinfo!
 	-Neurale systemet er en shitbra signal-prosesseringsenhet som har en del egenskaper som digitale signal-processore ikkje har- List opp..
 	\input{biologicalNeuralSystems}
 	\input{artificialNeuralSystms}
 % 	\input{NIM-simulations}
 
-%\include{novelModel}
+
+
+
+%\chapter{Articles}
+%	\input{artikkel_06.02.2012/introduction}
+%	\input{artikkel_06.02.2012/theory}
+%	\input{artikkel_06.02.2012/metode}
+%	\input{artikkel_06.02.2012/results}
+%	\input{artikkel_06.02.2012/discussion}
+%	\input{artikkel_06.02.2012/concludingRemarks}
+%
+% 	\appendix
+% 	\include{artikkel_06.02.2012/appendix}
+
+
+\chapter{Development of A Novel Neuron Simulation Scheme}
+	% TODO Write an intro to this chapter
+	The subthreshold build--up of membrane potential of a LIF node have the form of a general leaky integrator.
+	In the preliminary work to the final thesis, the author proposed a novel simulation scheme based directly on the solution to the LIF neuron's differential equations.
+	In this work, the simulation model has been further developed and tested experimentally.
+	This chapter will focus on the mathematical modelling and different necessary concepts for the resulting equations to be utilized in a simulator. %, before an experiment is put up in chapter ??
+	%	In this section, the mathematical modelling of the LIF neuron and different necessary concepts are introduced.
+%%	In the preliminary work to the final thesis, the author proposed a novel simulation technique that utilize the algebraic solution to the LIF neuron's differential equations.
+
+%	Because the system can be modelled as a capacitor circuit, the author have experimented on utilizing the leaky integrator of the familiar capacitor equation to simulate the neuron's depolarization instead of numerical integration.
+	
+
+	\include{theNovelModel}
+		% Skal inneholde:  		\section{The novel model: Modelling}  : 	\label{ssecModellingRefractionTimeToLimitFiringFrequency}
+	%\include{timeAndError} ... eller noke
+
 
 
 \appendix

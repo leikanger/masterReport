@@ -73,7 +73,7 @@
 \lstset{ %
 basicstyle=\footnotesize,       % the size of the fonts that are used for the code
 %numbers=left,                   % where to put the line-numbers
-%numberstyle=\footnotesize,      % the size of the fonts that are used for the line-numbers
+numberstyle=\footnotesize,      % the size of the fonts that are used for the line-numbers
 %stepnumber=1,                   % the step between two line-numbers. If it's 1 each line will be numbered
 %numbersep=5pt,                  % how far the line-numbers are from the code
 showspaces=false,               % show spaces adding particular underscores
@@ -83,9 +83,9 @@ showtabs=false,                 % show tabs within strings adding particular und
 %breakatwhitespace=false,        % sets if automatic breaks should only happen at whitespace
 %escapeinside={\%*}{*)}          % if you want to add a comment within your code
 %
-%frame=single,                % adds a frame around the code
+frame=single,                % adds a frame around the code
 tabsize=4,                % sets default tabsize to 2 spaces
-%breaklines=true,                % sets automatic line breaking
+breaklines=true,                % sets automatic line breaking
 }
 
 
@@ -105,9 +105,9 @@ tabsize=4,                % sets default tabsize to 2 spaces
 
 \maketitle
 
-\begin{abstract}
-abstract: Her.
-\end{abstract}
+%\begin{abstract}
+%abstract: Her.
+%\end{abstract}
 
 
 
@@ -172,8 +172,19 @@ abstract: Her.
 	This chapter will focus on the mathematical modelling and different necessary concepts for the resulting equations to be utilized in a simulator. %, before an experiment is put up in chapter ??
 	%	In this section, the mathematical modelling of the LIF neuron and different necessary concepts are introduced.
 %%	In the preliminary work to the final thesis, the author proposed a novel simulation technique that utilize the algebraic solution to the LIF neuron's differential equations.
+%%%%%%Because the system can be modelled as a capacitor circuit, the author have experimented on utilizing the leaky integrator of the familiar capacitor equation to simulate the neuron's depolarization instead of numerical integration.
 
-%	Because the system can be modelled as a capacitor circuit, the author have experimented on utilizing the leaky integrator of the familiar capacitor equation to simulate the neuron's depolarization instead of numerical integration.
+
+%\section{Mathematical Modelling}
+%%	In the preliminary work to the final thesis, the author proposed a novel simulation technique that utilize the algebraic solution to the LIF neuron's differential equations.
+
+If the solution to the capacitor differential equations are to be used for computing the neuron's depolarization value, it is found that depolarizing input have to be represented as a continuous flow.
+%Instead of considering the discrete synaptic transmissions, 
+After the equations for the leaky integrator have been adjusted for simulation of the LIF neuron in sec. \ref{ssecTheAlgebraicSolution} and \ref{ssecTheActionPotential},
+	the concept of synaptic transmission as a continuous flow is introduced in sec. \ref{ssecSynapticFlow}.
+The second part of this chapter is dedicated to a discussion about the error mechanisms for the two models; Simulation by numerical integration and simulation by the novel model.
+%Different errors mechanisms of the two models are discussed in sec. \ref{ssecAnalysisOfErrorsForTheTwoModels}.
+
 	
 
 	\include{theNovelModel}
@@ -184,6 +195,7 @@ abstract: Her.
 
 \appendix
 	\include{appendixSynPlast}
+	\include{appendix}
 
 
 \bibliography{bibliografi}

@@ -1,0 +1,71 @@
+
+% TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO  Skriv om denne fila: Skriv tekst og greier. No er det replikat av artikkel-appendix
+\chapter{Mathematical Derivations}
+
+\section{Algebraic Solution to the LIF Neuron's Depolarisation}
+\label{appendixAlgebraicSolution}
+	The subthreshold behaviour of the LIF neuron model can be modelled as a general leaky integrator.
+	\begin{equation}
+		\begin{split}
+			\dot{v}(t)&= \dot{v}_{in}(t) - \dot{v}_{out}(t) \\
+				&= I - \alpha v(t)
+		\end{split}
+		%\nonumber
+		\label{appendix:eqDifferentialEquation}
+	\end{equation}
+		where I represents the input flow and $\alpha$ represents the leakage constant of the value.
+
+		Laplace transform gives
+	% TODO TODO TODDO TODO TODO Legg utledning av uttrykk i appendix?
+	\begin{equation}
+		\begin{split}
+			sV(s)-v_0 		&= \frac{I}{s} - \alpha V(s) 			\qquad, \; \qquad v_0 = v(t_0) 				\\
+			(s+\alpha)V(s) 	&= \frac{I}{s} + v_0 														\\
+			V(s) 			&= \frac{1}{s+\alpha}\left( \frac{I}{s} + v_0 \right)
+		\end{split}
+		\nonumber
+	\end{equation}
+
+	And 
+	\begin{equation}
+		\begin{split}
+			v(t)  	&= 		\mathscr{L}^{-1}\bigg\{ V(s) \bigg\}  									\\
+			 		&=		\frac{I}{\alpha} - \frac{I}{\alpha} e^{-\alpha t_w} + v_0 e^{-\alpha t_w} \qquad, \; t_w = t - t_0
+% TODO TODO TODO TODO Sjekk om det stemmer at init-value blir trukket fra, som over (t_w = t - t_0)
+		\end{split}
+		\label{appendix:eqValueEquationUTLEDING}
+ 	\end{equation}
+
+	The value equation for the leaky integrator with initial value $v_0$ is only valid for time intervals where $I$ and $\alpha$ remain constant.
+	This includes any time window, as defined in sec. \ref{ssecTheAlgebraicSolution}.
+	%The value equation for the leaky integrator with initial value $v_0$ is only valid for time intervals where $\kappa$ and $\alpha$ remain constant.
+	%Such an interval is referred to as a time window, as defined in sec. \ref{ssecTheAlgebraicSolution}.
+%	%%We arrive at the value equation for the leaky integrator with initial value $v_0$.
+%	%%It is important to emphasize that the value equation \eqref{appendix:eqValueEquationUTLEDING} is only valid for time intervals where $\alpha$ and $I$ remain constant.
+%%
+	The variable that represents time is measured from the start of the current time window, $t_w = t - t_0$.
+
+\section{Firing Time for the LIF Neuron}
+The remainder of the interspike period can be found by 
+\label{appendixFiringTime}
+		\begin{equation}
+			\begin{split}
+					v\left(t_w^{(f)}\right)			 							&= \tau \qquad 										\\	%,\qquad\qquad\tau = \text{firing threshold} 	\\
+					\kappa - \left( \kappa - v_0 \right) e^{-at_w^{(f)}}  		&= \tau 											\\
+			%		(v_0-\kappa)e^{-\alpha t^^{(f)}}							&= \tau-\kappa 										\\
+					e^{-\alpha t_w^{(f)}} 			 						&= \frac{\kappa - \tau}{\kappa - v_0} 					\\
+					t_w^{(f)}													&= -\alpha^{-1} \, \ln \left( \frac{\kappa - \tau}{\kappa - v_0} \right) 					
+			\end{split}
+			\label{appendix:eqFiringTimeEstimate_withoutRefractionPeriod}
+		\end{equation}
+		
+		If we define an absolute refraction period $t_r$ for the neuron, where the depolarization will remain constant after firing, this can be added to \eqref{appendix:eqFiringTimeEstimate_withoutRefractionPeriod}.
+		%We will call $t^{(f)}$ for the remainder of the depolarizing phase of the inter--spike period, $p_r(\kappa)$.
+		We can view $t_w^{(f)}$ as the remainder of the depolarizing phase of the inter--spike period, and denote it $p_r(\kappa, v_0)$.
+		\begin{equation}
+			p_r(\kappa, v_0)	 = -\alpha^{-1} \, \ln \left( \frac{\kappa - \tau}{\kappa - v_0} \right) + t_r
+		\end{equation}
+
+
+
+% // vim:fdm=marker:fmr=//{,//}

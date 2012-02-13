@@ -167,9 +167,11 @@ breaklines=true,                % sets automatic line breaking
 \chapter{Development of A Novel Neuron Simulation Scheme}
 	% TODO Write an intro to this chapter
 	The subthreshold build--up of membrane potential of a LIF node have the form of a general leaky integrator.
-	In the preliminary work to the final thesis, the author proposed a novel simulation scheme based directly on the solution to the LIF neuron's differential equations.
+	In the preliminary work to the final thesis, the author proposed a novel simulation scheme based on the algebraic solution to the LIF neuron's differential equations.
 	In this work, the simulation model has been further developed and tested experimentally.
-	This chapter will focus on the mathematical modelling and different necessary concepts for the resulting equations to be utilized in a simulator. %, before an experiment is put up in chapter ??
+	The mathematical modelling and necessary consepts for utilizing the resulting equations in a simulator is presented in this chapter.
+	%%This chapter will focus on the mathematical modelling and different necessary concepts for the resulting equations to be utilized in a simulator. %, before an experiment is put up in chapter ??
+	%
 	%	In this section, the mathematical modelling of the LIF neuron and different necessary concepts are introduced.
 %%	In the preliminary work to the final thesis, the author proposed a novel simulation technique that utilize the algebraic solution to the LIF neuron's differential equations.
 %%%%%%Because the system can be modelled as a capacitor circuit, the author have experimented on utilizing the leaky integrator of the familiar capacitor equation to simulate the neuron's depolarization instead of numerical integration.
@@ -191,7 +193,16 @@ The second part of this chapter is dedicated to a discussion about the error mec
 		% Skal inneholde:  		\section{The novel model: Modelling}  : 	\label{ssecModellingRefractionTimeToLimitFiringFrequency}
 	%\include{timeAndError} ... eller noke
 
-
+\chapter{Design of Software to compare the Efficiency of the Two Models}
+	% Før dette må eg analysere error, slik at eg kan skrive "for å teste analysen fra \ref.., er spesiallaget software designet for dette."
+	The two simulations models mentioned in this text have been designed from scratch, and implemented in a common framework to enable a better comparison.
+	In the preliminary project to this MS thesis, the two simulations models were compared theoretically.
+	The analysis was supported by the design and implementation of the two models from scrach.
+	The two models are therefore implemented using a common framework, where the the subelements of a neuron for the two models are inherited from a common ancestor class.
+	...
+	\include{generalDesign}
+	%\include{designSANN}
+	%\include{designKANN}
 
 \appendix
 	\include{appendixSynPlast}

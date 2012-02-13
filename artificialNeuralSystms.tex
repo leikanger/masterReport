@@ -86,13 +86,13 @@
 	The output is not given as discrete states given by the input but as a continuous function that can be interpreted as the firing frequency of the node. % of the level of input to the node.
 	With this interpretation it can be said that ANNs of this generation gives a simulation that is closer to the biological neuron in behaviour.
 	%If the transmission through the output synapse of a neuron is seen as the firing frequency of that neuron, it can be said that this generation of ANN gives a simulation that is closer to the biological neuron.
-	%The third generation ANN is as supposed to be an accurate simulation of the neuron, and is as close to the biological neuron as possible.
-	The third generation ANN is as supposed to give an accurate simulation of the neuron, and achieves this by simulation the neuron's depolarization directly. 
+	%The third generation ANN is supposed to be an accurate simulation of the neuron, and is as close to the biological neuron as possible.
+	The third generation ANN is supposed to give an accurate simulation of the neuron, and achieves this by simulation the neuron's depolarization directly. 
 	The neuron has an internal state representing the depolarization and fires if this value goes to supra--threshold levels.
 	The signal is propagated in the same manner as in the biological neuron, where excitatory synapses increase the postsynaptic depolarization and inhibitory synapses decrease the postsynaptic depolarization.
 	%Errors in the simulation comes as a consequence of numerical errors or from the neuron model used.
-	Only numerical errors in the digital simulation and errors in the neuron model used separates the simulated result from the behaviour of a real neuron.
-	%Only elements like truncation errors in the digital simulation and errors in the neuron model used separates the simulated result from the behaviour of the real neuron.
+	Because the nodes of a SANN is a direct simulation of the mechanisms involved in the neuron's depolarization, only numerical errors and errors in the neuron model used separates the simulation results from the behaviour of a real neuron.
+	%Only numerical errors in the digital simulation and errors in the neuron model used separates the simulated result from the behaviour of a real neuron.
 
 %%%	XXX TA MED?    Den observante leser vil dermed se at med kvar ny generasjon ANN, så kommer vi nermere bio-neuronet. 
 
@@ -121,18 +121,74 @@
 %		Det er truleg at begge 'learning rules' har sannhet. Det ville difor vært bra å kunne benytte begge, ivertfall i forskningssamanheng.
 
 \subsection{Depolarization Simulation by Numerical Integration}
-	The depolarization of a node is a time integral of all depolarizing input and the total ``leakage'' of depolarization value, and can be implemented by numerical integration.
-	The effect of leakage can be implemented by subtracting a scaled version of the neuron's depolarization value every time iteration.
-	%The last computed value, that is used for computing the size of the leakage is delayed by the size of the computational time step before the leakage can be computed.
-	The size of the leakage is computed by the last computed value for the neuron's depolarization, delayed by the size of the computational time step.
-%	This cause an erroneous value for the leakage, and defines one aspect of the local truncation error.
-	%This value is delayed up The last computed value, that is used as the present value of the neuron is delayed by the size of the computational time step before the leakage can be computed.
-%%
-	%The error induced by doing it this way in discrete--time simulations is discussed in section \ref{TODO TODO TODO XXX}. %TODO TODO TODO Referer til denne plassen!
-%%%%
-	The error from each iteration, referred to as the local truncation error, thus increases with the size of the computational time step.
-	%It is possible to get accurate simulation results by decreasing the size of the computational time step.
-	Accurate simulations can therefore be designed by decreasing the size of the computational time step.
+	A node in a SANN is a simulation of the neuron's depolarization.
+	When the depolarization level crosses the firing threshold from below, a spike is initiated and the signal is propagated.
+	Many formal spiking neuron models exist, where the most common is the $LIF$ neuron model\cite{florian03}. %TODO Sjekk om dette står der!
+%	Many formal spiking neuron models exist, but we will in this text focus on the Leaky Integrate--and--Fire(LIF) neuron.
+%	The depolarization level of a neuron can be simulated utilizing different formal neuron models, but what is common for all neural simulation models is that a spike is initiated when the depolarization crosses the firing threshold.
+	
+	
+\begin{figure}[tb!hp]
+	\centering
+	\includegraphics[width=0.85\textwidth]{figRCcircuit}
+	\caption{A schematic diagram of the $LIF$ neuron model. 
+			Each node can be modelled as the circuit inside the dashed circle on the right side of the model.
+			Depolarizing input is modelled by the input current $I(t)$, and when the potential over the capacitor is larger than the firing threshold at time $t_i^{(f)}$, a spike $\delta(t-t_i^{(f)})$ is generated. 
+			The left--hand side of the figure shows a model of synaptic transmissions as a low--pass filtering of the presynaptic action potentials $\delta(t_j^{(t)})$, generating a input current $\alpha(t-t_j^{(f)})$ to neuron $i$.
+			(Figure from \cite{gerstnerKistler2002KAP04}).
+			}
+	\label{figRCcircuitAvNeuronet}
+\end{figure}
+	The $LIF$ model is a simple phenomenological model of the biological neuron, and is highly popular due to its simplicity.
+	%The neuron's depolarization is simulated by numerical integration of all membrane--potential changing input, including leakage.
+	%A basic electrical $RC$ circuit, consisting of a resistance in parallel with a capacitor can be used as an analogy to explain the $LIF$ model.
+	%The driving current $I_{tot}(t)$ can be split into two components, $I_R(t)$ that represents the current that ``leaks'' through the resistance and the input current $I_{input}(t)$\cite{gerstnerKistler2002KAP04}. 
+	The leaky integration of the $LIF$ neuron can be modelled by the electrical circuit shown in fig. \ref{figRCcircuitAvNeuronet}.
+	When the membrane potential $v(t)$ crosses the neuron's firing threshold $\tau$, a spike is initiated causing transmissions through all the neuron's output synapses.
+	The neuron's membrane potential is then reset to the resting membrane potential $v_r<\tau$ \cite{gerstnerKistler2002KAP04}.
+	%A spike cause transmissions through all the neuron's output synapses and the neuron's membrane potential to be reset to the resting membrane potential $v_r<\tau$.
+
+	%If the  TODO Innfør ligning 12 fra \ref{florian03}.
+	% TODO Gjør det her!
+\begin{equation}
+	\lim\limits_{t\to t^{(f)}; t>t^{(f)}} v(t) = v_r
+\end{equation}
+
+	To the author's knowledge, the $LIF$ neuron have previously only been simulated by numerical integration.
+	%To the author's knowledge, the only way of simulating the $LIF$ neuron in the digital computer is by numerical integration.
+	All depolarizing current and the leakage is integrated numerically by summing all synaptic input as discrete transmissions and subtracting the leakage after each computational time step.
+	If the efficiency of the synapse from neuron $j$ to neuron $i$ is modelled by $\omega_{ij}$, the total input current can be found by 
+\begin{equation}
+	I_i(t_n) = \sum_j \omega_{ij} \sum_f a(t - t_j^{(f)}) + \xi_i(t_n)
+\end{equation}
+	where $a(t- t_j^{(f)})$ is given by the neuron's synaptic input currents and $\xi_i(t_n)$ comes from external sources of depolarizing current, e.g. current induced through a probe or the activation of a sensory neuron\cite{florian03}.
+
+%TO O TD XXX XXX XXX HER HER HER OTOD TODO TODO TDODO TOO TODO TODO
+	Leakage can be simulated by subtracting a fraction of the present membrane potential every time step.
+	%%The leakage is simulated by subtracting a fraction of the present depolarization every time step.
+	%The fraction is defined by the ``leakage constant'' $\alpha=\tau^{-1}$, where $\tau$ is the system's time constant.
+	Because computational resources are limited, a finite temporal resolution(discrete time) is utilized.
+	The previously computed depolarization level is often used to find the leakage, delayed by the size of the computational step:
+\begin{equation}
+	%I_R(t_n) = \alpha v(t_{n-1})
+	l(t_n) = \alpha v(t_{n-1})
+\end{equation}
+	The discretization of time thus introduces an error defined by the size of the computational time step;
+	%This introduces an error defined by the size of the computational time step;
+		If the computational time steps are increased, the size of the simulation error is also increased.
+	%Accurate simulations can be designed by decreasing the size of the computational time steps, but this also increases the computational load of the simulation.
+	More accurate simulations can be designed by decreasing the computational time step, but this also increases the computational load.
+	
+	% 	The simplest form of the $LIF$ neuron utilize sample--and--hold numerical integration.
+
+%	This can be simulated by implementing a direct simulation of the $LIF$ neuron's depolarization, as modelled by the electrical $RC$ circuit in fig. \ref{figRCcircuitAvNeuronet}.
+
+% TODO ?: Write eq. 4.4, page 95 in gerstnerKistler2002KAP04 (threshold criterion).
+
+	%The depolarization of a node is a time integral of all depolarizing input and the total ``leakage'' of depolarization value,  and is implemented by numerical integration. %and can be implemented by numerical integration.
+	%The size of the leakage is computed by the last computed value for the neuron's depolarization, delayed by the size of the computational time step.
+	%XXX The error from each iteration, referred to as the local truncation error, thus increases with the size of the computational time step.
+	%Accurate simulations can therefore be designed by decreasing the size of the computational time step.
 
 % TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO 
 % TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO  Lag figuren som viser ANN på nytt! Litt slurvete, nå.
@@ -150,26 +206,27 @@
         \label{figAuronE:subfigDepolarization}
     }
     \caption{ % TODO TODO TODO Litt rart å bruke auron, her? Vil gjerne bruke auron, men dette må innføres først. Do It! TODO
-			(\ref{figAuronE:subfigModel}) A model to show the synaptic connections in a neural circuit intended to illustrate neural integration.
-			The synaptic connections are represented as a factor of the firing threshold, meaning that a transmission thought a synapse with $\omega_{ij}=1$ will cause the postsynaptic auron to fire.
+			(\ref{figAuronE:subfigModel}) A schematic model of the synaptic connections in a neural circuit intended to illustrate neural integration.
+			The synaptic connections in fig. \ref{figAuronE:subfigModel} are represented as a factor of the firing threshold, meaning that a transmission thought a synapse with $\omega_{ij}=1$ will cause the postsynaptic auron to fire.
 			The neural circuit $[A1, A9]$ is thus self sustaining, and cause synaptic transmissions through the synapse from auron $[A*]$ to auron $E$.
-			Auron $A7$ is disconnected to show the effect of the leakage, that can be seen by the decrease in auron $E$'s depolarization every ninth iteration.
 			\mbox{(\ref{figAuronE:subfigDepolarization}) The} resulting depolarization curve for auron $E$.
-			(The figure is generated by \emph{AuronSim}, a simulator utilizing numerical integration implemented in the preliminary project to this MS thesis) %this work)
-                % TODO TODO Rewrite next sentence! TODO TODO
+			Every auron but $A7$ is connected to auron $E$, making the effect of leakage prominent.
+			Auron $A7$ is disconnected, causing a small decrease in auron $E$'s depolarization every ninth iteration.
+			%%Auron $A7$ is disconnected to show the effect of the leakage, that can be seen by the decrease in auron $E$'s depolarization every ninth iteration.
+			%(The figure is generated by \emph{$_s{AuronSim}$}, a simulator utilizing numerical integration implemented in the preliminary project to this work) 
+			(The figure is generated by \emph{$_s{AuronSim}$}, the part of a simulator implemented in the preliminary project to this work that utilize numerical integration) 
+			%(The figure is generated by \emph{AuronSim}, a simulator utilizing numerical integration implemented in the preliminary project to this MS thesis) %this work)
+                % TODO TODO Make auron A7->A9. This is better for the text.. TODO TODO Also make figure figAuronE:subfigModel more pretty: redraw! TODO TODO TODO
 				}
     \label{figExperiment2}
 \end{figure}
 
 
-
-
-
-
 	If all nodes are updated every iteration, the computational load scales linearly with the number of nodes and the inverse of the size of the computational time step.
-	By halving the size of the computational time step, the computational load therefore increase as if the number of nodes are doubled.
-	This explains that the accuracy of the simulator can be used as a good measure of efficiency, and establish the motivation for having precise simulation algorithms.
-	More sophisticated numerical integration techniques are often used to accomplish this.
+	By halving the size of the computational time step, the computational load increase as if the number of nodes are doubled.
+	By having precise simulation algorithms, fewer time iterations can be utilized to accomplish the same accuracy for the simulation.
+	This explains that the accuracy of simulation algorithms can be used as a good measure of efficiency, and establish the motivation for having precise simulation algorithms.
+	More sophisticated numerical integration techniques are therefore often used to accomplish a high accuracy in numerical simulations\cite{PlesserStraubeMorrisonPlesser2007}.
 
 
 
@@ -182,21 +239,22 @@
 % 
  
 
-	The corresponding electrical circuit to the LIF neuron model consists of a capacitor $C$ in parallel with a resistor $R$. %, driven by a current $I(t)$.
-	Depolarizing input to the neuron, either in form of externally applied current or in the form of excitatory synaptic input is modelled as the $I(t)$. %    cause the membrane potential to increase(the capacitor is charged).
-	A leakage current $I_l(t) = -\frac{v(t)}{R}$ cause the depolarization value of the neuron to decrease, and can be modelled as a current through the circuit's resistor. %as a function of the node's present value.
-	The equivalent current in the RC circuit is then given by the equation
-	\begin{equation}
-		I_{tot}(t) = I(t) + I_l(t) = I(t) - \frac{v(t)}{R}
-	\end{equation}
-	
-	When implemented in a discrete--time simulator by numerical integration, discrete time cause a delay of one time step for $v(t)$.
-	%The error caused by this every time step is referred to as the local truncation error
-	As the value is integrated, the local truncation errors caused by this accumulate, giving an increasingly erroneous depolarization value for the neuron. 
-	This cause the simulated neuron to fire at the wrong time.
-	An erroneous inter--spike internal cause an error for the neuron's firing frequency with a size defined by the temporal resolution (number of time steps) of the simulation. %, and ??? XXX
-	%If the local truncation error is systematic, the erroneous inter--spike interval also produce an error for the neuron's firing frequency.
-	%%	This can be implemented in a discrete--time simulator as a discrete integration of all input ($I(t)$) minus the present leakage current $I_l(t) = \frac{v(t)}{R}$.	
+% 	The corresponding electrical circuit to the LIF neuron model consists of a capacitor $C$ in parallel with a resistor $R$. %, driven by a current $I(t)$.
+% 	Depolarizing input to the neuron, either in form of externally applied current or in the form of excitatory synaptic input is modelled as the $I(t)$. %    cause the membrane potential to increase(the capacitor is charged).
+% 	A leakage current $I_l(t) = -\frac{v(t)}{R}$ cause the depolarization value of the neuron to decrease, and can be modelled as a current through the circuit's resistor. %as a function of the node's present value.
+% 	The equivalent current in the RC circuit is then given by the equation
+% 	\begin{equation}
+% 		I_{tot}(t) = I(t) + I_l(t) = I(t) - \frac{v(t)}{R}
+% 	\end{equation}
+% 	
+% 	When implemented in a discrete--time simulator by numerical integration, discrete time cause a delay of one time step for $v(t)$.
+% 	%The error caused by this every time step is referred to as the local truncation error
+% 	As the value is integrated, the local truncation errors caused by this accumulate, giving an increasingly erroneous depolarization value for the neuron. 
+% 	This cause the simulated neuron to fire at the wrong time, and the next inter--spike interval to be initiated at the wrong time.
+% 	The size of the error is thus gives an error defined by the temporal resolution(then number or time steps) of the simulation.
+% 	%An erroneous inter--spike internal cause an error for the neuron's firing frequency with a size defined by the temporal resolution (number of time steps) of the simulation. %, and ??? XXX
+% 	%If the local truncation error is systematic, the erroneous inter--spike interval also produce an error for the neuron's firing frequency.
+% 	%%	This can be implemented in a discrete--time simulator as a discrete integration of all input ($I(t)$) minus the present leakage current $I_l(t) = \frac{v(t)}{R}$.	
 
 
 

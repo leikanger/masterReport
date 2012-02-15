@@ -7,13 +7,13 @@
 	%If the LIF neuron is visualized as a leaky bucket with input from a gutter, synaptic transmissions is represented by pouring cups of water into this gutter.
 	When the number of agents pouring water into the gutter becomes very large and the size of each transmission is small, this can again be visualized as rain.
 	%The resulting water level in the leaky bucket can be simulated by either counting the number of raindrops or by estimating the corresponding flow in the input gutter and utilizing the algebraic solution to find the water level.
-	The resulting water level in the leaky bucket can either be simulated by counting the number of raindrops(and computing the size of the leakage in each computional time step)
+	The resulting water level in the leaky bucket can either be simulated by counting the number of raindrops(and computing the size of the leakage in every computional time step)
 	%The resulting water level in the leaky bucket can be simulated by either counting the number of raindrops(and computing the leakage after each computational time step)
-	or by estimating the corresponding flow to the bucket and utilizing the algebraic solution to find the water level.
+		or by estimating the corresponding flow through the gutter and utilizing the algebraic solution to find the water level.
 %%%%%
 	%If the simulation has a bounded temporal accuracy(discrete time), the author believes that a more accurate simulation result can be achieved when the algebraic solution is utilized to simulate the systems value. 
 	When the simulation has a bounded temporal accuracy(discrete time), it is found that a more accurate simulation result can be achieved when the algebraic solution is utilized to simulate the systems value.
-	%If the simulation has a bounded temporal accuracy(discrete time), it is found that a more accurate simulation result can be achieved when the algebraic solution is utilized to simulate the systems value. 
+	%TODO Dropp setninga over? NEI: første biten er jævla bra! 			Men det etter her er litt dårlig: avslører for mykje om kva eg finner ut?
 %%                 %%                                                          %%                                                  %%                                              % input is represented as a flow.
 	%This implies that fewer iterations are needed to accomplish some accuracy goal, and a more efficient simulator model is the result.
 	In this section, the mathematics and necessary concepts for a flow simulation is developed and presented.
@@ -54,7 +54,7 @@
 	
 		The variable $v_0$ represents the initial value for the neuron's depolarization and $t_v$ is the time from the start of the considered time interval\mbox{($t_v = t - t_0$)}.
 		Recall that equation \ref{eqValueEquation} only is valid for time intervals where $\kappa$ and $\alpha$ remain constant.
-		To formalize such an interval for later discussions, the concept of a time window is introduced. % defined.
+		To formalize such an interval for later discussions, the concept of time windows is introduced. % defined.
 		\begin{mydef}
 			A time window is a time interval where $\kappa$ and $\alpha$ are constants, within one inter--spike period.
 			\label{defTimeWindow}
@@ -70,7 +70,7 @@
     \includegraphics[width=0.65\textwidth]{demonstrasjonAvUlikeKappaforVerdifunksjonen}
  	  \caption{
 	%		A leaky integrator can be simulated by utilizing the concept of time windows.
-			The plot shows how the concept of time windows enables the use of \eqref{eqValueEquation} for simulating the neuron's depolarization.
+			The figure shows how the concept of time windows enables the use of \eqref{eqValueEquation} for simulating the neuron's depolarization.
 			In the time interval $t_p = [0, 100]$, $\kappa_0 = 0.7$ is valid.
 			At time $t_p = 100$, $\kappa$ is changed to $\kappa_1 = 0.5$, before it finally is set to $\kappa_2 = 1$ at time $t_p = 150$.
 			}
@@ -81,55 +81,61 @@
 	As introduced in sec. \ref{secBiologicalNeuralSystems}, the neuron fires an action potential when the depolarization value crosses the firing threshold.
 	%In continuous time, 
 	The firing time for a neuron in continuous time can be found by the equation $v(t_f) = \tau$, where $\tau$ is the firing threshold for the neuron.
-	It is shown in appendix \ref{appendixFiringTime} that the firing time, represented as the remainder of the current inter--spike period is given by
+	It is shown in appendix \ref{appendixFiringTime} that the firing time, represented as the remainder of the current inter--spike period can be estimated by % is given by
 \begin{equation}
 	p_r(\kappa, v_0)  	= -\alpha^{-1} \, \ln \left( \frac{\kappa - \tau}{\kappa - v_0} \right) + t_r
 	\label{eqEstimatedTimeToFiring}
 \end{equation}
 
-% Dersom den under skal være med, er det uten mellomrom etter likninga.
-%	where $p_r(\kappa, v_0) = t_f$ represents the remainder of the present inter--spike period.
 	As the equation for the remainder of the inter--spike period is derived from \eqref{eqValueEquation}, the estimate is only valid for as long as $\kappa$ and $\alpha$ remains constant.
-	%The equation for the remainder of the inter--spike period is derived from \ref{eqValueEquation}, and is valid only for as long as $\kappa$ and $\alpha$ remains constant.
 	This means that when a new time window is initiated, the old firing time estimate becomes invalid.
-	%This implies that when initiating a new time window, a old firing time estimate becomes invalid.
-	If the next spike is estimated to happen during the current time iteration, the depolarizing inflow can per definition not change prior to this time. %TODO: as a computational time step is defined as the smallest possible time w. XXX
-%TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO Det på slutten av forrige linje er SUPERVIKTIG! Definer dette tidligare i teksten! TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO 
-	%% 								%% 							%% 			  , this estimate can per definition not change due to an altered depolarizing inflow.
-	%% 								%% 						 	%% 			  , it is impossible that the neuron initiates a new time window in other ways than firing an action potential.
-	The estimated firing time can therefore be seen as the actual firing time, and an action potential can be initiated at that precise moment.
-	%The spike time can therefore have a near--continuous temporal resolution by utilizing a double precision floating point format. 
-	The set of possible spike times can therefore have a near--continuous temporal resolution by utilizing a double precision floating point format. 
-	%Skriv litt om kor liten double er?
+%%
+	%If the depolarizing inflow is defined to be constant during a computational time step, a firing that is estimated to happen during the present time iteration can not change prior to this time.
+	%If the depolarizing inflow is defined to be constant during a computational time step, a firing time estimate during the present time step can not change before that time. %the neuron fires.
+	If the depolarizing inflow is defined to be constant during a computational time step, a firing time estimate in the present computational time step can not change before that time. %the neuron fires.
+	The estimated firing time can therefore be utilized as the actual firing time, and an action potential can be initiated at that precise moment.
+%%
+	The set of possible spike times thus have a near--continuous temporal resolution, only limited by the accuracy of the format used. %e.g. the double precision floating point format.
+	If e.g. the double precision floating point format is utilized, the IEEE standard defines the smallest number to be given by an exponent of $-308$\cite{kreyszig8edKAP17}. 
+	%For e.g. the double precision floating point format, the IEEE standard defines the smallest number to be given by an exponent of $-308$\cite{kreyszig8edKAP17}. 
+	This implies an accuracy where the numbers are separated by a step down to $10^{-308}$ time units.
 	%For a discussion about what this results in for the simulation error, it is referred to sec. \ref{ssecAnalysisOfErrorsForTheTwoModels}.
-	If all tasks are executed according to spike times, a task planned slightly before an other can be initiated before that task despite being scheduled in the same time iteration.
-	% TODO Skriv om slutten: "might" 													, and might have ..  "Might" er dårlig..
-	%This cause the simulation to have a near--continuous time resolution for spike times, and might have a large effect on e.g. Spike--Time Dependent Plasticity(mentioned in appendix \ref{appendixSynapticPlasticity}).
-	%This could have a large effect on Spike--Time Dependent Plasticity after a transmission, as mentioned in appendix \ref{appendixSynapticPlasticity}.
-	This can have a large effect on mechanisms defined by the relative spike time of two neurons, e.g. Spike--Timing Dependent Plasticity as mentioned in appendix \ref{appendixSynapticPlasticity}.
+	If all tasks are executed according to estimated spike times, a task planned slightly before another will therefore be initiated before that task despite being scheduled in the same computational time step.
+	% TODO Skriv om neste setning, slik at det bare er ei leddsetning!
+	%In some situations, this will have a large effect on mechanisms defined by the relative spike times of two neurons, e.g. Spike--Time Dependent Plasticity as mentioned in appendix \ref{appendixSynapticPlasticity}.
+	This will have a large effect on mechanisms defined by the relative spike times of two neurons, e.g. Spike--Time Dependent Plasticity as mentioned in appendix \ref{appendixSynapticPlasticity}.
+	%This could have a large effect on mechanisms defined by the relative spike times of two neurons, e.g. Spike--Time Dependent Plasticity as mentioned in appendix \ref{appendixSynapticPlasticity}.
 
 %TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO 
 %TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO  Finn figur som viser AP. Skriv at dette er formen på det biologiske AP.
 %TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO 
 
+
 %TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO HER ER EG!
 
-	The perhaps most important effect of having a near--continuous temporal resolution for the simulation error is that the next inter--spike interval can be initiated at the correct time. %computed time instant.
-	%The most important effect of having a near--continuous temporal resolution in respect to the simulation error, is that the next inter--spike interval can be initiated at the correct time. %computed time instant.
-	%%An other effect of having a near--continuous temporal resolution for spike times is that the next inter--spike interval can be initiated at the correct time.
-	After an action potential(and the defined refraction period), the neuron can start charging the membrane potential at the computed time instant. % correct time.
+	The perhaps most important effect of having a near--continuous temporal resolution for the simulation error is that the next inter--spike interval is initiated at the correct time. %computed time instant.
+	After an action potential(and the predefined absolute refraction period), the neuron can start charging the membrane potential at the right time. %computed time instant. 
 	%%
-	With the reactive firing scheme used in simulations utilizing numerical integration, the firing have to be delayed to the next iteration to preserve causality in a neural network. %TODO Finn referanse! TODO
+	% TODO Har eg definert "reactive firing scheme" tidligere?
+	%With the reactive firing scheme in simulations utilizing numerical integration, the firing have to be delayed to the next iteration to preserve causality in a neural network. %TODO Finn referanse! TODO
+	With the reactive firing scheme in simulations utilizing numerical integration, where the neuron fires as a reaction to the depolarizing going to suprathreshold levels, 
+		the firing have to be delayed to the next iteration to preserve causality in a neural network. %TODO Finn referanse! TODO
 	%With a discretization of possible spike times, the neuron have to wait for the iteration after the threshold crossing to preserve causality in the neural network.
-	This gives a small delay of up to one computational time step before the neuron can start depolarizing again.
-	A precise initiation of the next inter--spike interval will therefore remove an important error mechanisms in spiking neuron simulations.
-	%A precise initiation of the next inter--spike interval will thus remove one of the error mechanisms in spiking neuron simulations.
+	This  introduces a small delay of up to one computational time step before the neuron can start depolarizing again.
+	%This gives a small delay of up to one computational time step before the neuron can start depolarizing again.
+%% 										%% 																	%% 														%% 			har ikkje innført 	 efficiency som funksjon av accuracy, enda.
+	%A precise initiation of the next inter--spike interval caused by the near--continuous temporal resolution for possible spike times removes this error mechanism, and might be important for the efficiency of the neural simulator. %xxx
+	A precise initiation of the next inter--spike interval caused by the near--continuous temporal resolution for possible spike times removes this error mechanism, and might be important for the accuracy of the simulated depolarization.
+	%A precise initiation of the next inter--spike interval will therefore remove an important error mechanisms in spiking neuron simulations.
 	%%A precise initiation of the next inter--spike interval will remove an error mechanism that might give an important part of the total error in spiking neuron simulations that utilize numerical integration. %when simulating depolarization by numerical integration.
-	For a more elaborate discussion of the error induced by discrete possible spike times, it is referred to sec. \ref{ssecAnalysisOfErrorsForTheTwoModels}.
+	%For a more elaborate discussion of the error induced by discrete possible spike times, it is referred to sec. \ref{ssecAnalysisOfErrorsForTheTwoModels}.
+	For a more elaborate discussion of the error induced by the discretization of time and discrete possible spike times, it is referred to sec. \ref{ssecAnalysisOfErrorsForTheTwoModels}.
 
-	After an action potential, the neuron's depolarization is reset to the neuron's reset potential and the process starts anew.
-	%The total inter--spike interval can therefore be found as the remainder of the inter--spike period from the neuron's reset potential $v_r$.
-	The total inter--spike interval can be found as the remainder of the inter--spike period from the neuron's reset potential $v_r$.
+% XXX Er det for langt hopp? Vil gjerne gå over til neste section: synaptic flow of activation level.
+	An inter--spike interval is finalized by the neuron firing an action potential, after which the neuron's depolarization is reset to the membrane resting potential before the process starts anew.
+	%After an action potential, the neuron's depolarization is reset to the membrane resting potential and the next inter--spike interval starts.
+	%After an action potential, the neuron's depolarization is reset to the membrane resting potential and the process starts anew.
+	The total inter--spike interval can therefore be estimated as the remainder of the inter--spike period from the neuron's reset potential $v_r$.
 \begin{equation}
 	p_{isi}(\kappa) = p_r(\kappa, v_r)% IKKJE: + t_r
 	\label{eqEstimateOfInterSpikePeriod}
@@ -141,16 +147,22 @@
 
     \subsection{Synaptic Flow}
 	\label{ssecSynapticFlow}
-	%TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO  NESTE LINJE ER DÅRLIG!
-	Input that change the depolarization of the neuron comes in many forms. 
-	A class of these is a subset of synaptic input that alters the postsynaptic neuron's depolarization.
-	This class of input will be referred to as synaptic input in the remainder of this text.
+	Neural input that changes the neuron's depolarization can be divided into two groups, a subclass of synaptic input that changes the postsynaptic neuron's depolarization and other depolarizing input.
+	%Other input include the activation of a sensory neuron as a consequence of the sensed signal, and is represented by the 
+	The synaptic part of depolarizing input can be mediated through ligand--gated channels, as introduced in section \ref{ssecTheBiologicalSynapse}.
+	%Synaptic input that alters the postsynaptic membrane potential can be mediated through ligand--gated channels, as introduced in section \ref{ssecTheBiologicalSynapse}.
+	This class of neural input is what will be referred to as synaptic input in the remainder of this text.
+	%This class of neural input will be referred to as synaptic input in the remainder of this text.
+%%
+%%%	Input that change the depolarization of the neuron comes in many forms. 
+%	A class of these is a subset of synaptic input that alters the postsynaptic neuron's depolarization.
+%	This class of input will be referred to as synaptic input in the remainder of this text.
 
 	Let all synaptic input be modelled as the flow $\kappa_{ij}$, where $j$ represents the presynaptic neuron and $i$ the receiving neuron.
-	Other input that changes neuron $i$'s depolarization is modelled by $\xi_i(t)$.
-	The final value for the neuron's depolarization $\kappa_i$ is defined by the sum of all the neuron's input flows.
+	Other input that changes neuron $i$'s depolarization is represented by $\xi_i(t)$.
+	The final value for the neuron's depolarization, $\kappa_i$, is defined by the sum of all the neuron's input flows.
 	%The final value for the neuron's depolarization $\kappa_i$ is defined by the sum of all input flows for neuron $i$.
-	The total inflow int the $n$'th iteration can therefore be written as
+	The total inflow in the $n$'th iteration can therefore be written as
 
 		\begin{equation}
 % TODO HUGS: K = I/a : dermed må I være sum(k_ij + xi)*alpha
@@ -159,10 +171,11 @@
 			\label{eqSynapticIntegrationForKANN}
 		\end{equation}
 
-	The most important aspect for the neuron's signal processing capabilities comes as a consequence of synaptic transmission in networks of neurons, and will be the main focus in this section.
-	The form of other depolarizing input $\xi_i(t)$ varies, and have to be modelled for each such mechanism. %separately. 
-	One example of an other source for changing a neuron's depolarization is the instrumentation done by sensory neurons. %TODO TODO TODO Skriv om dette en plass, og referer dit! TODO TODO TODO TODO TODO TODO TODO  Internreferer! TODO
-	%One such input is the instrumentation done by sensory neurons.
+	The most important depolarizing input, when it comes to neural signal processing, is synaptic input\cite{PrinciplesOfNeuralScience4edKAP10}.
+	Synaptic transmissions will therefore be the main focus of this section.
+	%The most important aspect for the neuron's signal processing capabilities comes as a consequence of synaptic transmission in networks of neurons, and will be the main focus in this section.
+	The form of other input $\xi_i(t)$ varies for different sources of the signal and have to be modelled separately for each such mechanism. 
+	%XXX BRA XXX: One example of another source for changing a neuron's depolarization is the instrumentation done by sensory neurons. %TODO TODO TODO Skriv om dette en plass, og referer dit!  
 
 \begin{figure}[hbt!p]
 	\centering
@@ -186,14 +199,15 @@
 	\begin{equation}
 % TODO Skriv det som N
 %		\Delta v_i(\Delta t) = f_j(t_{n-1})\Delta t \cdot\omega_{ij} = \frac{\omega_{ij}}{p_{isi}(t_{n-1}}
-		\Delta v_{i, t_n}(\Delta t) = N_{j,t_n}\cdot\omega_{ij, t_n} %								%= f_j(t_{n-1})\Delta t \cdot\omega_{ij} % = \frac{\omega_{ij}}{p_{isi}(t_{n-1}}
+		%\Delta v_{i, t_n}(\Delta t) = N_{j,t_n}\cdot\omega_{ij, t_n} %								%= f_j(t_{n-1})\Delta t \cdot\omega_{ij} % = \frac{\omega_{ij}}{p_{isi}(t_{n-1}}
+		\Delta v_{i}(\Delta t_n) = N_{j,\Delta t_n}\cdot\omega_{ij, t_{n-1}} %								%= f_j(t_{n-1})\Delta t \cdot\omega_{ij} % = \frac{\omega_{ij}}{p_{isi}(t_{n-1}}
 	\end{equation}
-	where the variable $N_{j,t_n}$ represents the number of transmissions from neuron $j$ in time interval $t_n$.
+	where the variable $N_{j,t_n}$ represents the number of transmissions from neuron $j$ in time interval $\Delta t_n$, and $\omega_{ij, t_{n-1}}$ represents the synaptic weight updated at time $t_{n-1}$.
 	%where the number of transmissions is found by the last computed firing frequency of the presynaptic neuron $f_j(t_{n-1})$ multiplied by the length of the time interval $\Delta t$.
 
 	In the flow simulation model($\kappa M$) presented in this text, a continuous variable representing the present estimate of the inter--spike interval can be propagated instead of the integer number of transmissions,
 		enabling a higher resolution for the propagated signal.
-	For a time interval where the presynaptic activation level $\kappa_j$ is constant(a time window for the presynaptic neuron), the synaptic flow of activation level can be written as
+	For a time interval where the presynaptic activation level $\kappa_j$ is constant(a time window for the presynaptic neuron), synaptic flow of activation level can be written as
 	\begin{equation}
 	%	\kappa_{ij} = \frac{ \omega_{ij} }{ p_{isi}(\kappa_{j})}\Delta t
 		\kappa_{ij, t_n} = \frac{ \omega_{ij, t_n} }{ p_{isi}(\kappa_{j, t_n}) } \Delta t % TODO SKRIV kva \Delta t   er for noke! TODO TODO SKVIVE DET SOM FREKVENS, først? = f(t) \omega \cdot \Delta t
@@ -239,16 +253,31 @@
 % 	All analysis done in this text are of the unimproved model, where numerical computations are executed by a simple sample--and--hold technique.
 % 	Optimization by e.g. estimating intermediate values can be utilized for both models, but will not be considered in this text.
 	
-%FRA ARTIKKELEN:
-        When simulating time variant variables in discrete--time  environments such as the digital computer, truncation errors arise from the discretization of time.
-        The variable is updated based on the previous time step's value, delayed up to $\Delta t$ time units.
-        This introduces an error that vary with the size of the computational time step.
+%not from the article, any more.. FRA ARTIKKELEN: (KOPIER TILBAKE TIL ARTIKKELEN!)
+        When simulating time variant variables in discrete--time environments such as the digital computer, truncation errors arise from the discretization of time.
+		Mechanisms than make the variable time variant are computed based on the previously updated value instead of continuously updating the  value.
+		%Mechanisms that cause the variable to change as a consequence of time alone are computed based on the previously updated value instead of continuously updating the value. %a continuously updated value.
+		%%This implies that all depolarizing input and the leakage during the time step does not influence that time step's simulated leakage.
+		For a $NIM$ simulation, this implies that all depolarizing input and the effect of leakage during the time step does not influence the total size of that time step's leakage.
+%%		The leakage is computed based on the depolarization value at the initiation of the computational time step.
+		The size of this discretization error increase for larger computational time steps.
+		%As this effect becomes larger for larger computational time steps, it can be stated that the size of this error vary with the size of the computational time step.
+		As mentioned in section \ref{ssecDepolarizationSimulationByNIM}, a simulation with a smaller error can therefore easily be designed by increasing the temporal resolution of the simulation.
+			%but this is not a preferable solution as it also increases the computational load. 
+		This is not a preferable solution as it also increases the computational load of the simulation. 
+
+
+        %When simulating time variant variables in discrete--time  environments such as the digital computer, truncation errors arise from the discretization of time.
+        %The variable is updated based on the previous time step's value, delayed up to $\Delta t$ time units.
+        %This introduces an error that vary with the size of the computational time step.
 %%%
-        Because the Numerical Integration Model($NIM$) is fundamentally different from the simulation model utilizing flow($\kappa M$) as presented in sec. \ref{ssecDevelopmentOfTheNovelANNmodel}, the two models' error mechanisms are analyzed separately.
+        %Because the Numerical Integration Model($NIM$) is fundamentally different from a simulation model that considers depolarizing flow($\kappa M$) as the one presented in sec. \ref{secDevelopmentOfTheNovelANNmodel}, 
+        Because the Numerical Integration Model($NIM$) is fundamentally different from a simulation model that considers depolarizing flow($\kappa M$),
+			the two models' error mechanisms are analyzed separately.
 %
         All analysis done in this text are of the unimproved models, implemented with a simple sample--and--hold numerical integration technique.
         Optimization by e.g. estimating the intermediate values in each time iteration can be utilized for both models, but will not be covered in this text.
-
+% TODO 										 (KOPIER TILBAKE TIL ARTIKKELEN!)
 
 
 
@@ -257,39 +286,81 @@
 %TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO 
 	\subsection{Numerical Integration Method($NIM$)}
 	\label{ssecErrorForNIM}
-	%Every inter--spike interval is completed by the 
-	Every inter--spike interval is completed when the depolarization crosses the firing threshold. The neuron's depolarization therefore goes through a net rising phase during each inter--spike interval.
-	A rising phase for the considered variable implies that an earlier computed value is less than if the value was computed immediately before used.
-	Through a whole inter--spike period, this effect therefore cause a smaller leakage for the discrete--time simulation, and the simulated depolarization value reaches the firing threshold to early.
-	%This is an important part of the error caused by the discretization of time and if the error is integrated through a whole inter--spike interval, the computed leakage will have a smaller value in discrete--time simulations.
-	%A smaller leakage implies a larger value for the neuron's depolarization, something that cause the neuron to fire to early.
-%% 	%%
-	%This cause the neuron to fire to early, and the next inter-spike interval is initiated to early.
-	This cause the neuron to fire to early, and the depolarization of the next inter-spike interval is affected as a consequence of starting the period to early.
-%% 	%%
-	%A cumulation of error is the result. %, and the total error increase 
-	%The $NIM$ error thus have a cumulative property.
-	%The cumulative property of the $NIM$ error is the result.
-	
-	An opposite error comes from having discrete possible firing times for the neuron.
-	To implement causality in a neural network and assure that synaptic transmissions comes after firing, the firing of an action potential can be delayed to the subsequent time iteration after the threshold crossing.
-	%With regard to causality, firing of a neuron can be delayed to the subsequent time iteration when the neuron's depolarization crosses the firing threshold.
-	This cause a small delay before the initiation of the next inter--spike interval and therefore a negative error for the depolarization in that inter--spike interval. 
-	%This cause a small delay before the initiation of the next inter--spike interval, and cause an opposite effect for the neuron's depolarization than the previously mentioned error. %erroneous leakage.
+% TODO Må ha definert uttr. tidligere:xxx Local truncation error,xxx Inter--spike truncation error,xxx Global truncation error, 
+	%Every inter--spike interval is completed when the depolarization crosses the firing threshold, causing the neuron to fire the next spike. %action potential.
+	%Every inter--spike interval is completed when the depolarization goes to suprathreshold levels, causing the neuron to fire the next spike. %action potential.
+	Every inter--spike interval is completed when the depolarization goes to suprathreshold levels, causing the initiation of the next spike. % to fire the next spike. %action potential.
+	The neuron's depolarization therefore goes through a net rising phase(from the resting membrane potential $v_r$ to the firing threshold $\tau$) in the course of an inter--spike interval. 
+%%
+	%A rising phase implies that a delayed value is less than the correct value. 
+	%A rising phase defines that a delayed value is less than the correct value. 
+	A rising phase means that a delayed earlier value is smaller than the correct value. 
+	%As the leakage is proportional to the depolarization, utilizing an earlier value thus gives less leakage for the discrete--time $NIM$ simulation.
+	%As the leakage is proportional to the depolarization, the computed leakage therefore is less in the discrete--time $NIM$ simulation due to the discretization of time.
+	As the leakage is proportional to the depolarization, the computed leakage therefore is less in the discrete--time $NIM$ simulation,
+		and the size of the error is defined by the size of the computational time step.
+	%As the leakage is proportional to the depolarization, utilizing a delayed value therefore makes the leakage smaller for the discrete--time $NIM$ simulation.
+	%As the computed leakage is proportional to this value, the discrete--time $NIM$ simulation produce a smaller leakage. % is the result in a $NIM$ simulation.
+%%
+% 	%A rising phase implies that a delayed value generally is less than the correct value, something that gives a smaller leakage in a $NIM$ simulation.
+% 	A rising phase implies that a delayed value is less than the correct value, something that gives a smaller leakage in a $NIM$ simulation.
+%%%
+	%As the delay is the direct result of the computational time step, the size of the computational time step defines the size of the local truncation error.
+	%When simulating the neuron in discrete time, the delay is the direct result of the size of the computational time step and defines the connection between the size of the computational time step and the error.
+%%%
+	%In the course of an inter--spike interval, all local truncation errors caused by this effect are integrated up to what will be referred to as the inter--spike truncation error, and causes the threshold crossing to happen too early.
+	In the course of an inter--spike interval, all local truncation errors caused by this effect are integrated up to what will be referred to as the inter--spike truncation error,
+		and causes the threshold crossing to happen before too early.
+%%%
+% %% ELLER
+% 	A rising phase implies that a delayed value generally is less than the correct value.
+% 	During the whole inter--spike interval, all local truncation errors caused by this effect are integrated, and the total leakage that period is less for the discrete simulation than for the original system(in continuous time).
+% %% end: ELLER
+% 	This cause a positive error for the simulated depolarization, and the next spike is initiated to early.
+% 	%This cause the depolarization to be to large for the discrete--time simulation, and the next spike is initiated to early.
+	An early firing gives an earlier start for the next inter--spike interval, causing the depolarization of that inter--spike interval to have been integrated for too long. %be too large for any given time instant.
 
-	The size of the two mentioned error mechanisms varies, and the net inter--spike truncation error is given by the relative size of the two mechanisms.
-	The error from the first error mechanisms vary from having a size of $e_l=0$ if the neuron uses an eternity to reach the firing threshold,
+
+	
+% 	An error with opposite sign ...
+	An opposite error comes as a consequence of having discrete possible firing times.
+	The action potential is defined to happen as a consequence of the depolarization crossing the firing threshold from below.
+	To preserve causality in a network of artificial neurons, the action potential therefore have to be delayed to the time step after the threshold crossing.
+	This introduces a small delay before firing, causing a delayed transmission and a delayed initiation of the subsequent inter--spike interval.
+	%UNDER: Heller skrive at dette lager en motsatt feil (av den over)?
+	As previously described, an erroneous time of initiation of an inter--spike interval will cause an error for the simulated depolarization for all time after that instant. 
+	%As previously mentioned, an erroneous time of initiation of an inter--spike interval will cause an error for the simulated depolarization, that inter--spike interval.
+	%As previously mentioned, an erroneous time of initiation of an inter--spike interval will cause an error for the simulated depolarization caused by the late initiation of that inter--spike interval.
+
+
+
+%	An opposite error comes from having discrete possible firing times for the neuron.
+%	To implement causality in a neural network and assure that synaptic transmissions comes after firing, the firing of an action potential can be delayed to the subsequent time iteration after the threshold crossing.
+%	This cause a small delay before the initiation of the next inter--spike interval and therefore a negative error for the depolarization in that inter--spike interval. 
+%	%This cause a small delay before the initiation of the next inter--spike interval, and cause an opposite effect for the neuron's depolarization than the previously mentioned error. %erroneous leakage.
+
+%TODO TODO  The cumulative property of the $NIM$ error is the result. TODO TODO Skriv om akkumulering av feil! Positiv feil + stokastisk negativ feil.
+ 	The net inter--spike truncation error is given by the relative size of the two mechanisms.
+	%The size of the two error mechanisms varies, and the net inter--spike truncation error is given by the relative size of the two mechanisms.
+	The error from an erroneous leakage caused by the discretization of time vary from having a size of $e_l=0$ if the neuron uses an eternity to reach the firing threshold,
+	%The error from the first error mechanisms vary from having a size of $e_l=0$ if the neuron uses an eternity to reach the firing threshold,
 		 to the size of the correct leakage if the depolarization goes all the way from $v_r$ to $\tau$ in one iteration.
-	The error caused by discrete possible firing times varies from $e_d=0$ if the threshold crossing happens at the very end of the iteration to 
-		having a size given by the size of the computational time step if the threshold crossing happens immediately after the initiation of that time step.
+	The error caused by having discrete possible firing times varies from $e_d=0$ if the threshold crossing happens at the very end of the iteration to 
+		having a size given by the size of a full computational time step if the threshold crossing happens    at the very beginning of the time step. %immediately after the initiation of that time step.
 	%The global truncation error is thus very hard to predict, and its differential have an appearance of being stochastic.
-	The differential of the global truncation error is very hard to predict, as the second error mechanism have an appearance of being stochastic.
-	If the inter--spike truncation error is systematic in any way, the global truncation error will diverge for $t\to\infty$ as the error after one inter--spike period can be seen as the differential of the global truncation error.
+	%The differential of the global truncation error is therefore very hard to predict, especially as the second error mechanism have an appearance of being stochastic.
+	The differential of the accumulated truncation error, referred to as the global truncation error, is therefore very hard to predict. %, especially as the second error mechanism have an appearance of being stochastic.
+	%If the inter--spike truncation error is systematic in any way, the global truncation error will diverge for $t\to\infty$ as the error after one inter--spike period can be seen as the differential of the global truncation error.
+	As the global truncation error can be defined as the sum of all previous inter--spike truncation errors, 
+		any systematic local truncation error(with an expectancy value different from zero) therefore cause the global truncation error to diverge in a $NIM$ simulation as $t\to\infty$.
+	%If the inter--spike truncation error is systematic in any way, the global truncation error will diverge for $t\to\infty$. % as the error after one inter--spike period can be seen as the differential of the global truncation error.
 	%If the increase of the global truncation error after an inter--spike period is systematic in any way, 
+%%%
+	%This is probably not preferable, and should be avoided.
+	%This is probably not preferable.
+	%This is not preferable.
 	
 
-	%TODO Skriv at det er vanskelig å forutsi feilen, siden [effekt 1] varierer fra 0 til heile størrelsen på lekkasjen. [effekt 2] Varierer med eksakt tidspunkt for fyring. 
-	% Skriv eget avsnitt om dette!
 
 
 

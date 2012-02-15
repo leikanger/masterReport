@@ -304,7 +304,7 @@
 
 
 	\subsection{The Synapse}
-
+	\label{ssecTheBiologicalSynapse}
 % TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO  SKRIV Pånytt! TODO OTOD TODO DTOOTDOTGIJSO JIDKL
 
 
@@ -313,7 +313,8 @@
 	%	%TODO TODO TODO No er det for stort hopp! Gjør om, slik at det blir meir flytende overgang fra siste setninga, over, til neste setninga!
 	%	One important result of the active signal propagation of the action potential is that the increase in neuron potential is independent of how long the signal have to travel.
 		When the action potential reach the axon terminal, voltage--gated $Ca^{2+}$ channels in the active zone of the terminal opens and $Ca^{2+}$ enters the cytosol of the axon terminal. %\cite{PrinciplesOfNeuralScience4edKAP10}.
-		The axon terminal contains bag--like organelles called synaptic vesicles filled with different neurotransmitters, and free $Ca^{2+}$ cause these organelles to be pulled toward the neuron membrane.
+		%The axon terminal contains bag--like organelles called synaptic vesicles filled with different neurotransmitters, and free $Ca^{2+}$ cause these organelles to be pulled toward the neuron membrane.
+		The axon terminal contains bag--like organelles called synaptic vesicles filled with different neurotransmitters, and free intracellular $Ca^{2+}$ cause these organelles to be pulled toward the neuron membrane.
 %%		The amplitude of the presynaptic signal thus defines the size of each transmission.
 %%
 	%%	When the synaptic vesicles fuse with the neuron membrane, the content of the synaptic vesicles are released out into the synaptic cleft.
@@ -321,12 +322,12 @@
 %%
 	%%	The axon terminal contains bag--like organelles called synaptic vesicles filled with different neurotransmitters.
 	%%	When $Ca^{2+}$ enters the cytosol of the axon terminal, synaptic vesicles are pulled toward the membrane. % where they fuse and release its content into the synaptic cleft.
-		The synaptic vesicles fuse into the neuron membrane when close enough, causing its content to be released into the synaptic cleft.
+		The synaptic vesicles fuse into the neuron membrane when close enough, causing its content to be released into the synaptic cleft on the outside of the membrane.
 		The neurotransmitters diffuse out in the fluid of the synaptic cleft, and some come in contact with postsynaptic receptors. %ligand--gated channels that enable different ions to flow freely into/out of the postsynaptic neuron.
 		When the right neurotransmitter bind to a specific group of receptors called ligand--gated channels, an ionic channel is opened in the postsynaptic membrane.
-		Depending on the channel(and thus the ions that are let through), this can either depolarize(excite) or hyperpolarize(inhibit) the postsynaptic neuron.
+		Depending on the channel(and thus the ions that are let through), this can either depolarize(excite) or hyperpolarize(inhibit) the postsynaptic neuron %.
 						%% 											%%  , the postsynaptic neuron is either depolarized(excited) or hyperpolarized(inhibited).
-		\cite{PrinciplesOfNeuralScience4edKAP10}
+		\cite{PrinciplesOfNeuralScience4edKAP10}.
 		%TODO Sjekk om det er rett å cite KANDELL:10
 		
 		%The synaptic vesicles are bag--like organelles that contain different neurotransmitters
@@ -351,13 +352,35 @@
 		In neuroscience, synaptic plasticity is what is seen as the basis of learning and memory\cite{NeuroscienceExploringTheBrain3edKAP25}. %(DENNE CITE gjelder bare denne linja..) (Ta vekk?)
 		%This is what is seen as the basis of learning\cite{NeuroscienceExploringTheBrain3edKAP25}. %(DENNE CITE gjelder bare denne linja..) (Ta vekk?)
 		%The exact firing time have recently been found to have a large impact on synaptic plasticity.
+
+		As the synaptic connection is plastic, this enables a truly complex computational system.
 		The subject of synaptic transmission and plasticity in biological systems have been covered extensively in appendix \ref{appendixSynPlast}.
-	%TODO TODO TODO Skriv ferdig. Skal eg ha med STDP, her?
-		%\cite{} MULIG: Neural Networks and Brain Function: KAP 1 (Introduction) s.7
 
 	\subsection{Signal Propagation in the Biological Neuron}
-		
+%TODO CITE TODO siter TODO CITE TODO siter TODO CITE TODO siter TODO CITE TODO siter TODO CITE TODO siter TODO CITE TODO siter TODO CITE TODO siter TODO CITE TODO siter TODO CITE TODO siter TODO CITE TODO siter TODO CITE TODO siter TODO CITE TODO siter TODO CITE TODO siter TODO CITE TODO siter TODO CITE TODO siter TODO CITE TODO siter TODO CITE TODO siter TODO CITE TODO siter TODO CITE TODO siter TODO CITE TODO siter TODO CITE TODO siter TODO CITE TODO siter TODO CITE TODO siter TODO CITE TODO siter TODO CITE TODO siter  			Ingen siteringer nå...		
+		To sum up this section, it can be said that the computational capability of a single neuron does not extend very far.
+		It can be modelled as a basic leaky integrator of input, where the value represents the electrochemical potential over the neuronal membrane.
+		%In biology, this is possible because of the 
+% 		%%
+		The signalling capabilities of the neuron is possible because of the phospholipid bilayer, that is virtually impermeable to electrically charged ions and molecules.
+		This enables an electrochemical potential over the membrane, and the neuron can have a rapidly changing state.
+		In terms from graph theory, the synapse is a directed weighted edge, where the weight is plastic.
+		%In terms from graph theory, the synapse is a directed edge with a plastic weight.
+		%In terms from graph theory, the synapse is a weighted directed edge between two nodes.
+		The chemical synapse therefore enables transmissions from presynaptic neurons to be amplified or reduced depending on the size of the synaptic connection.
 
-		- oppsymmer AP, spatiotemporal effekt av axon, synaptic transmission, EPSP/IPSP, ...
+		The neuron fires an action potential when the membrane potential of the neuron becomes more positive than the firing threshold.
+		An action potential is a self--carrying signal that enables output synapses all along the axon to receive the same intracellular signal, causing the size of synaptic transmission to be given solely by the synaptic weight.
+		The distance between the start of the axon and the synapse does not reduce the size of the signal, but it does introduce a small delay given by the distance travelled.
+		% This delay is important because of the Spike--Time Dependent Plasticity that increase 
+		This delay is thought to be important, as Spike--Time Dependent Plasticity states that the synaptic weight of a synapse can increase or decrease depending on the time of transmission.
+
+		The computational capabilities of neural networks is a result of having a tremendous amount of these weak computational units.
+		In the human brain, the number of neurons is estimated to have an order of magnitude corresponding to about $10^{11}$ nodes, each estimated to have about $10^3$ input synapses.
+		%Every neuron is excitable and fires an action potential 
+		Every neuron is excitable and every synapse is plastic based on e.g. the relative time of firing of the presynaptic and the postsynaptic neuron.
+		%This creates a highly parallel system that is hard to simulate.
+		This creates a very complex plastic system, and is seen as the basis of cognition.
+
 
 % // vim:fdm=marker:fmr=//{,//}

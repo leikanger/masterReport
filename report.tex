@@ -165,44 +165,56 @@ breaklines=true,                % sets automatic line breaking
 
 
 \chapter{Development of A Novel Neuron Simulation Scheme}
-	% TODO Write an intro to this chapter
-	The subthreshold build--up of membrane potential of a LIF node have the form of a general leaky integrator.
-	In the preliminary work to the final thesis, the author proposed a novel simulation scheme based on the algebraic solution to the LIF neuron's differential equations.
-	In this work, the simulation model has been further developed and tested experimentally.
-	The mathematical modelling and necessary consepts for utilizing the resulting equations in a simulator is presented in this chapter.
-	%%This chapter will focus on the mathematical modelling and different necessary concepts for the resulting equations to be utilized in a simulator. %, before an experiment is put up in chapter ??
-	%
-	%	In this section, the mathematical modelling of the LIF neuron and different necessary concepts are introduced.
-%%	In the preliminary work to the final thesis, the author proposed a novel simulation technique that utilize the algebraic solution to the LIF neuron's differential equations.
-%%%%%%Because the system can be modelled as a capacitor circuit, the author have experimented on utilizing the leaky integrator of the familiar capacitor equation to simulate the neuron's depolarization instead of numerical integration.
-
-
+%\chapter{Development of $\kappa M$}
 %\section{Mathematical Modelling}
+	% TODO Write an intro to this chapter
+% 	The subthreshold build--up of membrane potential of a LIF node have the form of a general leaky integrator.
+% 	In the preliminary work to the final thesis, the author proposed a novel simulation scheme based on the algebraic solution to the LIF neuron's differential equations.
+% 	In this work, the simulation model has been further developed and tested experimentally.
+% 	The mathematical modelling and necessary consepts for utilizing the resulting equations in a simulator is presented in this chapter.
+
+%TODO TODO TDOO TODO Skriv om første setning! Slutten er dårlig.
+%A simulator implemented by numerical integration of input involves an accumulation of truncation errors, as the error is integrated too. % as well as the value.
+A simulator implemented by numerical integration of input involves an accumulation of truncation errors, because the error is integrated as well as the value.
+%Because the depolarization of a neuron is integrated up to the firing threshold before it is reset and starts depolarizing from the membrane resting potential(that is less than the firing threshold), 
+%	the depolarization can be said to have a rising phase of unlimited length.
+The depolarization of a neuron is integrated up to the firing threshold, before an action potential is fired and the depolarization is reset to the resting membrane potential.
+Because the resting membrane potential always is less than the firing threshold, one can say that the depolarization have a rising phase of unlimited length. % for simuleringer der t->infty.
+% Og ta vekk neste setning: Formidle budskapen heller veldig lett:xxx Any systematic local truncation error therefore potentially cause an unbounded error.
+It can be argued that any systematic local truncation error therefore cause an error of unbounded size as time $t_n\to\infty$.
+%In an attempt to make a simulation method that have a bounded error, a simulation scheme based on the algebraic solution to the $LIF$ neuron's differential equations is devised.
+%TODO UNDER: 			simulation method that produce a limited error, ... 	Eller noke.
+In an attempt to create simulation method with a bounded error, a simulation scheme based on the algebraic solution to the $LIF$ neuron's differential equations is devised in this chapter.
+%In an attempt to create simulation method with a more stable error, a simulation scheme based on the algebraic solution to the $LIF$ neuron's differential equations is devised in this chapter.
 %%	In the preliminary work to the final thesis, the author proposed a novel simulation technique that utilize the algebraic solution to the LIF neuron's differential equations.
 
-If the solution to the capacitor differential equations are to be used for computing the neuron's depolarization value, it is found that depolarizing input have to be represented as a continuous flow.
+To utilize the algebraic solution of the $LIF$ neuron's differential equations for simulating its depolarization value, depolarizing input have to be represented as a continuous flow.
+%%									%%									%%							%%				% , it is found that depolarizing input have to be represented as a continuous flow.
+%If the solution to the capacitor differential equations are to be used for computing the neuron's depolarization value, it is found that depolarizing input have to be represented as a continuous flow.
 %Instead of considering the discrete synaptic transmissions, 
-After the equations for the leaky integrator have been adjusted for simulation of the LIF neuron in sec. \ref{ssecTheAlgebraicSolution} and \ref{ssecTheActionPotential},
+After the algebraic solution of the $LIF$ neuron's depolarization have been developed in sec.  \ref{ssecTheAlgebraicSolution} and \ref{ssecTheActionPotential},
+%After the equations for the leaky integrator have been adjusted for simulation of the LIF neuron in sec. \ref{ssecTheAlgebraicSolution} and \ref{ssecTheActionPotential},
 	the concept of synaptic transmission as a continuous flow is introduced in sec. \ref{ssecSynapticFlow}.
-The second part of this chapter is dedicated to a discussion about the error mechanisms for the two models; Simulation by numerical integration and simulation by the novel model.
+%The last part of this chapter is dedicated to a discussion about the error mechanisms for the two models; Simulation by numerical integration and simulation by the novel model.
+The last part of this chapter is dedicated to a discussion about the error mechanisms for the two considered simulation models. % ; Simulation by numerical integration and simulation by depolarizing flow.
 %Different errors mechanisms of the two models are discussed in sec. \ref{ssecAnalysisOfErrorsForTheTwoModels}.
 
 	
-
+	%inkluderer ei fil..
 	\include{theNovelModel}
 		% Skal inneholde:  		\section{The novel model: Modelling}  : 	\label{ssecModellingRefractionTimeToLimitFiringFrequency}
 	%\include{timeAndError} ... eller noke
 
-\chapter{Design of Software to compare the Efficiency of the Two Models}
-	% Før dette må eg analysere error, slik at eg kan skrive "for å teste analysen fra \ref.., er spesiallaget software designet for dette."
-	The two simulations models mentioned in this text have been designed from scratch, and implemented in a common framework to enable a better comparison.
-	In the preliminary project to this MS thesis, the two simulations models were compared theoretically.
-	The analysis was supported by the design and implementation of the two models from scrach.
-	The two models are therefore implemented using a common framework, where the the subelements of a neuron for the two models are inherited from a common ancestor class.
-	...
-	\include{generalDesign}
-	%\include{designSANN}
-	%\include{designKANN}
+% \chapter{Design of Software to compare the Efficiency of the Two Models}
+% 	% Før dette må eg analysere error, slik at eg kan skrive "for å teste analysen fra \ref.., er spesiallaget software designet for dette."
+% 	The two simulations models mentioned in this text have been designed from scratch, and implemented in a common framework to enable a better comparison.
+% 	In the preliminary project to this MS thesis, the two simulations models were compared theoretically.
+% 	The analysis was supported by the design and implementation of the two models from scrach.
+% 	The two models are therefore implemented using a common framework, where the the subelements of a neuron for the two models are inherited from a common ancestor class.
+% 	...
+% 	\include{generalDesign}
+% 	%\include{designSANN}
+% 	%\include{designKANN}
 
 \appendix
 	\include{appendixSynPlast}

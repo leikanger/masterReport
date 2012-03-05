@@ -18,8 +18,10 @@
 	In the late 1800s, Camillo Golgi developed a way of staining nervous tissue so that complex networks became apperent in nervous tissue.
 	%In the late 1800s, Camillo Golgi developed a way of staining nervous tissue so that complex networks of nerve cells (neurons) became apperent.
 	Santiago Ramon Y Cajal used Golgi's technique in such a way that individual neurons could be separated, and it was observed that nervous tissue was not a continuous web but a network of discrete cells. 
-	He proposed what has later been known as the neuron doctrine; That the basis of intelligence is individual ``brain cells'' that can process incoming transmissions and 
-		can send output transmissions as a consequence of receiving enough depolarizing input transmissions.
+	Ramon Y Cajal proposed what has later been known as the neuron doctrine; 
+		That the computational capabilities of a biological neural system comes from a network of indivitual ``brain cells'' that process incoming transmissions and sends output when its input history have a certain pattern.
+	%Under: istadenfor "He", skriv "Ramon Y Cajal" 			TODO TODO Skriv om neste setning! TODO TODO
+	%That the basis of intelligence is individual ``brain cells'' that process incoming transmissions and send output transmissions as a consequence of receiving enough depolarizing input transmissions.
 	For their contribution, Ramon Y Cajal and Golgi shared the 1906 Nobel's price in Physiology and Medicine.
 	\cite{NeuroscienceExploringTheBrain3edKAP2}
 	%TODO Cite Bear kap. 2.
@@ -39,18 +41,20 @@
 
 
 % TODO TODO FINN BEDRE FIGUR! TODO TODO TODO 
+% TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO  Eller lag figuren sjølv!
+% (Hugs at dersom eg siterer en plass, trur sensor at alt kommer derfra..
 \begin{figure}[hbt!p]
 	\centering
 	\includegraphics[width=0.65\textwidth]{ModellAvNeuronet}
-	\caption{An illustrative model of the neuron. The signal propagation goes from the left to the right in this figure;
-			Synaptic integration at the dendrites, action potential through the axon and finally transmission throught the output synapses. 
+	\caption[Illustrative model of the neuron]{Illustrative model of the neuron. The signal propagation goes from the left to the right in this figure;
+			Synaptic integration at the dendrites, action potential through the axon and finally transmission through the output synapses. 
 			The aspects of the cell body is not immediately relevant to signal processing, and is not taken into account in the model used. }
 	\label{figFigurAvNeuronet}
 \end{figure}
 	
 	In this section, the most important elements of neural signal processing are presented, enabling the reader to become more familiar with how neural networks process information.
 	%It is recommended that the reader utilize this section as a reference work when different methods of neural simulation are presented.
-	It is recommended that the reader utilize this section as a reference work when different methods of neural simulation are discussed, later in the text. % la til "later in this text", no.  Er det bra?
+	It is recommended that the reader utilize this section as a reference work when different methods of neural simulation are discussed later in the text. % la til "later in this text", no.  Er det bra?
 	% DERSOM NESTE SETNING skal være med: Skriv om "the neuron", slik at dette er sant!
 	%Before discussing how the neuron processes information, the organization of the neuron have to be reviewed. %REVIEWED er dårlig TODO
 	%We will start with the organization of the neuron, before moving on to a fundamental signal processing mechanism of the neuron; The electrochemical properties of the neuron membrane.
@@ -86,6 +90,7 @@
 		In terms from graph theory, a biological neural network is a directed, cyclic graph.
 		The nodes are called neurons and the edges between the nodes are called synapses.
 		% Skriv om: neste setning! Vil heller formidle at i dette kapittelet skal eg gå gjennom geografien til neuronet.
+%TODO THREE er for spesifikt. fører til at man lurer på kva dei er. Enten skriv dei, eller skriv noke slikt som "noken"..
 		In addition to the synapse, the neuron contain three elements that are fundamental for signal processing.
 		% skrive at det er eit PHOSPHOlipid bilayer?
 		The most important element is the neuronal membrane. % that is a lipid bilayer with a low permeability to ions, enabling an electrical potential across the cell membrane.
@@ -103,14 +108,16 @@
 		Each neuron is surrounded by a phospholipid bilayer cell membrane with a low permeability to ions, enabling a different concentration of ions over the membrane.
 		%5													%%												%enabling the intracellular fluid to have a different consectration of different ions than the fluid outside the membrane.
 		%under: ikkje "spesialiserte", men "dedidkerte"
-		All neuron membranes has ionic pumps dedicated to create an ionic concentration gradient over the membrane.
-		The different ionic pumps push the corresponding ions ``upstream'' in relation to the ionic concentration gradient, resulting in an electrochemical potential over the membrane.
+		%All neuron membranes has ionic pumps dedicated to create an ionic concentration gradient over the membrane.
+		All neuron membranes has ionic pumps dedicated to uphold an ionic concentration gradient over the membrane.
+		Different ionic pumps push the corresponding ions ``upstream'' in relation to the ionic concentration gradient, resulting in an electrochemical potential over the membrane.
 		%The membrane potential at rest generally lies at about $-65mV$.
+%TODO For langt hopp til neste setning.
 		The resting membrane potential of a neuron generally lies at about $-65mV$. 
 		\cite{NeuroscienceExploringTheBrain3edKAP3} %XXX Dersom dei to avsnitta over blir kobla sammen: flytt denne under heile avsnittet. TODO Do this?
 %TODO CITE: Bear kap 3 ?
 
-		If specialized ionic gates permeable to certain ions are opened, these ions can flow freely through the gate.
+		When specialized ionic gates permeable to certain ions are opened, these ions can flow freely through the gate.
 		Depending on which ions are let thought, the neuron membrane is either hyperpolarized(more negative membrane potential) or depolarized(more positive membrane potential).
 		%Depending on which ions are let thought, the neuron membrane to either be hyperpolarized(more negative membrane potential) or depolarized(more positive membrane potential).
 		%This cause the neuron membrane to either be hyperpolarized(more negative membrane potential) or depolarized(more positive membrane potential), depending on which ions are let thought.
@@ -134,7 +141,7 @@
 
 
 	\subsection{The Axon and the Action Potential}
-
+		%The axon hillock is the part of the axon that lies closest to the cell body of the neuron. ELLER NOKE: Lag overgang fra siste setninga i forrige avsnitt til dette avsnittet!
 		Voltage--gated sodium and potassium channels are located along the membrane of the axon.
 		If the membrane potential is more positive than the ``firing threshold'' of the neuron, these channels open, causing the membrane to have a transient positive increase in membrane potential.
 		%In the membrane of the axon there are voltage--gated sodium and potassium channels that open if the level of depolarization is more than some value, referred to as the ``firing threshold'' of the neuron.
@@ -171,7 +178,8 @@
     \centering
     %\includegraphics[width=0.65\textwidth]{AP_IonFlow}
     \includegraphics[width=0.65\textwidth]{AP_IonFlow2}
- 	  \caption{The action potential. Activation of the $Na^{2+}$ channel cause positively charged ions to flow into the neuron, depolarizing the neuron. The slower $K^+$ channel has the opposite effect.
+ 	  \caption[The transient axon membrane potential from an action potential]
+				{The action potential. Activation of the $Na^{2+}$ channel cause positively charged ions to flow into the neuron, depolarizing the neuron. The slower $K^+$ channel has the opposite effect.
 				Both channels close after a short while, and the membrane potential returns to the resting value after a small overshoot.
 				(Figure from \cite{PrinciplesOfNeuralScience4edKAP09}).
 				%Figure taken from  \cite{PrinciplesOfNeuralScience4edKAP09}, page 158.
@@ -184,7 +192,7 @@
 % TODO Trur eg skal skrive om dette heilt sist i dette avsnittet, for å lede inn på syn.trans.
 
 
-		After a successful opening of the voltage--gated ion channels, internal mechanisms close the ion channels after a little while.
+		After a successful opening of the voltage--gated ion channels in the axon membrane, internal mechanisms close the ion channels after a little while.
 		%After a successful opening of the voltage--gated ion channels, internal mechanisms of the channels cause the ion channels to close again.
 		The channels stay closed long enough to enable the active sodium--potassium pump to reestablish the ionic concentration gradient over the membrane.
 		%The channels stay closed for a short while, enabling the active sodium--potassium pump to reestablish the ionic concentration gradient over the membrane.
@@ -336,7 +344,8 @@
 \begin{figure}[hbt!p]
     \centering
     \includegraphics[width=0.95\textwidth]{synapticTransmissionFraKandell}	%Figure taken from  \cite{PrinciplesOfNeuralScience4edKAP10}, page 183.
- 	  \caption{\textbf{Synaptic transmission in an excitatory synapse.} 
+ 	  \caption[Synaptic transmission in an excitatory synapse]
+			{Synaptic transmission in an excitatory synapse; 
 			An action potential arriving at the terminal of the presynaptic axon cause $Ca^{2+}$ to enter the presynaptic cytosol, causing synaptic vesicles to fuse with the membrane.
 			The containing neurotransmitters are released into the synaptic cleft.
 			The released neurotransmitters diffuse passively across the synaptic cleft and bind to specific receptors in the postsynaptic membrane, causing the connected ion channels to open.
@@ -354,33 +363,37 @@
 		%The exact firing time have recently been found to have a large impact on synaptic plasticity.
 
 		As the synaptic connection is plastic, this enables a truly complex computational system.
-		The subject of synaptic transmission and plasticity in biological systems have been covered extensively in appendix \ref{appendixSynPlast}.
+		The subject of synaptic transmission and plasticity in biological systems have been covered extensively in appendix \ref{appendixSynapticPlasticity}.
 
-	\subsection{Signal Propagation in the Biological Neuron}
-%TODO CITE TODO siter TODO CITE TODO siter TODO CITE TODO siter TODO CITE TODO siter TODO CITE TODO siter TODO CITE TODO siter TODO CITE TODO siter TODO CITE TODO siter TODO CITE TODO siter TODO CITE TODO siter TODO CITE TODO siter TODO CITE TODO siter TODO CITE TODO siter TODO CITE TODO siter TODO CITE TODO siter TODO CITE TODO siter TODO CITE TODO siter TODO CITE TODO siter TODO CITE TODO siter TODO CITE TODO siter TODO CITE TODO siter TODO CITE TODO siter TODO CITE TODO siter TODO CITE TODO siter TODO CITE TODO siter  			Ingen siteringer nå...		
-		To sum up this section, it can be said that the computational capability of a single neuron does not extend very far.
-		It can be modelled as a basic leaky integrator of input, where the value represents the electrochemical potential over the neuronal membrane.
-		%In biology, this is possible because of the 
-% 		%%
-		The signalling capabilities of the neuron is possible because of the phospholipid bilayer, that is virtually impermeable to electrically charged ions and molecules.
-		This enables an electrochemical potential over the membrane, and the neuron can have a rapidly changing state.
-		In terms from graph theory, the synapse is a directed weighted edge, where the weight is plastic.
-		%In terms from graph theory, the synapse is a directed edge with a plastic weight.
-		%In terms from graph theory, the synapse is a weighted directed edge between two nodes.
-		The chemical synapse therefore enables transmissions from presynaptic neurons to be amplified or reduced depending on the size of the synaptic connection.
 
-		The neuron fires an action potential when the membrane potential of the neuron becomes more positive than the firing threshold.
-		An action potential is a self--carrying signal that enables output synapses all along the axon to receive the same intracellular signal, causing the size of synaptic transmission to be given solely by the synaptic weight.
-		The distance between the start of the axon and the synapse does not reduce the size of the signal, but it does introduce a small delay given by the distance travelled.
-		% This delay is important because of the Spike--Time Dependent Plasticity that increase 
-		This delay is thought to be important, as Spike--Time Dependent Plasticity states that the synaptic weight of a synapse can increase or decrease depending on the time of transmission.
 
-		The computational capabilities of neural networks is a result of having a tremendous amount of these weak computational units.
-		In the human brain, the number of neurons is estimated to have an order of magnitude corresponding to about $10^{11}$ nodes, each estimated to have about $10^3$ input synapses.
-		%Every neuron is excitable and fires an action potential 
-		Every neuron is excitable and every synapse is plastic based on e.g. the relative time of firing of the presynaptic and the postsynaptic neuron.
-		%This creates a highly parallel system that is hard to simulate.
-		This creates a very complex plastic system, and is seen as the basis of cognition.
-
+% TAR VEKK SUBSECTION! (Signal Propagation in the Biological Neuron) KOMMENTERT UT!
+%//{
+% 	\subsection{Signal Propagation in the Biological Neuron}
+% %TODO CITE TODO siter TODO CITE TODO siter TODO CITE TODO siter TODO CITE TODO siter TODO CITE TODO siter TODO CITE TODO siter TODO CITE TODO siter TODO CITE TODO siter TODO CITE TODO siter TODO CITE TODO siter TODO CITE TODO siter TODO CITE TODO siter TODO CITE TODO siter TODO CITE TODO siter TODO CITE TODO siter TODO CITE TODO siter TODO CITE TODO siter TODO CITE TODO siter TODO CITE TODO siter TODO CITE TODO siter TODO CITE TODO siter TODO CITE TODO siter TODO CITE TODO siter TODO CITE TODO siter TODO CITE TODO siter  			Ingen siteringer nå...		
+% 		To sum up this section, it can be said that the computational capability of a single neuron does not extend very far.
+% 		It can be modelled as a basic leaky integrator of input, where the value represents the electrochemical potential over the neuronal membrane.
+% 		%In biology, this is possible because of the 
+% % 		%%
+% 		The signalling capabilities of the neuron is possible because of the phospholipid bilayer, that is virtually impermeable to electrically charged ions and molecules.
+% 		This enables an electrochemical potential over the membrane, and the neuron can have a rapidly changing state.
+% 		In terms from graph theory, the synapse is a directed weighted edge, where the weight is plastic.
+% 		%In terms from graph theory, the synapse is a directed edge with a plastic weight.
+% 		%In terms from graph theory, the synapse is a weighted directed edge between two nodes.
+% 		The chemical synapse therefore enables transmissions from presynaptic neurons to be amplified or reduced depending on the size of the synaptic connection.
+% 
+% 		The neuron fires an action potential when the membrane potential of the neuron becomes more positive than the firing threshold.
+% 		An action potential is a self--carrying signal that enables output synapses all along the axon to receive the same intracellular signal, causing the size of synaptic transmission to be given solely by the synaptic weight.
+% 		The distance between the start of the axon and the synapse does not reduce the size of the signal, but it does introduce a small delay given by the distance travelled.
+% 		% This delay is important because of the Spike--Time Dependent Plasticity that increase 
+% 		This delay is thought to be important, as Spike--Time Dependent Plasticity states that the synaptic weight of a synapse can increase or decrease depending on the time of transmission.
+% 
+% 		The computational capabilities of neural networks is a result of having a tremendous amount of these weak computational units.
+% 		In the human brain, the number of neurons is estimated to have an order of magnitude corresponding to about $10^{11}$ nodes, each estimated to have about $10^3$ input synapses.
+% 		%Every neuron is excitable and fires an action potential 
+% 		Every neuron is excitable and every synapse is plastic based on e.g. the relative time of firing of the presynaptic and the postsynaptic neuron.
+% 		%This creates a highly parallel system that is hard to simulate.
+% 		This creates a very complex plastic system, and is seen as the basis of cognition.
+% //}
 
 % // vim:fdm=marker:fmr=//{,//}

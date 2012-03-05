@@ -40,7 +40,9 @@
 	\begin{equation}
 		\sigma(x)=\frac{1}{1+e^{-x}}   %TODO TODO TODO TODO TODO TODO Lag heller en figur for å vise sigmoid function! (Bytt ut ligning med fig!) TODO TODO TODO TODO TODO TODO TODO
 	\end{equation}
-	Because it is more right to consider the neuron as stateless in the frequency domain, the stateless computation in a second generation ANN is more correct than the stateless computation in the McCulloch--Pitts neuron model.
+	As the neuron has a state that gives the depolarization value of the neuron, the stateless computation in the McCulloch--Pitts neuron is gross simplification of the original system.
+	It could be more correct to consider the neuron as being stateless in the frequency domain, and the stateless computation of a second generation ANN can be said to be more correct than in a first generation ANN.
+	%Because it is more right to consider the neuron as stateless in the frequency domain, the stateless computation in a second generation ANN is more correct than the stateless computation in the McCulloch--Pitts neuron model.
 	As the concept of frequency only makes sense for time intervals of a certain size, precise simulations with small computational time steps does not necessarily give accurate simulation results for an ANN of the second generation. 
 	%As the concept of frequency only makes sense for time intervals of a certain size, a second generation ANN can not be used for accurate simulations with small computational time steps.
 	%%%
@@ -58,7 +60,7 @@
 \begin{figure}[hbt!p]
 	\centering
 	\includegraphics[width=0.75\textwidth]{sigmoidCurve}
-	\caption{Sigmoid curve $\frac{1}{1+e^{-x}}$ for the domain $x\in [-5,5]$}
+	\caption[The sigmoid curve that is often used to compute the output of a node in a second generation ANN]{Sigmoid curve $\frac{1}{1+e^{-x}}$ for the domain $x\in [-5,5]$}
 	\label{figSigmoidCurve}
 \end{figure}
 	
@@ -139,11 +141,14 @@
 \begin{figure}[tb!hp]
 	\centering
 	\includegraphics[width=0.85\textwidth]{figRCcircuit}
-	\caption{A schematic diagram of the $LIF$ neuron model. 
+	\caption[A schematic diagram of the $LIF$ neuron model]
+			{A schematic diagram of the $LIF$ neuron model. 
 			Each node can be modelled as the circuit inside the dashed circle on the right side of the model.
 			Depolarizing input is represented by the input current $I(t)$, and when the potential over the capacitor is larger than the firing threshold at time $t_i^{(f)}$, a spike $\delta(t-t_i^{(f)})$ is generated. 
 			The left--hand side of the figure shows a model of synaptic transmissions as a low--pass filtering of the presynaptic action potentials $\delta(t_j^{(t)})$, generating a input current $\alpha(t-t_j^{(f)})$ to neuron $i$.
 			(Figure from \cite{gerstnerKistler2002KAP04}).
+% TODO TODO Amund seier at denne referansen oppfattes som om det er figur pluss teks som kommer fra artikkelen. Gjøre om på dette? Hvordan?
+% TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO 
 			}
 	\label{figRCcircuitAvNeuronet}
 \end{figure}
@@ -216,7 +221,8 @@
         \includegraphics[width=0.55\textwidth]{auronE_depol}
         \label{figAuronE:subfigDepolarization}
     }
-    \caption{ % TODO TODO TODO Litt rart å bruke auron, her? Vil gjerne bruke auron, men dette må innføres først. Do It! TODO
+    \caption[An artificial neural circuit to illustrate numerical integration of the $LIF$ neuron. Schematic model and simulation results.]
+			{ % TODO TODO TODO Litt rart å bruke auron, her? Vil gjerne bruke auron, men dette må innføres først. Do It! TODO
 			(\ref{figAuronE:subfigModel}) A schematic model of the synaptic connections in a neural circuit intended to illustrate neural integration.
 			The synaptic connections in fig. \ref{figAuronE:subfigModel} are represented as a factor of the firing threshold, meaning that a transmission thought a synapse with $\omega_{ij}=1$ will cause the postsynaptic auron to fire.
 			The neural circuit $[A1, A9]$ is thus self sustaining, and cause synaptic transmissions through the synapse from auron $[A*]$ to auron $E$.

@@ -26,7 +26,7 @@
 %
 
 
-\documentclass[b5paper,11 pt]{report}
+\documentclass[b5paper,12 pt]{report}
 % TODO Er dette rett? Sjekk dette..
 
 
@@ -71,19 +71,19 @@
 
 %%%%%%%% Fra Kristoffer sin master:
 \lstset{ %
-basicstyle=\footnotesize,       % the size of the fonts that are used for the code
-%numbers=left,                   % where to put the line-numbers
-numberstyle=\footnotesize,      % the size of the fonts that are used for the line-numbers
-%stepnumber=1,                   % the step between two line-numbers. If it's 1 each line will be numbered
-%numbersep=5pt,                  % how far the line-numbers are from the code
+basicstyle=\tiny,       % the size of the fonts that are used for the code
+numbers=left,                   % where to put the line-numbers
+numberstyle=\tiny,      % the size of the fonts that are used for the line-numbers
+stepnumber=1,                   % the step between two line-numbers. If it's 1 each line will be numbered
+numbersep=7pt,                  % how far the line-numbers are from the code
 showspaces=false,               % show spaces adding particular underscores
 showstringspaces=false,         % underline spaces within strings
 showtabs=false,                 % show tabs within strings adding particular underscores
 %captionpos=b,                   % sets the caption-position to bottom
-%breakatwhitespace=false,        % sets if automatic breaks should only happen at whitespace
-%escapeinside={\%*}{*)}          % if you want to add a comment within your code
+breakatwhitespace=false,        % sets if automatic breaks should only happen at whitespace
+%escapeinside={\%*}{*)},          % if you want to add a comment within your code
 %
-frame=single,                % adds a frame around the code
+%frame=single,                % adds a frame around the code
 tabsize=4,                % sets default tabsize to 2 spaces
 breaklines=true,                % sets automatic line breaking
 }
@@ -120,6 +120,9 @@ breaklines=true,                % sets automatic line breaking
 \cleardoublepage %start new page %TODO Brukes dersom [report] brukes for dokumentet.
 %\clearpage
 
+\listoffigures
+%\listoftables
+
 \setcounter{page}{1} %reset the page counter
 \pagestyle{plain} % put headers/footers back on
 
@@ -138,7 +141,7 @@ breaklines=true,                % sets automatic line breaking
 \include{introduction}
 
 \chapter{Background Theory}
-	Before we looking av Artificial Neural Networks(ANN), different aspects of ANN history and biology have to be introduced.
+	Before looking av Artificial Neural Networks(ANN), different aspects of ANN history and biology have to be introduced.
 	This chapter is intended to introduce the reader to the necessary background information to make the theory in this work comprehendable.
 
 	First, theory about the simulated system is ... OSV (sjå FDP)...
@@ -174,14 +177,13 @@ breaklines=true,                % sets automatic line breaking
 % 	The mathematical modelling and necessary consepts for utilizing the resulting equations in a simulator is presented in this chapter.
 
 %TODO TODO TDOO TODO Skriv om første setning! Slutten er dårlig.
-%A simulator implemented by numerical integration of input involves an accumulation of truncation errors, as the error is integrated too. % as well as the value.
-A simulator implemented by numerical integration of input involves an accumulation of truncation errors, because the error is integrated as well as the value.
-%Because the depolarization of a neuron is integrated up to the firing threshold before it is reset and starts depolarizing from the membrane resting potential(that is less than the firing threshold), 
-%	the depolarization can be said to have a rising phase of unlimited length.
-The depolarization of a neuron is integrated up to the firing threshold, before an action potential is fired and the depolarization is reset to the resting membrane potential.
-Because the resting membrane potential always is less than the firing threshold, one can say that the depolarization have a rising phase of unlimited length. % for simuleringer der t->infty.
-% Og ta vekk neste setning: Formidle budskapen heller veldig lett:xxx Any systematic local truncation error therefore potentially cause an unbounded error.
-It can be argued that any systematic local truncation error therefore cause an error of unbounded size as time $t_n\to\infty$.
+A simulator implemented by numerical integration of input involves an accumulation of truncation errors, where the error is integrated as well as the value. %also is integrated. %is integrated too. % as well as the value.
+%A simulator implemented by numerical integration of input involves an accumulation of truncation errors, because the error is integrated as well as the value.
+The depolarization value of a neuron is integrated to the firing threshold before an action potential is fired and the depolarization is reset. % to the resting membrane potential.
+An erroneous simulated depolarization value gives an erroneous firing time and initiation of the next inter--spike interval.
+%The depolarization value therefore have a cumulative property when utilizing numerical integration, and any local truncation error ...
+The depolarization value in that inter--spike interval is therefore affected by the spike time error, and mechanism is repeated.
+Any systematic local truncation error therefore creates an increasing total error given by the direction of the local error, producing a diverging error for simulations where simulated time $t_n \to \infty$.
 %In an attempt to make a simulation method that have a bounded error, a simulation scheme based on the algebraic solution to the $LIF$ neuron's differential equations is devised.
 %TODO UNDER: 			simulation method that produce a limited error, ... 	Eller noke.
 In an attempt to create simulation method with a bounded error, a simulation scheme based on the algebraic solution to the $LIF$ neuron's differential equations is devised in this chapter.
@@ -195,15 +197,77 @@ To utilize the algebraic solution of the $LIF$ neuron's differential equations f
 After the algebraic solution of the $LIF$ neuron's depolarization have been developed in sec.  \ref{ssecTheAlgebraicSolution} and \ref{ssecTheActionPotential},
 %After the equations for the leaky integrator have been adjusted for simulation of the LIF neuron in sec. \ref{ssecTheAlgebraicSolution} and \ref{ssecTheActionPotential},
 	the concept of synaptic transmission as a continuous flow is introduced in sec. \ref{ssecSynapticFlow}.
-%The last part of this chapter is dedicated to a discussion about the error mechanisms for the two models; Simulation by numerical integration and simulation by the novel model.
-The last part of this chapter is dedicated to a discussion about the error mechanisms for the two considered simulation models. % ; Simulation by numerical integration and simulation by depolarizing flow.
-%Different errors mechanisms of the two models are discussed in sec. \ref{ssecAnalysisOfErrorsForTheTwoModels}.
+%The last part of this chapter is dedicated to a discussion about the error mechanisms for the two considered simulation models. % ; Simulation by numerical integration and simulation by depolarizing flow.
+The last part of this chapter is dedicated for an analysis of the error mechanisms of the two models and discussion about other necessary concepts for implementing the novel simulation model.
 
 	
 	%inkluderer ei fil..
 	\include{theNovelModel}
 		% Skal inneholde:  		\section{The novel model: Modelling}  : 	\label{ssecModellingRefractionTimeToLimitFiringFrequency}
 	%\include{timeAndError} ... eller noke
+
+
+
+
+
+
+
+
+	% Todo finn ut korleis rekkefølgen skal være. Ikkje bestemt enda..
+%	\chapter{Design of an implementation for comparing the two models}
+%		\begin{itemize}
+%			\item Write about how to make the similarities and differences more prominent: Common abstract class, derived [s\_*] and [K\_*] classes.
+%		 	\item Time, pWorkTaskQue.
+%		 	\item 
+%		\end{itemize}
+
+	\chapter{A Theoretic Comparison of the Two Models}
+
+		Two simulation methods have been presented in this text.
+		The traditional method of simulating the $LIF$ neuron's depolarization by numerical integration ($NIM$), % utilize numerical integration of all change in depolarization.
+			and the novel model that utilize the algebraic solution to the $LIF$ neuron's differential equations($\kappa_M$).
+			%and the novel model that computes each node's depolarization by the algebraic solution to the $LIF$ neuron's differential equations($\kappa M$).
+		These two models differ on how they compute the neuron's depolarization, what is values are propagated and how the neuron spike time is decided.
+		%These two models differ in how they simulate the neuron's depolarization. 
+		%The traditional model($NIM$) computes the neuron's depolarization by numerical integration of discrete synaptic input, while the novel model($\kappa M$) achieves a higher time resolution by computing the future spike time.
+		%The two models are thus very different in how they can be implemented and in the error produced.
+%%
+		In this chapter, a theoretical analysis and comparison between the two models is performed.
+		%In this chapter, a theoretical comparison of the similarities and differences of the two simulation models is carried out.
+
+		To make this comparison as comprehensive and accurate as possible, both models are implemented from scratch to achieve an extensive insight into the mechanisms of the two models.
+	%	As much of the code as possible is placed in a common class that is derived to elements specific to each simulation models.
+		The resulting observations are presented in this chapter.
+		In chapter \ref{chExperimentalEfficiencyMeasurement}, experiments are designed to test the accuracy/efficiency of the two models.
+		The implementation will be based on the simulation design presented in this chapter.
+		%Later, in chapter \ref{chExperimentalEfficiencyMeasurement}, experiments are designed for the two implementations and the results meant to assess the simulation accuracy of the two models are presented.
+		%Later, in chapter \ref{chExperimentalEfficiencyMeasurement}, experimental measurements are performed on the two implementation to assess the simulation accuracy of the two models.
+		%In chapter \ref{chExperimentalEfficiencyMeasurement}, the theory discussed in this chapter will be tested by executing simulations on the two implementations and comparing the simulation error of each model.
+		
+		\include{designOfTheImplementation}
+		\include{analysisOfTheTwoModels}
+
+
+
+	
+	\chapter{Experimental efficiency measurement of the two models}
+	\label{chExperimentalEfficiencyMeasurement}
+		\section{Experiment design} 	%		Copy/Paste from article! (Nesten ukritisk).
+			\subsection{Idealized Situation}
+			\subsection{A Realistic Input Flow}
+		\section{Simulation Results} 	%		Copy/Paste from article! (Nesten ukritisk).
+			\subsection{Static Input Flow}
+			\subsection{Dynamic Input Flow}
+			\subsection{?? Meir grundig analyse av feil for lange simuleringer?}
+		\section{Analysis of Simulation Results} %.. Det som står i artikkel::Discussion..
+
+	\chapter{Discussion and Concluding Remarks}
+ 		- Skriv om at med dEstimatedTaskTime-opplegget er det ikkje nødvendig å simulere spatiotemporal delay. I aksonet for eksempel. Dette er kjempebra for neuronsimulering.
+		- Mulighet for "multi-compartment model with single compartment implementation".
+		
+		- Skriv om at det var teit å bruke deriverte ved overføringer. Bedre ville det vore å bare definert det slik at kvart neuron oppdaterte(rekalkulerte) kvar iterasjon. 
+			Ikkje så veldig intuitivt at dette er meir effektivt, men la oss sjå på simuleringsresultata!
+		- Directions for further work
 
 % \chapter{Design of Software to compare the Efficiency of the Two Models}
 % 	% Før dette må eg analysere error, slik at eg kan skrive "for å teste analysen fra \ref.., er spesiallaget software designet for dette."
@@ -217,8 +281,10 @@ The last part of this chapter is dedicated to a discussion about the error mecha
 % 	%\include{designKANN}
 
 \appendix
-	\include{appendixSynPlast}
+	\include{appendixSynapticPlasticity}
 	\include{appendix}
+	\chapter{UML av alle subelement klassene!} 			%TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO     SKRIV DENNE!         TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO 
+		\label{appendixUMLofAllNodeSubelementClasses}  	%TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO     SKRIV DENNE!         TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO 
 
 
 \bibliography{bibliografi}

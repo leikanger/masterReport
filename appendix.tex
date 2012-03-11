@@ -45,27 +45,107 @@
 %%
 	The variable that represents time is measured from the start of the current time window, $t_w = t - t_0$.
 
-\section{Firing Time for the LIF Neuron}
-The remainder of the interspike period can be found by 
-\label{appendixFiringTime}
-		\begin{equation}
-			\begin{split}
-					v\left(t_w^{(f)}\right)			 							&= \tau \qquad 										\\	%,\qquad\qquad\tau = \text{firing threshold} 	\\
-					\kappa - \left( \kappa - v_0 \right) e^{-at_w^{(f)}}  		&= \tau 											\\
-			%		(v_0-\kappa)e^{-\alpha t^^{(f)}}							&= \tau-\kappa 										\\
-					e^{-\alpha t_w^{(f)}} 			 						&= \frac{\kappa - \tau}{\kappa - v_0} 					\\
-					t_w^{(f)}													&= -\alpha^{-1} \, \ln \left( \frac{\kappa - \tau}{\kappa - v_0} \right) 					
-			\end{split}
-			\label{appendix:eqFiringTimeEstimate_withoutRefractionPeriod}
-		\end{equation}
-		
-		If we define an absolute refraction period $t_r$ for the neuron, where the depolarization will remain constant after firing, this can be added to \eqref{appendix:eqFiringTimeEstimate_withoutRefractionPeriod}.
-		%We will call $t^{(f)}$ for the remainder of the depolarizing phase of the inter--spike period, $p_r(\kappa)$.
-		We can view $t_w^{(f)}$ as the remainder of the depolarizing phase of the inter--spike period, and denote it $p_r(\kappa, v_0)$.
-		\begin{equation}
-			p_r(\kappa, v_0)	 = -\alpha^{-1} \, \ln \left( \frac{\kappa - \tau}{\kappa - v_0} \right) + t_r
-		\end{equation}
 
 
+% FLYTTA TIL TEKSTEN: \section{Firing Time for the LIF Neuron}
+% 	Difor er \label{appendixFiringTime} bore..
+
+
+
+\section{Refration time and simulator time scale}
+%\label{ssecValueOfAlpha}
+
+The inter--spike interval for a neuron consists of two phases. 
+The absolute refraction period and the depolarizing phase (se sec. \ref{ssecTheActionPotential}).
+% % % 
+Equation \eqref{eqPeriodeligningForKonstIntraPeriodKAPPA} models the interval of the depolarizing phase of the neuron. % , $p_d(\kappa)$.
+The equation for the whole inter--spike interval is given by
+\begin{equation}
+	p_{isi}(\kappa) = p_d(\kappa) + t_r
+	\label{eqHeilePerioden}
+\end{equation}
+
+Where $t_r$ is the refraction period of the neuron. % , and $p_d(\kappa)$ is given in \eqref{eqPeriodeligningForKonstIntraPeriodKAPPA}.
+If we consider the firing frequency of the neuron, $f(\kappa) = p_{isi}^{-1}(\kappa)$ we can see that the asymptote is given by
+\begin{equation}
+	\begin{split}
+		\lim_{\kappa->\infty}{ f(\kappa)} &= \lim_{\kappa->\inf}\left( \frac{-\alpha}{\ln \left( \frac{\kappa - \tau}{\kappa} \right) - \alpha t_r} \right)   \qquad = \frac{1}{t_r} \\ 
+		%\lim_{\kappa->\infty}{ f(\kappa)} &= \frac{1}{t_r}
+	\end{split}
+	\label{eqFrekvensLlim} 
+\end{equation}
+
+From this analysis it can be concluded that the refraction period of the neuron will limit the output frequency of the neuron.
+This can be seen in fig. \ref{figFrekvensMedOgUtenRefractionPeriod}.
+
+\begin{figure}[bhtp]
+	\begin{center}
+		\includegraphics[width=0.7\textwidth]{frekvensPlotRefractionPeriod}
+	\end{center}
+	\caption{Frequency for a neuron, with and without refraction period for the neuron.}
+	\label{figFrekvensMedOgUtenRefractionPeriod}
+\end{figure}
+
+%We can see from this analysis that the refraction period of the neuron is fundamental for restricting the neurons output frequency (se fig. \ref{figFrekvensMedOgUtenRefractionPeriod}).
+For biological neurons, the maximum firing frequency is about 1000 Hz \cite{NeuroscienceExploringTheBrain3edKAP4}. %s 79
+\begin{equation}
+	\lim_{\kappa->\infty}{ f(\kappa}) \approx 1000 \, \text{Hz}
+\end{equation}
+%If we define the maximum firing frequency to be 1000, equation \ref{eqFrekvensLlim} gives us the absolute refraction period as
+If we define the maximum firing frequency for the artificial neuron to be 1000 Hz, from equation \ref{eqFrekvensLlim} we get the corresponding refraction period $t_r$:
+\begin{equation}
+	t_r = \frac{1}{1000 \text{Hz}} = 1 \, \text{m}s %= 0.001 s = 
+\end{equation}
+
+%TODO Skriv at dette er en kjendt størrelse i neuroscience (finn, referer), og er en indikasjon på rettheten til lingningene (?)
+% 		Kanskje også skrive litt om at dette er "absolute refraction period". Det er også en mild refraction period etter dette (finn,referer). Dette kan implementeres ved 2ms refraction period for auronet. 
+% 		TODO TODO Sjekk andre linja her, og gjør en bestemmelse i forhold til mine ANN. (1 eller 2 ms refraction period?).
+If we define the time step of the simulation to be 1 m$s$, the refraction period will be one time step in the simulation.
+%With a time step of 1 m$s$, the absolute refraction period (the time interval where it is impossible to exite the neuron) can be set to one time step. 
+With a time step of 1 m$s$, the simulation of the refraction period can be done by blocking the input for the durion of one time iteration.
+%For SANN nodes, this means that the node will not change its value for the duration of the next time step. 
+%For $\kappa$ANN this can be implemented more effective by incrementing the estimated firing time by one time iteration. 
+
+
+
+\section{Activation level recalculation} 		%todo todo todo todo todo todo todo todo todo todo todo todo todo todo todo 
+\label{appendixRecalculateKappaClass}
+	The concept of edge transmissions as the derived potentially gives an increase in the efficiency of the simulation, as only the necessary additions have to be executed.
+	The value is found as the sum of all such edge transmissions, and the effect of an altered activation level is computed after the time step.
+	As the activation level is found as the sum of all preceding edge transmissions, small numerical errors is also integrated and could give a large deviation from the correct activation level.
+	Because of this, an adaptive mechanism for recalculation of the activation variable $\kappa$ is devised.
+
+	The size of the error is hard to estimate, as it can vary with the hardware architecture, the system load and the number of input transmissions to the node in question.
+	%The size of the error from one time step is hard to estimate, as this varies with the number of inputs in the course of the time step.
+	Because of this, the number of time steps between each recalculation in a node is designed to be adaptive.
+	When the activation variable have a small deviation from the actual activation level, the interval to the next recalculation can be set higher than if the deviation is large.
+
+	It is important to limit both the minimal and maximal period between recalculation of $\kappa$.
+	This is achieved by the altered sigmoid function \eqref{eqIntervalToNextRecalculationOfKappa}. %, shown in fig. \ref{figIntervalToNextRecalculationOfKappa}.
+	
+\begin{equation}
+	p_e(E) = (c_1 + c_2) - \frac{c_2}{1+e^{-(c_4\cdot E - c_3)}}
+	\label{eqIntervalToNextRecalculationOfKappa}
+\end{equation}
+
+	From equation \eqref{eqIntervalToNextRecalculationOfKappa}, it can be observed that the altered sigmoid function has a maximal value of $c_1+c_2$.
+	In fig. \ref{figIntervalToNextRecalculationOfKappa}, $c_1=100$ and $c_2=250$ gives the maximal interval of $350$ time steps between recalculation.
+	Because of a small value for the $\kappa$ errors while experimenting with this aspect, the minimal period between recalculations was set to $c_1 = 100$ iterations.
+	This can easily be adjusted if $\kappa$ errors become an issue.
+	 
+	%As indicated in fig. \ref{figIntervalToNextRecalculationOfKappa}, 
+	%	this function gives a maximal interval defined by $c_1+c_2$ when the error is zero and a minimal period of size $c_1$ when the error $E\to\infty$.
+	%The altered sigmoid function can therefore easily be adjusted to give a different recalculation interval.
+
+\begin{figure}[bhtp]
+	\centering
+	\includegraphics[width=0.9\textwidth]{intervalToNextRecalculationOfKappa}
+	\caption{Plot of the altered sigmoid function \eqref{eqIntervalToNextRecalculationOfKappa} with $c_1=100$, $c_2=250$, $c_3=10$ and $c_4=0.5$.
+			The minimal interval is given by $c_1$ and the maximum period by $c_1+c_2$.  }
+	\label{figIntervalToNextRecalculationOfKappa}
+\end{figure}
+
+	\subsection{Implementation of \emph{recalcKappaClass}}
+	% todo todo todo todo todo todo todo todo todo todo todo todo todo todo todo todo todo todo todo todo todo todo todo todo todo todo todo todo todo todo todo todo todo 
 
 % // vim:fdm=marker:fmr=//{,//}

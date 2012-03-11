@@ -1,6 +1,9 @@
 
+% Tester stavekontroll:ord: 	que queue deklarations declarations continue colour color successful important forcing  address
 
-% Trenger "Table of abbrevations"
+
+
+% Trenger "Table of abbreviations"
 % 	- LTP, LTD, STDP
 % 	- "spike" ? (at det betyr Action potential)?
 % 	- SANN  - spiking ANN
@@ -27,6 +30,7 @@
 
 
 \documentclass[b5paper,12 pt]{report}
+%\documentclass[a4paper,10 pt, twocolumn]{report}
 % TODO Er dette rett? Sjekk dette..
 
 
@@ -167,7 +171,8 @@ breaklines=true,                % sets automatic line breaking
 % 	\include{artikkel_06.02.2012/appendix}
 
 
-\chapter{Development of A Novel Neuron Simulation Scheme}
+\chapter{Development of A Novel Neuron Simulation Model}
+	\label{chapDevelopmentOfANovelModel}
 %\chapter{Development of $\kappa M$}
 %\section{Mathematical Modelling}
 	% TODO Write an intro to this chapter
@@ -221,31 +226,38 @@ The last part of this chapter is dedicated for an analysis of the error mechanis
 %		 	\item 
 %		\end{itemize}
 
-	\chapter{A Theoretic Comparison of the Two Models}
+	\chapter{Design of Software to Compare the Models}
+	%\chapter{A Theoretic Comparison of the Two Models}
 
-		Two simulation methods have been presented in this text.
-		The traditional method of simulating the $LIF$ neuron's depolarization by numerical integration ($NIM$), % utilize numerical integration of all change in depolarization.
-			and the novel model that utilize the algebraic solution to the $LIF$ neuron's differential equations($\kappa_M$).
-			%and the novel model that computes each node's depolarization by the algebraic solution to the $LIF$ neuron's differential equations($\kappa M$).
-		These two models differ on how they compute the neuron's depolarization, what is values are propagated and how the neuron spike time is decided.
+		Two simulation methods have been presented in this text,
+			the Numerical Integration Method($NIM$) that utilize numerical integration of input,
+			and a novel model($\kappa M$) that utilize the algebraic solution to the $LIF$ neuron's differential equations.
+		%The traditional method of simulating the $LIF$ neuron's depolarization by numerical integration ($NIM$), % utilize numerical integration of all change in depolarization.
+		%	and the novel model that utilize the algebraic solution to the $LIF$ neuron's differential equations($\kappa_M$).
+		%	%and the novel model that computes each node's depolarization by the algebraic solution to the $LIF$ neuron's differential equations($\kappa M$).
+		The two models differ in how they compute the neuron's depolarization, what values are propagated, and how the neuron's spike times are decided.
 		%These two models differ in how they simulate the neuron's depolarization. 
 		%The traditional model($NIM$) computes the neuron's depolarization by numerical integration of discrete synaptic input, while the novel model($\kappa M$) achieves a higher time resolution by computing the future spike time.
 		%The two models are thus very different in how they can be implemented and in the error produced.
 %%
-		In this chapter, a theoretical analysis and comparison between the two models is performed.
-		%In this chapter, a theoretical comparison of the similarities and differences of the two simulation models is carried out.
+		%In this chapter, a theoretical analysis and comparison between the two models is conducted. %performed.
+		Software intended for a theoretical analysis have been designed and is presented in this chapter.
+		Some of the differences in implementation are inadvertedly presented, but main discussion can be found in chapter \ref{chapDiscussion}.
+		%A more thorough discussion of the differences will be discussed in chapter \ref{chapDiscussion}.
 
-		To make this comparison as comprehensive and accurate as possible, both models are implemented from scratch to achieve an extensive insight into the mechanisms of the two models.
-	%	As much of the code as possible is placed in a common class that is derived to elements specific to each simulation models.
-		The resulting observations are presented in this chapter.
-		In chapter \ref{chExperimentalEfficiencyMeasurement}, experiments are designed to test the accuracy/efficiency of the two models.
-		The implementation will be based on the simulation design presented in this chapter.
-		%Later, in chapter \ref{chExperimentalEfficiencyMeasurement}, experiments are designed for the two implementations and the results meant to assess the simulation accuracy of the two models are presented.
-		%Later, in chapter \ref{chExperimentalEfficiencyMeasurement}, experimental measurements are performed on the two implementation to assess the simulation accuracy of the two models.
-		%In chapter \ref{chExperimentalEfficiencyMeasurement}, the theory discussed in this chapter will be tested by executing simulations on the two implementations and comparing the simulation error of each model.
+		To make this comparison as comprehensive and accurate as possible, both models are implemented from scratch.
+		The design of this software is discussed in this chapter.
+		The software have also been used for analyzing the efficiency of the two models.
+		The design and results from these experiments can be found in chapter \ref{chExperimentalEfficiencyMeasurement}.
+		
+		%The resulting observations are presented in the second half of this chapter.
+		%The first part is about the general design of the implementation, and how best to achieve an insight into the differences and similarities between the two models. 
+
+		%In chapter \ref{chExperimentalEfficiencyMeasurement}, experiments are designed to test the accuracy or efficiency of the two models.
+		%The implementation utilized for these experiments is based on the design presented in this chapter. %XXX Based on .. er feil!
 		
 		\include{designOfTheImplementation}
-		\include{analysisOfTheTwoModels}
+		%\include{analysisOfTheTwoModels}
 
 
 
@@ -261,7 +273,13 @@ The last part of this chapter is dedicated for an analysis of the error mechanis
 			\subsection{?? Meir grundig analyse av feil for lange simuleringer?}
 		\section{Analysis of Simulation Results} %.. Det som står i artikkel::Discussion..
 
+	\chapter{RESULTS: Theoretical Analysis of the Two Models} %XXX RESULTS!
+		Her skal eg skrive om forskjeller i design og implementasjon.
+			Prøv å gjøre det slik at lite blir introdusert i Discussion!
+		Enten skal eg ha inn bare teoretisk sammenligning, her, eller så kan eg også få inn results fra Efficiency Comparison: her! (mest ryddig, mest arbeid(?) )
+
 	\chapter{Discussion and Concluding Remarks}
+	\label{chapDiscussion}
  		- Skriv om at med dEstimatedTaskTime-opplegget er det ikkje nødvendig å simulere spatiotemporal delay. I aksonet for eksempel. Dette er kjempebra for neuronsimulering.
 		- Mulighet for "multi-compartment model with single compartment implementation".
 		

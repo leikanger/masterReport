@@ -264,14 +264,37 @@ The last part of this chapter is dedicated for an analysis of the error mechanis
 	
 	\chapter{Experimental efficiency measurement of the two models}
 	\label{chExperimentalEfficiencyMeasurement}
-		\section{Experiment design} 	%		Copy/Paste from article! (Nesten ukritisk).
-			\subsection{Idealized Situation}
-			\subsection{A Realistic Input Flow}
-		\section{Simulation Results} 	%		Copy/Paste from article! (Nesten ukritisk).
-			\subsection{Static Input Flow}
-			\subsection{Dynamic Input Flow}
-			\subsection{?? Meir grundig analyse av feil for lange simuleringer?}
-		\section{Analysis of Simulation Results} %.. Det som står i artikkel::Discussion..
+		In digital simulations, where time is divided into discrete time steps, numerical errors comes as a consequence of having a bounded temporal accuracy. %TODO Cite ?
+		SKRIV INTRO SEINARE. Ha aftikkelen til Plesser og co. framfor deg! %TODO
+
+
+
+
+The size of the truncation errors caused by the discretization of time can be minimized by letting the number of iterations be very large and the computational time step very small.
+This cause the discrete time to go toward continuous time, and the truncation errors to go toward zero. %and the error from simulating the system in discrete time to go toward zero.
+Because of this direct correlation between the size of the error and the computational load, it is possible to measure the efficiency of a simulator by the simulation error;
+	For simulations with smaller error, larger computational time steps can be used to accomplish the same accuracy goal.
+In this work, the efficiency of the two models are analyzed by comparing the simulation error of a $\kappa M$ and a $NIM$ simulation of low temporal resolution with a high resolution $NIM$ simulation. % with over $1000$ times the number of time steps.
+%The results from this high--resolution simulation will be referred to as the simulated solution in the remainder of this text. %, and considered the true time course.
+
+% %TODO Ta vekk resten av intro. Skriv om dette i første section i {experimentalEfficiancyComparison}
+% In this work, the simulated solution have a high temporal resolution of $1.000.000$ time steps per sensory function period. %, the simulation takes long time to complete.
+% The simulation produce results with small error, but is very inefficient.
+% The high--resolution simulation's depolarization time course is considered the true time course, and referred to as the simulated solution in the remainder of this text.
+% The results from low--resolution simulations with a temporal resolution of $100$ or $1000$ can therefore be compared to the depolarization of the simulated solution to find the accuracy of the two models, $\kappa M$ and $NIM$.
+% %Because of the high accuracy of the simulated solution, it is considered the correct depolarization curve for the $LIF$ neuron for the experiments conducted in this work.
+
+		%TODO Eller hent fra "theory" i artikkelen. Intro til den section er bedre strevet..
+
+		\include{experimentalEfficiancyComparison}
+		%\section{Experiment design} 	%		Copy/Paste from article! (Nesten ukritisk).
+		%	\subsection{Idealized Situation}
+		%	\subsection{A Realistic Input Flow}
+		%\section{Simulation Results} 	%		Copy/Paste from article! (Nesten ukritisk).
+		%	\subsection{Static Input Flow}
+		%	\subsection{Dynamic Input Flow}
+		%	\subsection{?? Meir grundig analyse av feil for lange simuleringer?}
+		%\section{Analysis of Simulation Results} %.. Det som står i artikkel::Discussion..
 
 	\chapter{RESULTS: Theoretical Analysis of the Two Models} %XXX RESULTS!
 		Her skal eg skrive om forskjeller i design og implementasjon.

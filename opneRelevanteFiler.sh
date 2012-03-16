@@ -1,4 +1,4 @@
-vim -p TODO report.tex introduction.tex biologicalNeuralSystems.tex artificialNeuralSystms.tex theNovelModel.tex designOfTheImplementation.tex experimentalEfficiancyComparison.tex analysisOfTheTwoModels.tex discussion.tex bibliografi.bib #  generalDesign.tex KMdesign.tex          appendixSynapticPlasticity.tex appendix.tex bibliografi.bib
+vim -p TODO report.tex introduction.tex biologicalNeuralSystems.tex artificialNeuralSystms.tex theNovelModel.tex designOfTheImplementation.tex analysisOfTheTwoModels.tex experimentalEfficiancyComparison.tex discussion.tex bibliografi.bib #  generalDesign.tex KMdesign.tex          appendixSynapticPlasticity.tex appendix.tex bibliografi.bib
 
 #%%%%%%%%%%%
 #appendixSynPlast.tex

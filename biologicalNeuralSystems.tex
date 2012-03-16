@@ -49,12 +49,15 @@
 	\caption[Illustrative model of the neuron]{Illustrative model of the neuron. The signal propagation goes from the left to the right in this figure;
 			Synaptic integration at the dendrites, action potential through the axon and finally transmission through the output synapses. 
 			The aspects of the cell body is not immediately relevant to signal processing, and is not taken into account in the model used. }
+			% XXX Fra kor da? TODO Lag figur sjølv?
 	\label{figFigurAvNeuronet}
 \end{figure}
 	
 	In this section, the most important elements of neural signal processing are presented, enabling the reader to become more familiar with how neural networks process information.
 	%It is recommended that the reader utilize this section as a reference work when different methods of neural simulation are presented.
 	It is recommended that the reader utilize this section as a reference work when different methods of neural simulation are discussed later in the text. % la til "later in this text", no.  Er det bra?
+	%TODO Skriv om setninga; Skriv heller at bruk denne som referance for resten av teksten..
+%%%%%%
 	% DERSOM NESTE SETNING skal være med: Skriv om "the neuron", slik at dette er sant!
 	%Before discussing how the neuron processes information, the organization of the neuron have to be reviewed. %REVIEWED er dårlig TODO
 	%We will start with the organization of the neuron, before moving on to a fundamental signal processing mechanism of the neuron; The electrochemical properties of the neuron membrane.
@@ -198,10 +201,8 @@
 		The channels stay closed long enough to enable the active sodium--potassium pump to reestablish the ionic concentration gradient over the membrane.
 		%The channels stay closed for a short while, enabling the active sodium--potassium pump to reestablish the ionic concentration gradient over the membrane.
 		During this time, it is impossible to elicit a new action potential.
-		This time interval is called the absolute refraction time for the neuron and is important both to hinder the action potential to ``travel back'' along the axon.
-		%This mechanism cause what is referred to as the absolute refraction period for the neuron, and is important both to hinder the action potential to ``travel back'' along the axon and to limit the firing frequency of the neuron.
-		\cite{NeuroscienceExploringTheBrain3edKAP4} %TODO TODO TODO Sjekk: les gjennom kapittelet, og se om alt stemmer! TODO TODO TODO
-		%TODO CITE f.eks. Bear, kap 4
+		%This time interval is called the absolute refraction time and is important both to hinder the action potential to ``travel back'' along the axon and to limit the maximal firing frequency of the neuron.
+		This time interval is called the absolute refraction time for the neuron and is important both to hinder the action potential to ``travel back'' along the axon\cite{NeuroscienceExploringTheBrain3edKAP4} and to limit the maximal firing frequency of the neuron(see appendix \ref{appendixRefractionTimeAndSimulationTimeScale}). %TODO TODO TODO Sjekk: les gjennom kapittelet, og se om alt stemmer! TODO TODO TODO
 
 %As we will see in sec. \ref{ssecModellingRefractionTimeToLimitFiringFrequency}, the refraction time is also important to limit the maximum firing frequency of the neuron.
 
@@ -225,11 +226,10 @@
 % \cite{PrinciplesOfNeuralScience4edKAP09}
 	
 		An important part of the active propagation of the action potential is that the signal is independent of the distance travelled.
-		Because of this, the synapses that are located at distal parts of the axon does not receive a different transmission--initiating signal than earlier synapses along the axon.
+		Because of this, the synapses that are located at distal parts of the axon receives the same transmission--initiating signal than earlier synapses along the axon.
 		%We will next consider why this is important.
-		Why this is important will be clear after the mechanisms of synaptic transmission are covered.
-		%This is important for the size of the resulting synaptic transmission 
-		%The mechanisms of synaptic transmission will be considered next.
+		The importance of this becomes clear when the mechanisms of synaptic transmissions are introduced. %discussed.
+		%Why this is important will be clear after the mechanisms of synaptic transmission are covered.
 		%\cite{XXX} %TODO TODO CITE!!!!
 
 
@@ -363,7 +363,9 @@
 		%This is what is seen as the basis of learning\cite{NeuroscienceExploringTheBrain3edKAP25}. %(DENNE CITE gjelder bare denne linja..) (Ta vekk?)
 		%The exact firing time have recently been found to have a large impact on synaptic plasticity.
 
-		As the synaptic connection is plastic, this enables a truly complex computational system.
+		%Because of the number of connections and that the synaptic weight is plastic, neural networks are truly complex computational system.
+		Because the synaptic weight is plastic and the number of synaptic connections, neural networks are truly complex computational system.
+		%As the synaptic connection is plastic, this enables a truly complex computational system.
 		The subject of synaptic transmission and plasticity in biological systems have been covered extensively in appendix \ref{appendixSynapticPlasticity}.
 
 

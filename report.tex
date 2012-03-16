@@ -182,28 +182,28 @@ breaklines=true,                % sets automatic line breaking
 % 	The mathematical modelling and necessary consepts for utilizing the resulting equations in a simulator is presented in this chapter.
 
 %TODO TODO TDOO TODO Skriv om første setning! Slutten er dårlig.
-A simulator implemented by numerical integration of input involves an accumulation of truncation errors, where the error is integrated as well as the value. %also is integrated. %is integrated too. % as well as the value.
-%A simulator implemented by numerical integration of input involves an accumulation of truncation errors, because the error is integrated as well as the value.
-The depolarization value of a neuron is integrated to the firing threshold before an action potential is fired and the depolarization is reset. % to the resting membrane potential.
-An erroneous simulated depolarization value gives an erroneous firing time and initiation of the next inter--spike interval.
-%The depolarization value therefore have a cumulative property when utilizing numerical integration, and any local truncation error ...
-The depolarization value in that inter--spike interval is therefore affected by the spike time error, and mechanism is repeated.
-Any systematic local truncation error therefore creates an increasing total error given by the direction of the local error, producing a diverging error for simulations where simulated time $t_n \to \infty$.
+A simulator implemented by numerical integration of input involves an accumulation of truncation errors, as the error is integrated alongside the depolarization value. %also is integrated. %is integrated too. % as well as the value.
+%A simulator implemented by numerical integration of input involves an accumulation of truncation errors, where the error is integrated as well as the value. %also is integrated. %is integrated too. % as well as the value.
+The value is integrated to the firing threshold before an action potential is fired and the depolarization is reset. % to the resting membrane potential.
+An incorrect value of the simulated depolarization gives an erroneous firing time and initiation of the next inter--spike interval.
+%An erroneous simulated depolarization value gives an erroneous firing time and initiation of the next inter--spike interval.
+The depolarization value in that inter--spike interval is therefore affected by the spike time error, and the mechanism is repeated.
+Any systematic local truncation error thus creates an increasing total error defined by the sign of the local truncation error, producing a diverging error for simulations where simulated time $t_n \to \infty$.
 %In an attempt to make a simulation method that have a bounded error, a simulation scheme based on the algebraic solution to the $LIF$ neuron's differential equations is devised.
 %TODO UNDER: 			simulation method that produce a limited error, ... 	Eller noke.
 In an attempt to create simulation method with a bounded error, a simulation scheme based on the algebraic solution to the $LIF$ neuron's differential equations is devised in this chapter.
 %In an attempt to create simulation method with a more stable error, a simulation scheme based on the algebraic solution to the $LIF$ neuron's differential equations is devised in this chapter.
 %%	In the preliminary work to the final thesis, the author proposed a novel simulation technique that utilize the algebraic solution to the LIF neuron's differential equations.
 
-To utilize the algebraic solution of the $LIF$ neuron's differential equations for simulating its depolarization value, depolarizing input have to be represented as a continuous flow.
-%%									%%									%%							%%				% , it is found that depolarizing input have to be represented as a continuous flow.
+To utilize the algebraic solution of the $LIF$ neuron's differential equations for simulating its depolarization value, it is found that depolarizing input have to be represented as a continuous flow.
 %If the solution to the capacitor differential equations are to be used for computing the neuron's depolarization value, it is found that depolarizing input have to be represented as a continuous flow.
 %Instead of considering the discrete synaptic transmissions, 
 After the algebraic solution of the $LIF$ neuron's depolarization have been developed in sec.  \ref{ssecTheAlgebraicSolution} and \ref{ssecTheActionPotential},
 %After the equations for the leaky integrator have been adjusted for simulation of the LIF neuron in sec. \ref{ssecTheAlgebraicSolution} and \ref{ssecTheActionPotential},
-	the concept of synaptic transmission as a continuous flow is introduced in sec. \ref{ssecSynapticFlow}.
+	the concept of synaptic transmission as a continuous flow is discussed in sec. \ref{ssecSynapticFlow}.
 %The last part of this chapter is dedicated to a discussion about the error mechanisms for the two considered simulation models. % ; Simulation by numerical integration and simulation by depolarizing flow.
-The last part of this chapter is dedicated for an analysis of the error mechanisms of the two models and discussion about other necessary concepts for implementing the novel simulation model.
+The last part of this chapter is dedicated to how the introduced mathematics can be utilized for simulating the neuron. 
+											%an analysis of the error mechanisms of the two models and discussion about other necessary concepts for implementing the novel simulation model.
 
 	
 	%inkluderer ei fil..
@@ -226,8 +226,8 @@ The last part of this chapter is dedicated for an analysis of the error mechanis
 %		 	\item 
 %		\end{itemize}
 
-	\chapter{Design of Software to Compare the Models}
-	%\chapter{A Theoretic Comparison of the Two Models}
+	\chapter{Design/Implementation and Theoretical Comparison} % of the two Models}
+	%\chapter{Design of Software to Compare the Models}
 
 		Two simulation methods have been presented in this text,
 			the Numerical Integration Method($NIM$) that utilize numerical integration of input,
@@ -242,13 +242,14 @@ The last part of this chapter is dedicated for an analysis of the error mechanis
 %%
 		%In this chapter, a theoretical analysis and comparison between the two models is conducted. %performed.
 		Software intended for a theoretical analysis have been designed and is presented in this chapter.
-		Some of the differences in implementation are inadvertedly presented, but main discussion can be found in chapter \ref{chapDiscussion}.
-		%A more thorough discussion of the differences will be discussed in chapter \ref{chapDiscussion}.
+		Some of the differences in implementation are inadvertently presented, but main discussion can be found in chapter \ref{chDiscussion}.
+		%A more thorough discussion of the differences will be discussed in chapter \ref{chDiscussion}.
 
 		To make this comparison as comprehensive and accurate as possible, both models are implemented from scratch.
-		The design of this software is discussed in this chapter.
-		The software have also been used for analyzing the efficiency of the two models.
-		The design and results from these experiments can be found in chapter \ref{chExperimentalEfficiencyMeasurement}.
+		The design of the software intended to make the similarities and differences prominent is discussed in this chapter.
+		The software is also used for analyzing the efficiency of the two models, and the design and results of these experiments are presented in chapter \ref{chExperimentalEfficiencyMeasurement}.
+		%The software have also been used for analyzing the efficiency of the two models.
+		%The design and results from these experiments can be found in chapter \ref{chExperimentalEfficiencyMeasurement}.
 		
 		%The resulting observations are presented in the second half of this chapter.
 		%The first part is about the general design of the implementation, and how best to achieve an insight into the differences and similarities between the two models. 
@@ -257,12 +258,12 @@ The last part of this chapter is dedicated for an analysis of the error mechanis
 		%The implementation utilized for these experiments is based on the design presented in this chapter. %XXX Based on .. er feil!
 		
 		\include{designOfTheImplementation}
-		%\include{analysisOfTheTwoModels}
+		\include{analysisOfTheTwoModels}
 
 
 
 	
-	\chapter{Experimental efficiency measurement of the two models}
+	\chapter{Experimental Efficiency Mesurements}
 	\label{chExperimentalEfficiencyMeasurement}
 		In digital simulations, where time is divided into discrete time steps, numerical errors comes as a consequence of having a bounded temporal accuracy. %TODO Cite ?
 		SKRIV INTRO SEINARE. Ha aftikkelen til Plesser og co. framfor deg! %TODO
@@ -287,22 +288,15 @@ In this work, the efficiency of the two models are analyzed by comparing the sim
 		%TODO Eller hent fra "theory" i artikkelen. Intro til den section er bedre strevet..
 
 		\include{experimentalEfficiancyComparison}
-		%\section{Experiment design} 	%		Copy/Paste from article! (Nesten ukritisk).
-		%	\subsection{Idealized Situation}
-		%	\subsection{A Realistic Input Flow}
-		%\section{Simulation Results} 	%		Copy/Paste from article! (Nesten ukritisk).
-		%	\subsection{Static Input Flow}
-		%	\subsection{Dynamic Input Flow}
-		%	\subsection{?? Meir grundig analyse av feil for lange simuleringer?}
-		%\section{Analysis of Simulation Results} %.. Det som står i artikkel::Discussion..
 
-	\chapter{RESULTS: Theoretical Analysis of the Two Models} %XXX RESULTS!
-		Her skal eg skrive om forskjeller i design og implementasjon.
-			Prøv å gjøre det slik at lite blir introdusert i Discussion!
-		Enten skal eg ha inn bare teoretisk sammenligning, her, eller så kan eg også få inn results fra Efficiency Comparison: her! (mest ryddig, mest arbeid(?) )
+
+%	\chapter{Discussion: Theoretical Analysis of the Two Models} 
+%		Her skal eg skrive om forskjeller i design og implementasjon.
+%			Prøv å gjøre det slik at lite blir introdusert i Discussion!
+%		Enten skal eg ha inn bare teoretisk sammenligning, her, eller så kan eg også få inn results fra Efficiency Comparison: her! (mest ryddig, mest arbeid(?) )
 
 	\chapter{Discussion and Concluding Remarks}
-	\label{chapDiscussion}
+	\label{chDiscussion}
  		- Skriv om at med dEstimatedTaskTime-opplegget er det ikkje nødvendig å simulere spatiotemporal delay. I aksonet for eksempel. Dette er kjempebra for neuronsimulering.
 		- Mulighet for "multi-compartment model with single compartment implementation".
 		
@@ -323,7 +317,8 @@ In this work, the efficiency of the two models are analyzed by comparing the sim
 
 \appendix
 	\include{appendixSynapticPlasticity}
-	\include{appendix}
+	\include{appendixMathematicalDerivations}
+	\include{appendixImplementationDetails}
 	\chapter{UML av alle subelement klassene!} 			%TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO     SKRIV DENNE!         TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO 
 		\label{appendixUMLofAllNodeSubelementClasses}  	%TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO     SKRIV DENNE!         TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO 
 

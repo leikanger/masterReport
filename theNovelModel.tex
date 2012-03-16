@@ -1,18 +1,22 @@
 
 \section{Spiking Neuron Simulation Based on Synaptic Flow}
 	\label{secDevelopmentOfTheNovelANNmodel}
-	An intuitive leaky integrator is a bucket with a set of small holes at the bottom.
-	%Because this system is simple to visualize, it is 
+	A system that behaves like a leaky itegrator is a bucket with a set of small holes at the bottom.
+	%An intuitive leaky integrator is a bucket with a set of small holes at the bottom.
 	If the LIF neuron is visualized as a leaky bucket with input from a gutter, excitatory synaptic input can be represented by an agent pouring cups of water into that gutter.
 	%If the LIF neuron is visualized as a leaky bucket with input from a gutter, synaptic transmissions is represented by pouring cups of water into this gutter.
 	When the number of agents pouring water into the gutter becomes very large and the size of each transmission is small, this can again be visualized as rain.
 	%The resulting water level in the leaky bucket can be simulated by either counting the number of raindrops or by estimating the corresponding flow in the input gutter and utilizing the algebraic solution to find the water level.
+
 	The resulting water level in the leaky bucket can either be simulated by counting the number of raindrops(and computing the size of the leakage in every computional time step)
 	%The resulting water level in the leaky bucket can be simulated by either counting the number of raindrops(and computing the leakage after each computational time step)
 		or by estimating the corresponding flow through the gutter and utilizing the algebraic solution to find the water level.
 %%%%%
 	%If the simulation has a bounded temporal accuracy(discrete time), the author believes that a more accurate simulation result can be achieved when the algebraic solution is utilized to simulate the systems value. 
-	When the simulation has a bounded temporal accuracy(discrete time), it is found that a more accurate simulation result can be achieved when the algebraic solution is utilized to simulate the systems value.
+	For simulations with a bounded temporal accuracy(discrete time), more accurate simulations may be achieved by utilizing the algebraic solution to simulate the systems value.
+	This is tested in chapter \ref{chExperimentalEfficiencyMeasurement}.
+	%Experiments test this is set up in chapter \ref{chExperimentalEfficiencyMeasurement}.
+	%For simulations with a bounded temporal accuracy(discrete time), it is found that a more accurate simulation result can be achieved when the algebraic solution is utilized to simulate the systems value.
 	%TODO Dropp setninga over? NEI: første biten er jævla bra! 			Men det etter her er litt dårlig: avslører for mykje om kva eg finner ut?
 %%                 %%                                                          %%                                                  %%                                              % input is represented as a flow.
 	%This implies that fewer iterations are needed to accomplish some accuracy goal, and a more efficient simulator model is the result.
@@ -109,7 +113,7 @@
 %%
 	If depolarizing inflow is defined to be constant during a computational time step, a firing time estimate in the current iteration can not change before the estimated time. % the neuron fires.
 	%If depolarizing inflow is defined to be constant during a computational time step, a firing time estimate in the present time step can not change before that time. %the neuron fires.
-	The estimated firing time can therefore be utilized as the simulation's firing time, and an action potential can be initiated with a time accuracy given by e.g. the \emph{float} data format.
+	The estimated firing time can therefore be utilized as the simulation's firing time, and an action potential can be initiated with an intra--iteration time accuracy defined by the data format used in the computations. %, e.g. the \emph{double} data formate. %given by e.g. the \emph{float} data format.
 	%The estimated firing time can therefore be utilized as the actual firing time, and an action potential can be initiated at that precise moment.
 %%
 	The set of possible spike times thus have a near--continuous temporal resolution, only limited by the accuracy of the format used. %e.g. the double precision floating point format.
@@ -232,8 +236,10 @@
 
 
 	\section{New Aspects to be Considered for the Novel Model}
-		The use of the theory presented in this chapter introduce a couple extra considerations and opportunities for the implementation.
-		Because the activation level $\kappa$ is updated many times before the neuron fires, time windows have to be utilized to be able to simulate a spiking neuron by $\kappa M$.
+		The use of the theory presented in this chapter introduce new aspects that have to be considered as well as opportunities for the simulator. % implementation.
+		%The use of the theory presented in this chapter introduce a some new considerations and opportunities for the simulator. % implementation.
+		%The use of the theory presented in this chapter introduce a some new considerations and opportunities for the implementation.
+		Because the activation level $\kappa$ is updated many times before the neuron fires, time windows have to be utilized to be able to simulate utilizing the $\kappa M$. %a spiking neuron by $\kappa M$.
 		From equation \ref{eqEstimatedTimeToFiring} and \ref{eqEstimateOfInterSpikePeriod}, the next firing and the inter--spike period can be estimated with a floating point accuracy.
 		This enables a synaptic signal propagation of a number with a higher resolution, and the execution of an action potential at the computed firing time instant.
 		
@@ -241,52 +247,53 @@
 		%When the estimated firing time is in the present time iteration, an action potential is simulated.
 		The simulated firing is not involved in signal propagation as in the $NIM$ model, but is an additional capability for the $\kappa M$ simulation model.
 		%The main reason for simulating the action potential in the $\kappa M$ is to compute mechanisms like STDP, as presented in appendix \ref{appendixSynapticPlasticity}.
-		The neuron fires when the estimated task time is during the present computational time step.
-		This proactive firing scheme in $\kappa M$ requires a task scheduler to be able to efficiently simulate the neuron.
+		The neuron fires when the estimated task time is in the present computational time step.
+		To be able to efficiently make use of this proactive firing time simulation scheme, a task scheduler have to be devised specifically for this purpose.
+		%This proactive firing scheme in $\kappa M$ requires a task scheduler to be able to efficiently simulate the neuron.
+
+		%TODO Kanskje ha "synaptic transmission as the derivative", her? Da kan eg også ha "recalculation of kappa", her..
+
+
+%TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO 
+%TODO TODO TODO TODO TODO Skriv noke nytt, her. Skal flytte "Task Scheduling" til "General Design of Simulator"::"Time" Det er fortidlig å ha det her.
+%TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO 
 		
-		
+% 		\subsection{Task Scheduling}
+% 			
+% 			Two alternatives for scheduling tasks have been tested for the simulator.
+% 			The first is based on a continuously updated linked list of linked lists with tasks. %that can be considered a variable array.
+% 			When a task is scheduled for execution e.g. in the iteration after the next, the object's pointer is inserted into the second inner list of the outer linked list.
+% 			Before every time step, the first element of the outer list is popped and all the tasks of the inner list is inserted into \emph{pWorkTaskQueue}.
+% 			This gives a list of lists that gives the relative time of scheduled tasks, where each list contains jobs scheduled for future time iterations.
+% 			
+% 			An alternative approach is to implement time scheduling by letting the \emph{time\_interface} abstract class have a variable \emph{double dEstimatedTaskTime}.
+% 			This element is updated every time the neuron's firing time estimate is updated and checked by \emph{time\_class::doTask()} when time is iterated:
+% 				If an element is scheduled for execution during the next computational time step, the pointer to that element is inserted into \emph{pWorkTaskQueue}.
+% 			As introduced in section \ref{ssecTime}, this causes the task to be executed during the correct computational time step, 
+%  			%This causes the task to be executed during the correct computational time step, 
+% 				and the double precision floating point variable \emph{dEstimatedTaskTime} enables an intra--iteration time accuracy for tasks if \emph{pWorkTaskQueue} is
+% 				 sorted by this variable.
+% 
+% 			The two methods was tested by comparing the total run time for a similar experiment set up.
+% 			Because the second alternative is simpler to implement and thus simpler to maintain,
+% 				and it was found to have about the same grade of efficiency(almost $5\%$ faster for the conducted experiment),
+% 				%and have about the same grade of efficiency(about $5\%$ faster for the conducted experiment), 
+% 				this approach is used for time scheduling in the implementation.
+% 				%the alternative with the \emph{time\_interface::dEstimatedTaskTime} is used for time scheduling in this implementation.
+% 			%The second alternative was somewhat more efficient($<5\%$ faster run time) in addition to being simpler to implement and maintain.
+% 			%This alternative was therefore chosen.
+% 			
+% 			\subsubsection{Task Scheduling for Other Tasks}
+% 				%The task scheduler utilize a variable from \emph{
+% 				As the task scheduler use a member variable from \emph{class time\_interface}, task scheduling can be used for all classes that is part of the simulation.
+% 				An important example of this is the \emph{synapse}: % The synaptic transmission for all output synapses of a node can therefore 
+% 					When the neuron fires, the auron object of the node can write to all the node's output synapses' \emph{dEstimatedTaskTime} variable.
+% 				The time can be written to the present time plus the predefined axonic delay before that synapse's transmission.
+% 				In this way, a more efficient axon delay can be simulated with floating point accuracy.
+%TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO 
 
-		\subsection{Task Scheduling}
-			
-			Two alternatives for scheduling tasks have been tested for the simulator.
-			The first is based on a continuously updated linked list of linked lists with tasks. %that can be considered a variable array.
-			When a task is scheduled for execution e.g. in the iteration after the next, the object's pointer is inserted into the second inner list of the outer linked list.
-			Before every time step, the first element of the outer list is popped and all the tasks of the inner list is inserted into \emph{pWorkTaskQueue}.
-			This gives a list of lists that gives the relative time of scheduled tasks, where each list contains jobs scheduled for future time iterations.
-			
-			An alternative approach is to implement time scheduling by letting the \emph{time\_interface} abstract class have a variable \emph{double dEstimatedTaskTime}.
-			This element is updated every time the neuron's firing time estimate is updated and checked by \emph{time\_class::doTask()} when time is iterated:
-				If an element is scheduled for execution during the next computational time step, the pointer to that element is inserted into \emph{pWorkTaskQueue}.
-			As introduced in section \ref{ssecTime}, this causes the task to be executed during the correct computational time step, 
- 			%This causes the task to be executed during the correct computational time step, 
-				and the double precision floating point variable \emph{dEstimatedTaskTime} enables an intra--iteration time accuracy for tasks if \emph{pWorkTaskQueue} is
-				 sorted by this variable.
-
-			The two methods was tested by comparing the total run time for a similar experiment set up.
-			Because the second alternative is simpler to implement and thus simpler to maintain,
-				and it was found to have about the same grade of efficiency(almost $5\%$ faster for the conducted experiment),
-				%and have about the same grade of efficiency(about $5\%$ faster for the conducted experiment), 
-				this approach is used for time scheduling in the implementation.
-				%the alternative with the \emph{time\_interface::dEstimatedTaskTime} is used for time scheduling in this implementation.
-			%The second alternative was somewhat more efficient($<5\%$ faster run time) in addition to being simpler to implement and maintain.
-			%This alternative was therefore chosen.
-			
-			\subsubsection{Task Scheduling for Other Tasks}
-				%The task scheduler utilize a variable from \emph{
-				As the task scheduler use a member variable from \emph{class time\_interface}, task scheduling can be used for all classes that is part of the simulation.
-				An important example of this is the \emph{synapse}: % The synaptic transmission for all output synapses of a node can therefore 
-					When the neuron fires, the auron object of the node can write to all the node's output synapses' \emph{dEstimatedTaskTime} variable.
-				The time can be written to the present time plus the predefined axonic delay before that synapse's transmission.
-				In this way, a more efficient axon delay can be simulated with floating point accuracy.
 
 
-	% Drit i RESTEN: eg har nok tekst, som det er. 
-	% 	Or maybe not: This will be an important part of the discussion: Elements that should have been done differently. Do it later TODO
-		%\subsection{Synaptic Transmission as the Derivative}
-		%	In section \ref{ssecSynapticFlow}, synaptic flow is introduced.
-		%	
-		%	Referer til avsnittet som innfører synaptic flow.
-		%\subsection{Recalculation of $\kappa$}
 
 
 	

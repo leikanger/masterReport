@@ -1,5 +1,9 @@
 
-\section{Spiking Neuron Simulation Based on Synaptic Flow}
+
+%	TODO TODO TODO TODO Kjør masse sitering: \cite{FDP_report} TODO TODO TODO TODO TODO 
+
+\section{Synaptic Flow: New Formalism for Neural Acivity} %Activation Level}
+%\section{Spiking Neuron Simulation Based on Synaptic Flow}
 	\label{secDevelopmentOfTheNovelANNmodel}
 	A system that behaves like a leaky itegrator is a bucket with a set of small holes at the bottom.
 	%An intuitive leaky integrator is a bucket with a set of small holes at the bottom.
@@ -35,7 +39,7 @@
 % 	If the simulation has a bounded temporal resolution(discrete time), it is found that a more accurate simulation can be achieved by considering depolarizing flow instead of discrete synaptic transmissions.
 % 	In this section, the mathematics and necessary concepts for flow simulation are developed and presented.
 
-	\subsection{The Algebraic Solution to the LIF Neuron's Value}
+	\subsection{Algebraic Solution for the LIF Neuron's Depolarization}
 	\label{ssecTheAlgebraicSolution}
 		Subthreshold integration in the LIF neuron is defined by general leaky integrator's differential equations\cite{gerstnerKistler2002KAP04}.
 		\begin{equation}
@@ -76,15 +80,16 @@
 		\end{mydef}
 
 		When the neuron's input flow is changed or the neuron fires an action potential, a new time window is initialized.
-		The initial value $v_0$ can be found by computing the last value of the previous time window, and $t_0$ is acquired by saving the time of initiation for the new time window.
+		The initial value $v_0$ can be found by computing the last value of the previous time window, and $t_0$ is acquired by saving the time of initiation for the new time window\cite{FDP_report}.
 
 
 
-	\subsection{The Action Potential}
+	\subsection{The Action Potential Discontinuity}
 	\label{ssecTheActionPotential}
+%TODO TODO TODO TODO TODO TODO TODO TODO   Legg inn plott av K som viser kappa og fyring: FDP::fig.3.4    TODO TODO TODO TODO TODO TODO TODO
 	As introduced in sec. \ref{secBiologicalNeuralSystems}, the neuron fires an action potential when the depolarization value crosses the firing threshold.
 	%In continuous time, 
-	The firing time for a neuron in continuous time can therefore be found by the equation $v(t_f) = \tau$, where $\tau$ is the firing threshold for the neuron.
+	The firing time for a neuron in continuous time can therefore be found by the equation $v(t_w^{(f)}) = \tau$, where $\tau$ is the firing threshold for the neuron.
 
 	\begin{equation}
 		\begin{split}
@@ -111,19 +116,22 @@
 		The estimate for the remainder of the current inter--spike interval is only valid until a new time window is initialized.
 	%This means that when a new time window is initiated, the old firing time estimate becomes invalid.
 %%
-	If depolarizing inflow is defined to be constant during a computational time step, a firing time estimate in the current iteration can not change before the estimated time. % the neuron fires.
+	If depolarizing inflow is defined to be constant during a computational time step, a firing time estimate during the current time step can not change before the estimated time. % the neuron fires.
+	%If depolarizing inflow is defined to be constant during a computational time step, a firing time estimate in the current iteration can not change before the estimated time. % the neuron fires.
 	%If depolarizing inflow is defined to be constant during a computational time step, a firing time estimate in the present time step can not change before that time. %the neuron fires.
-	The estimated firing time can therefore be utilized as the simulation's firing time, and an action potential can be initiated with an intra--iteration time accuracy defined by the data format used in the computations. %, e.g. the \emph{double} data formate. %given by e.g. the \emph{float} data format.
-	%The estimated firing time can therefore be utilized as the actual firing time, and an action potential can be initiated at that precise moment.
+%%%%%%%%%
+%	The estimated firing time can therefore be utilized as the simulation's firing time, and an action potential can be initiated with an intra--iteration time accuracy defined by the data format used in the computations. %, e.g. the \emph{double} data formate. %given by e.g. the \emph{float} data format.
+	The estimated firing time can therefore be utilized as the emulated neuron's firing time. %, giving a set of possible spike times that has a near--continuous temporal resolution.
+	If the double precision floating point formate is utilized, this gives a near--continuous temporal resolution for the neuron's firing times.
 %%
-	The set of possible spike times thus have a near--continuous temporal resolution, only limited by the accuracy of the format used. %e.g. the double precision floating point format.
+%	The set of possible spike times therefore has a near--continuous temporal resolution, only limited by the accuracy of the format used. %e.g. the double precision floating point format.
 
 % asdf@jeje12
 
 % XXX Er det for langt hopp? Vil gjerne gå over til neste section: synaptic flow of activation level.
 	An inter--spike interval is finalized by the neuron firing an action potential, after which the neuron's depolarization is reset to the membrane resting potential before the process starts anew.
-	%After an action potential, the neuron's depolarization is reset to the membrane resting potential and the process starts anew.
-	The current estimate of the total inter--spike interval can be computed by eq. \eqref{eqEstimatedTimeToFiring} from the neuron's reset potential $v_r$.
+	The immediate estimate of the total inter--spike interval can be computed by eq. \eqref{eqEstimatedTimeToFiring}, from the neuron's reset potential $v_r$.
+	%The current estimate of the total inter--spike interval can be computed by eq. \eqref{eqEstimatedTimeToFiring} from the neuron's reset potential $v_r$.
 	%An immediate estimate of the total inter--spike interval can be found by computing eq. \eqref{eqEstimatedTimeToFiring} from the neuron's reset potential $v_r$.
 	%The total inter--spike interval can therefore be estimated as the remainder of the inter--spike period from the neuron's reset potential $v_r$.
 \begin{equation}
@@ -163,12 +171,15 @@
 			\label{eqSynapticIntegrationForKANN}
 		\end{equation}
 
-	The most important depolarizing input for neural signal processing is synaptic input\cite{PrinciplesOfNeuralScience4edKAP10}.
-	%The most important depolarizing input when it comes to neural signal processing is synaptic input\cite{PrinciplesOfNeuralScience4edKAP10}.
-	Synaptic input will therefore be the main focus in this section.
+	Synaptic input $\kappa_{ij}$ is the most important element for neural signal processing\cite{PrinciplesOfNeuralScience4edKAP10}, and is the main focus of this section.
+	%Synaptic input $\kappa_{ij}$ is the most important neural input for signal processing\cite{PrinciplesOfNeuralScience4edKAP10}, and will be the main focus of this section.
+	%The most important depolarizing input for neural signal processing is synaptic input\cite{PrinciplesOfNeuralScience4edKAP10}. Synaptic input will therefore be the main focus in this section.
 	%The main focus of this section is therefore synaptic transmissions.
 	%The main focus of this section will therefore be synaptic transmissions.
-	The funtion $\xi_i(t)$, representing other input, have different forms for different depolarizing sources and have to be modelled separately for each such source.
+	%TODO Skriv om neste setn., litt. (rundt "have")
+	The funtion $\xi_i(t)$, representing other input, can have different forms for different depolarizing sources.
+	This element therefore has to be modelled separately for each such source.
+	%The funtion $\xi_i(t)$, representing other input, can have different forms for different depolarizing sources and have to be modelled separately for each such source.
 	%Other input $\xi_i(t)$ have different forms for different sources and have to be modelled separately for different such mechanisms.
 	%The form of other input $\xi_i(t)$ varies for different sources of the signal and have to be modelled separately for each such mechanism. 
 	%XXX BRA XXX: One example of another source for changing a neuron's depolarization is the instrumentation done by sensory neurons. %TODO TODO TODO Skriv om dette en plass, og referer dit!  
@@ -205,9 +216,10 @@
 	%where the variable $N_{j,t_n}$ represents the number of transmissions from neuron $j$ in time interval $\Delta t_n$, and $\omega_{ij, t_{n-1}}$ represents the synaptic weight updated at time $t_{n-1}$.
 	%where the number of transmissions is found by the last computed firing frequency of the presynaptic neuron $f_j(t_{n-1})$ multiplied by the length of the time interval $\Delta t$.
 
-	%In the flow simulation model($\kappa M$), a continuous variable representing the present estimate of the inter--spike interval can be sent instead of the integer number of transmissions, enabling a higher resolution for the propagated signal.
-	In the flow simulation model($\kappa M$), a continuous variable representing the present estimate of the inter--spike interval can be sent instead of the integer number of transmissions. 
-	This enables a higher resolution for the propagated signal and thus a more accurate simulation.
+	In $\kappa M$, a continuous variable representing the present estimate of the inter--spike interval can be sent instead of the integer number of transmissions. 
+	%In the flow simulation model($\kappa M$), a continuous variable representing the present estimate of the inter--spike interval can be sent instead of the integer number of transmissions. 
+	This enables a higher resolution for the propagated signal and thus less discretization errors. %XXX Kanskje bedre enn den under?
+%	This enables a higher resolution for the propagated signal and thus a more accurate simulation. %XXX Kanskje litt drøyt: more accurate - dette kan også ha med andre ting, som f-eks- modellen som er brukt..
 	%For a time interval where the presynaptic activation level $\kappa_j$ is constant(a time window for the presynaptic neuron), synaptic flow of activation level can be written as
 	For a time interval where the presynaptic activation level $\kappa_j$ is constant, synaptic flow of activation level can be written as
 	\begin{equation}
@@ -215,8 +227,8 @@
 		\kappa_{ij, t_n} = \frac{ \omega_{ij, t_n} }{ p_{isi}(\kappa_{j, t_n}) } \Delta t \qquad,\; j\in\mathscr{D}% TODO SKRIV kva \Delta t   er for noke! TODO TODO SKVIVE DET SOM FREKVENS, først? = f(t) \omega \cdot \Delta t
 	\end{equation}
 
-	For a simulation with constant computational time steps $\Delta t = C_t$, this constant can be incorporated into the equation for synaptic flow $\kappa_{ij}$.
-	%If a simulation with constant computational time steps $\Delta t = C_t$ is considered, this constant can be incorporated into the equation for synaptic flow $\kappa_{ij}$.
+	For a simulation with constant computational time steps $\Delta t = C_t$, this constant can be further be incorporated into the variable that represents synaptic weight $\omega_{ij}$. % equation for synaptic flow $\kappa_{ij}$.
+%	For a simulation with constant computational time steps $\Delta t = C_t$, this constant can be incorporated into the equation for synaptic flow $\kappa_{ij}$.
 	%
 	%If we let the simulation be carried out with constant time steps $\Delta t = C_t$, this constant can be incorporated into the equation for synaptic flow $\kappa_{ij}$.
 	% ELLER:
@@ -233,30 +245,82 @@
 
 %[Her stod tidligare en analyse av feilen for de to ANN modellene]. Dette er flyttet inn i analysisOfTheTwoModels.tex
 
+	%TODO La denne være discussion for dette kapittelet! (Ta "Summary" inn i denne section!)TODO
+	\section{Implications of $\kappa$--Mathematics}
+		Algebraic analysis of a node's activation level is possible when neural input is represented as a continuous flow.
+		The propagation of information as activation level can be modelled as the distribution of a changed $\kappa$, 
+			and algebraic transfer functions can be set up for a neural network.
+		This makes it possible to utilize a less confusing jargon when talking about neural activation level.
+		%In ANNs, this might actively be used to compute propagation of activation level.
+
+		Combined with the concept of synaptic flow and time windows, the $\kappa$ formalism enables a new neural simulation scheme, the $\kappa$ simulation model($\kappa M$).
+%		The $\kappa$ mathematics also enables an entirely new neural simulation scheme, the $\kappa$ simulation Model -- $\kappa M$. 
+		By letting the activation level $\kappa$ be propagated as a mechanistic function for the presynaptic neuron's firing frequency,
+		%By letting the activation level $\kappa$ be propagated as a function of the presynaptic neuron, 
+			neural network dynamics can be simulated and eq. \ref{eqValueEquation} can be used to find the neuron's depolarization.
+%		This makes it possible to utilize a propagation of activation level like in a 2. generation ANN, to simulate a spiking neuron.
+		The $\kappa$ simulation model thus has elements from second as well as third generation ANNs.
+%		$\kappa M$ thus has elements from second as well as third generation ANNs.
+
+		The concept of time windows from definition \ref{defTimeWindow} makes it possible to utilize equation \ref{eqValueEquation}
+			to simulate the neuron's depolarization;
+		Every time the neuron's activation level is altered, a new time window is initialized by updating the initial depolarization 
+			value $v_0$ and saving the time of initiation, $t_0$.
+		The depolarization value can therefore be found for any time $t$ in a time window, by the equation
+$$v(t_v) = \kappa - \left( \kappa - v_0 \right) e^{-at_v} 	\quad,\; t_v = t - t_0 . $$
+%%%%%%%%
+		%The size of synaptic flow can be found by utilizing equation \ref{eqSynapticTransmissionForKANN}, making it possible to create Artificial Neural Networks with nodes simulated by the flow simulation model, $\kappa M$.
+
+		The next firing time can be found by eq. \ref{eqEstimatedTimeToFiring} every time a new time window is initialized.
+		This variable can be used to have spike times with an intra--iteration time resolution, and a near--continuous resolution for possible spike times is the result.
 
 
-	\section{New Aspects to be Considered for the Novel Model}
-		The use of the theory presented in this chapter introduce new aspects that have to be considered as well as opportunities for the simulator. % implementation.
-		%The use of the theory presented in this chapter introduce a some new considerations and opportunities for the simulator. % implementation.
-		%The use of the theory presented in this chapter introduce a some new considerations and opportunities for the implementation.
-		Because the activation level $\kappa$ is updated many times before the neuron fires, time windows have to be utilized to be able to simulate utilizing the $\kappa M$. %a spiking neuron by $\kappa M$.
-		From equation \ref{eqEstimatedTimeToFiring} and \ref{eqEstimateOfInterSpikePeriod}, the next firing and the inter--spike period can be estimated with a floating point accuracy.
-		This enables a synaptic signal propagation of a number with a higher resolution, and the execution of an action potential at the computed firing time instant.
-		
-		When equation \ref{eqEstimatedTimeToFiring} have given an estimate that is in the present computational time step, an action potential is simulated.
-		%When the estimated firing time is in the present time iteration, an action potential is simulated.
-		The simulated firing is not involved in signal propagation as in the $NIM$ model, but is an additional capability for the $\kappa M$ simulation model.
-		%The main reason for simulating the action potential in the $\kappa M$ is to compute mechanisms like STDP, as presented in appendix \ref{appendixSynapticPlasticity}.
-		The neuron fires when the estimated task time is in the present computational time step.
-		To be able to efficiently make use of this proactive firing time simulation scheme, a task scheduler have to be devised specifically for this purpose.
-		%This proactive firing scheme in $\kappa M$ requires a task scheduler to be able to efficiently simulate the neuron.
-
-		%TODO Kanskje ha "synaptic transmission as the derivative", her? Da kan eg også ha "recalculation of kappa", her..
 
 
-%TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO 
-%TODO TODO TODO TODO TODO Skriv noke nytt, her. Skal flytte "Task Scheduling" til "General Design of Simulator"::"Time" Det er fortidlig å ha det her.
-%TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO 
+% 	\section{Summary, $\kappa M$ neuron simulation model}
+% 	% - Kvar node er ansvarlig for å oppdatere sin depol. som funksjon av depolarizing flow.
+% 	% - 
+% 		In this chapter, a novel neuron simulation model based on the algebraic solution to the $LIF$ neuron's depolarization is developed.
+% 		The algebraic equation is found by solving the system's differential equations. %, and necessary concepts like synaptic flow and time windows enable a simulation model based on this equation.
+% 		When considering depolarizing and hyperpolarizing input as flows, this equation can be utilized for simulating the neuron's depolarization.
+% 		The concept of time windows enable these depolarization--altering flows to be dynamic, and an activation based ANN model similar to a second generation ANN can be used to simulate nodes with third generation ANN facilities.
+% 		% TODO i siste discussion: Skriv om muligheten for 'transduction' av signal mellom 2.gen og 3.gen ANN ved KM.
+% 		
+% 		From equation \ref{eqEstimatedTimeToFiring} and \ref{eqEstimateOfInterSpikePeriod}, the next firing in addition to the immediate inter--spike interval can be estimated with a floating point accuracy.
+% 		This enables a higher resolution of firing time and synaptic signal propagation, and a more accurate depolarization simulation is thought to be the result.
+% 		% TODO TODO TODO Neste setning er litt upassende, her! TODO TODO TODO Skriv om! (Dette skal bare være en oppsummering, men eg føler at eg trenger noko meir enn setn. over..
+% 		To further examine this element, simulation software is designed with the intention to compare the two models.
+% 		The design and results of this comparison is presented in chapter \ref{chDesignAndTheroeticalComparison}.
+% 		%To further examine this, simulation software is designed with the intention of comparing the different ways of simulating a spiking neuron.
+% 		%To test whether this is the case, the two models are implemented and efficiency experiments are designed in chapter \ref{chExperimentalEfficiencyMeasurement}.
+% 		
+% 	%	Even if the $\kappa M$ neuron simulation model has the capability to compute the spike time of the neuron, spikes are not used as a means to propagate the signal through the neural network.
+% 	%	The simulated firing is not directly involved in signal propagation(as in the $NIM$ model), but can be considered as an extra proficiency of the $\kappa M$ simulation model.
+% 		
+	
+
+	
+% 	\section{New Aspects to be Considered for the Novel Model}
+% 		The use of the theory presented in this chapter introduce new aspects that have to be considered as well as opportunities for the simulator. % implementation.
+% 		%The use of the theory presented in this chapter introduce a some new considerations and opportunities for the simulator. % implementation.
+% 		%The use of the theory presented in this chapter introduce a some new considerations and opportunities for the implementation.
+% 		Because the activation level $\kappa$ is updated many times before the neuron fires, time windows have to be utilized to be able to simulate utilizing the $\kappa M$. %a spiking neuron by $\kappa M$.
+% 		From equation \ref{eqEstimatedTimeToFiring} and \ref{eqEstimateOfInterSpikePeriod}, the next firing and the inter--spike period can be estimated with a floating point accuracy.
+% 		This enables a synaptic signal propagation of a number with a higher resolution, and the execution of an action potential at the computed firing time instant.
+% 		
+% 		When equation \ref{eqEstimatedTimeToFiring} have given an estimate that is in the present computational time step, an action potential is simulated.
+% 		%When the estimated firing time is in the present time iteration, an action potential is simulated.
+% 		The simulated firing is not involved in signal propagation as in the $NIM$ model, but is an additional capability for the $\kappa M$ simulation model.
+% 		%The main reason for simulating the action potential in the $\kappa M$ is to compute mechanisms like STDP, as presented in appendix \ref{appendixSynapticPlasticity}.
+% 		The neuron fires when the estimated task time is in the present computational time step.
+% 		To be able to efficiently make use of this proactive firing time simulation scheme, a task scheduler have to be devised specifically for this purpose.
+% 		%This proactive firing scheme in $\kappa M$ requires a task scheduler to be able to efficiently simulate the neuron.
+
+
+
+
+
+%TODO  Skriv noke nytt, her. Skal flytte "Task Scheduling" til "General Design of Simulator"::"Time" Det er fortidlig å ha det her.
 		
 % 		\subsection{Task Scheduling}
 % 			
@@ -290,7 +354,6 @@
 % 					When the neuron fires, the auron object of the node can write to all the node's output synapses' \emph{dEstimatedTaskTime} variable.
 % 				The time can be written to the present time plus the predefined axonic delay before that synapse's transmission.
 % 				In this way, a more efficient axon delay can be simulated with floating point accuracy.
-%TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO 
 
 
 

@@ -1,0 +1,28 @@
+
+\section{Design of the $\kappa M$ simulator.}
+
+The $\kappa M$ simulation is a Moore automata of the biological neuron. %TODO Siter!
+A Moore automata often enables more efficient simulations, but also makes it harder to implement. %TODO Siter!
+The first version of the $\kappa M$ simulator therefore had many dependencies, an small changes in the code caused unintended consequences that sometimes was devastating for the simulation results.
+In an attempt to make the code more suited for development and maintenance, the internal mechanisms of the software will now be formalized.
+
+The main loop of the simulation is the highest level of control in the \emph{auroSim} environment.
+The main loop is fairly simple. 
+Every iteration, the first element of pWorkTaskQue is popped from the list and the contained pointer is stored in the variable \emph{static timeInterface* pConsideredElementForTheIteration}.
+The abstract interface class \emph{timeInterface} contains some pure virtual functions, among them the \emph{doTask()} function.
+Every iteration, the \emph{.doTask()} member function is called for the iteration's considered element(pointed to by \emph{pConsideredElementForTheIteration}.
+
+%TODO TODO TDOO TODO Lag eit UML klassediagram for klasseoppsettet! TODO TODO TODO TODO
+
+
+
+Eg har forsøkt to greier for KM: eine er slik at den tar inn float-tid alle plasser, f.eks. i getCalculateDepol().
+Denne varianten kan beregne depol for nøyaktig tidspunkt, og er såleis meir nøyaktig. Problemet er at den viser en litt feil depol. med mindre eg kaller doCalculations() umiddelbart, kvar gang eg endrer Kappa.
+	->Dette er som en kortslutning, og er veldig negativt for effektiviteten av implementasjonen. 
+% TODO Prøv å fikse!
+
+Den andre varianten fyrer, f.eks. på tiden $t_f=14.42$, og setter $v(t_f)=0$. 
+Når den kjører getCalculateDepol() som neste steg, beregner den depol fra dette tidspunktet ($v(t_f-t_n)$), som blir en negativ verdi. 
+Verdien er slik at den blir eksakt lik 0 på fyringstidspunktet. Siden $\kappa$ garantert ikkje endres før denne tiden(samme iter som fyring betyr også samme time window).
+Dette fører til at denne "enkle" implementasjonen gir correct resultat. Dette er verdt mykje, og eg tenker kanskje å gå tilbake til dette.
+DETTE ER BRA FOR RAPPORTEN(denne teksten kan brukes eit avsnitt på i KM-implementasjon).

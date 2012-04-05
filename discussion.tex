@@ -1,0 +1,475 @@
+
+		%% KLADD: %%
+		%That $\kappa M$ gives a more effective simulation might not be the main contribution of this work.
+% 		It is possible that it is more important that the $\kappa$ formalism enables a more accurate discussion of a neuron's activation level
+% 		The $\kappa$ formalism could also be more appropriate for analyzing and computing a NN's activation level and the use of graph and systems theory form cybernetics.
+
+%  		- Skriv om at med dEstimatedTaskTime-opplegget er det ikkje nødvendig å simulere spatiotemporal delay. I aksonet for eksempel. Dette er kjempebra for neuronsimulering.
+% 		- Mulighet for "multi-compartment model with single compartment implementation".
+% 		
+% 		- Skriv om at det var teit å bruke deriverte ved overføringer. Bedre ville det vore å bare definert det slik at kvart neuron oppdaterte(rekalkulerte) kvar iterasjon. 
+% 			Ikkje så veldig intuitivt at dette er meir effektivt, men la oss sjå på simuleringsresultata!
+% 		- Directions for further work
+
+
+%TODO Diskuter feil: Kva er begrensningane på modellen?
+					% 		- på experementa? (Sensory node, bruk av algebraisk funk. for input, valg av sensory funk., ...)
+
+%TODO Bruk: 	"This study shows ..." 	Veldig rett formulering! XXX
+
+% TODO TODO TODO BRA! TA MED (kommer fra FDP):
+% With “spatiotemporal resolution” i refer to the ability to separate be-
+% tween elements located at different positions in space with a transmission
+% delay. This is important for the output, scince different output synapses are
+% situated at different locations of the neurons axon. This will cause different
+% transmission delays, and might be important for the neural calculations.
+% This gives us the ability to make a separation between “early synapses”
+% and “late synapses” along the axon, and gives us a better spatiotemporal
+% resolution for the simulated neuron.
+
+
+
+%XXX skrive om Lovelace and Cios(2008) som "proposed a very simple spiking neuron(VSSN) model, og "Simplicity an Efficiency of Integrate--and-fire neuron models" mener er drit. Denne bruker en forenkling av SANN, men diesmann og Plesser mener den er dårlig. Skriv om at eg går motsatt retning, og bruker meir avanserte metoder for å finne meir correct resultat(som betyr meir effektiv simulering).
+
+
+
+
+
+% TODO TODO TODO TODO TODO Skriv om synaptisk plasticity! Kan bruke aktivitetsbasert og spikebasert!  TODO TODO TODO TODO TODO TODO TODO TODO 
+
+
+
+\section{Discussion}
+
+This work introduces an entirely new way of considering a neuron's activation level.
+Instead of considering erroneous concepts like ``immediate mean firing frequency'',  %TODO Er dette innført før? Ellrs:FJÆRN
+	ideas from systems theory is utilized to develop a new formalism for activation level.
+The novel formalism for the neuron's activation level considers what level the neuron's depolarization would approach, $\kappa$, if no firing interrupts it.
+%This considers what the neuron's depolarization would approach if no firing interrupts it, $\kappa$.
+%XXX It is therefore referred to as the $\kappa$ formalism of neural activation.
+
+As the neuron fires when the value crosses the firing threshold and an algebraic equation is utilized to find the depolarization value,
+	the exact firing time $t^{(f)}$ can be estimated by the equation $v(t^{(f)}) = \tau$. 
+	%the exact firing time can be estimated by an equation that equals the algebraic formula to the firing threshold. %TODO Skriv litt om på slutten.
+The $\kappa$ formalism can be used to simulate the neuron by utilizing the concept of 'time windows', intervals where $\kappa$ is constant.
+A changed $\kappa$ initializes a new time window, and the initial value for the value equation is found as the last value in the previous time window.
+%A changed $\kappa$ initializes a new time window, and the firing time estimate needs to be updated.
+Time windows are thus fundamental for the use of the $\kappa$ formalism in a neural simulator.
+%When a new time window is initialized, the depolarization value and firing time estimate is updated for the neuron.
+
+% TODO TA vekk: Dette er ikkje en diskurs!
+% When a new time window is initialized, the depolarization value and a new firing time estimate is computed.
+% %When $\kappa$ is updated, the depolarization value of this time is computed and saved along the time of initiation of the new time window.
+% The computation of a new firing time estimate and all other aspects involved in initiating a new time window are only computed once, 
+% 	at the end of a computational time step.
+% This saves much computational resources, and cause these computations to be executed as often as the computations of leakage in $NIM$.
+% The computational complexity still makes the $\kappa M$ simulation more demanding on the system, and the per--iteration efficiency is lower than for the $NIM$ model.
+% %It also generates a smaller error OR SOMETHING..
+ 
+
+
+Two experiment have been set up to assess the discussed theory.
+%Two experiments have been set up to assess the novel model.
+%The first experiment considers a constant depolarizing inflow, and shows that only the $NIM$ simulation have a simulation error.
+%The first experiment considers a constant depolarizing inflow, and shows that this does not induce any simulation error;
+%The first experiment considers a constant inflow of activation level, and shows that this situation does not generate any simulation error;
+%	The $\kappa M_{100}$ simulation produce the algebraically correct spike times for all spikes,
+%	indicating that the $\kappa M$ error analysis varies with the change in activation level.
+%%	indicating that the $\kappa M$ error analysis is correct and that the implementation works as intended. %designed.TODO works r dårlig ord
+%This indicates that the $\kappa M$ error analysis is correct and that the implementation works as intended. %designed.
+The first experiment considers a constant depolarizing inflow, and illustrates that the $\kappa$ formalism can be used to simulate the depolarization of the neuron. %the $\kappa M$ neuron simulation model can be used to simulate a spiking neuron.
+%	and shows that only the $NIM$ simulation produce a simulation error for this situation.
+The $\kappa M_{100}$ simulation produce the algebraically correct spike times for all spikes, 
+	indicating that the $\kappa M$ error analysis varies with the change in activation level.
+As the $NIM_{100}$ simulation produce a cumulative error of notable size, the first experiment justifies the conclutions from the theoretical error analysis in sec. \ref{ssecAnalysisOfErrorsForTheTwoModels}.
+%As the $NIM_{100}$ simulation produce a cumulative error of notable size, it can be concluded that the error analysis done in sec. \ref{ssecAnalysisOfErrorsForTheTwoModels} is justified for the two models.
+
+
+The second experiment considers a single sensory neuron with a forcing function given by one and a half period of a sine function. %TODO sine?
+%%%
+This study shows that errors of approximately the same magnitude is achieved for a $\kappa M_{100}$ simulation with a temporal resolution 
+	of $100$ time steps per sensory function period as a $NIM_{1.000}$ simulation with ten times the number of time steps.
+The results also indicate that the $NIM$ simulation produce a cumulative error, while the $\kappa M$ simulation have 
+	an error that only varies with the phase of the forcing function.
+% The experiment utilized for efficiency comparison have a dynamically input flow that varies as a trigonometric function.
+To test the extend of the hypothesized cumulation of error for $NIM$, % and the stability property of the $\kappa M$ error,
+	the experiment was repeated with a simulation time interval that is ten times as long.
+The cumulative property of $NIM$ is prominent, and the results also verifies the hypothesized stability property of the $\kappa M$ error;
+	Instead of having an accumulation of truncation errors from numerical integration, $\kappa M$ error varies within constant bounds. %a constant interval. 
+%This could be a confirmation of the $\kappa M$ error analysis that states that the error comes from a delayed update.
+An error from a delayed update can also possibly be dampened by methods from systems theory or numerical estimation.
+%Such an error can possibly be [DEMPET] by methods from systems theory.
+%%%
+%	This is thought to be the main reason why the $\kappa M_{100}$ simulation has a smaller absolute error than a $NIM_{10.000}$ simulation.
+ 	
+
+	One question that presents itself is the importance of a gradually increasing cumulative error.
+	%One question that presents itself is the importance of a gradually increasing accumulation of error.
+	If for example all inter--spike intervals are increased by the same factor, one can say that this is a similarity transform of 
+		the real inter--spike intervals. % and the results can be transformed back.
+	For ``offline simulations'' with e.g. scientific intent, the resulting depolarization and spike times can thus be transformed back.
+	%For simulations with a scientific intent, the resulting depolarization and spike times can thus possibly be transformed back.
+	If the emulator is to be used for real--time applications, it is hard to avoid that the transformed results are utilized instead of the correct values.
+	%This is hard if the emulator is to be used for real--time applications.
+%
+%	Problems arise when this is to be used for real time applications;
+%		Unless the simulation results are transformed back, the transformed results are utilized instead of the correct values.
+%	Transforming the results back demands algebraic equations for the error, and is hard to achieve for $NIM$ simulations.
+%%%%%%%%
+%	Another problem with having a gradually increasing error is that the mean firing frequency is affected by this gradual increase in absolute error.
+%	If the firing time error increase by some factor $C$ in the course of the interval $\Delta t$, 
+%		the resulting firing frequency error for that interval have a size $e_f = \frac{C}{\Delta t}$.
+%	%The implications of errors are therefore hard to predict in a complex neural network.
+%	%If there is a motivation for doing accurate simulations with a maximal error, the $\kappa M$ simulation scheme is a contribution to the field of computational neuroscience	and/or neural--inspired  cybernetics.
+%%%%%
+%%  %%
+	%If there is a gradually increasing error, the mean firing frequency of the neuron is affected.
+	The gradually increasing spike time error affects the activity level of the neuron, altering the mean firing frequency of the neuron;
+		When the firing time error increase by some factor $C_{e}$ in the course of the interval $\Delta t$, 
+		the resulting firing frequency error for that interval have a magnitude $e_f = \frac{C_e}{\Delta t}$.
+	%If it is important that the neuron simulations are accurate without a gradual increase in error,
+	%	the $\kappa M$ simulation scheme accomplish a small and limited absolute error at a relatively low computational cost.
+%%%
+	
+
+The concept of edge transmission, where the signal is propagated as the derivative of synaptic transmission seems like a good idea.
+Only the subset of input synapses with a changed transmission level is considered by the postsynaptic node.
+% Because floating point precision is utilized for representing $\kappa$, 
+% 	it is highly unlikely that the activation level remains constant to this resolution.
+% The concept of edge transmission increase the complexity of the design, and it is recommended that information is propagated as 
+% 	synaptic flow instead of its derivative.
+When $\kappa$ is represented with a floating point precision, it is unlikely that the activation level remains constant 
+	to this accuracy from one computational time step to the next.
+The concept of edge transmission as the derivative thus only increase the complexity of the design, without impoving simulator efficiency.
+%The concept of edge transmission as the derivative therefore does not involve any efficiency improvement, and only increases the complexity of the design.
+It is therefore recommended that information propagation is implemented as synaptic flow instead of its derivative in future work.
+% It is highly unlikely that the activation level remains constant to the resolution of the floating point data formate,
+% 	the consept of edge transmission as the derivative therefore does not involve any efficiency improvement.
+% Transmission as the derivative therefore only increase the complexity of the design, and it is recommended that information is propagated
+% 	as synaptic flow instead of its derivative.
+
+
+	%TODO TODO Diskuter det med umiddelbar vs. transient-kurve for overføring! Kanskje KM er bedre for dette? (bruker ikkje dirac-delta)
+
+\section{Limitations}
+	%Her kan eg DISKUTERE begrensninger med dette arbeidet(diskutere frem og tilbake. Kanskje ende opp positivt?
+	%VELDIG bra for å få full score på kor reflektert arbeidet er!
+
+	%\subsection{The Model} xxx
+		%The $\kappa M$ simulation scheme is possible after a couple of simple concepts woven together to make is possible to utilize the algebraic equation for the neuron's depolarization.
+		%Because the simulation model utilize the algebraic solution to the $LIF$ neuron's differential equations, the author can only think of two aspects that can be limiting for the $\kappa M$ simulation model.
+		The concept of 'time windows' makes it possible to utilized algebraic equations to simulate the depolarization of the neuron.
+		The model used in this work ist the $LIF$ neuron model.
+		This is a simple neuron model with many abstractions, and gives less correct simulation results than more advanced models\cite{CITE}.
+		It is still used in this work, as this model is the most commonly used neuron model in computational neuroscience\cite{CITE}.
+
+%%TODO Skriv 
+%%TODO [leikanger] hevder at sånnOgSånn, difor har eg brukts Sånn.. 		Hevder at, raporterer at, sier at, har gjort, ...
+
+		[CITEAUTHOR] reports that e.g. the nonlinear IF model is a more precise and balanced neuron model\cite{CITE}.
+		It is likely that all models that can be represented by a funtion of a single variable can be simulated by the novel simulation scheme. %$\kappa M$.
+%		In this case, the alternating model's equation for depolarization is used instead of that of the $LIF$ model.
+		%The alternating model's equation for depolarization have to be used instead of that of the $LIF$ model.
+		%The algebraic solution to the $LIF$ model only has to be substituted with the equation for the alternative model.
+%		As these models are harder to simulate numerically, it is believed that the efficiency improvement could be even larger for these models. 	%%%
+		This is something that aught to be tested.		
+
+%		%The nonlinear IF model have not been examined, but could be especially [EGNET]suited for simulation by the $\kappa M$.
+%		%[SKRIVE MEIR OM DETTE]
+%		%The nonlinear integrate--and--fire model have not been examined, but the native use of the exponential function in $\kappa M$ makes
+%		%	it probable that $\kappa M$ can be relatively computationally more effective than a $NIM$ design.
+%		This might be the case for other neuron models as well, and is worth further examination.
+
+		An other aspect that might be a limitation for the $\kappa M$ implementation, is how synaptic transmission is modelled.
+		Because $\kappa M$ propagates information as a second generation ANN, with transmission of the activation level, 
+			it is hard to imagine whether all aspects of the propagation of spikes are preserved.
+		With the $NIM$ design, synaptic transmission can e.g. be implemented as transient transmission curves instead of instantaneous transmissions.
+		It is possible that this is possible for $\kappa M$ as well, by letting $\kappa_{ij}$ have a transient curve.
+		%It is possible that $\kappa M$ also makes this possible, by letting $\kappa_{ij}$ have a transient curve.
+		It is therefore recommended that this aspect is examined further.
+
+%		The third aspect comes from the implementation and computational complexity of the $\kappa M$ simulation scheme.
+
+%	\begin{itemize}
+%		\item Bruk av $LIF$ modellen:
+%			\begin{itemize}
+%				\item [-] ikkje så bra modell
+%				\item [+] mest brukte modellen
+%			\end{itemize}
+%		\item Diskuter korleis KM kan utvides for f.eks. nonlinear model.
+%			\small{KM kan gjøre det lettare å bruke transiente overføringskurver(enn dirac delta)}
+%		\item Synaptisk plasticity
+%	\end{itemize}
+%		\subsubsection{Further Work (-ikkje med, men viktig å hugse-)}
+
+	%\subsection{The Implementation} xxx
+		An important focus for the experiments conducted in this work have been to make it simpler to verify the results.
+		%An important focus in the experiments conducted in this work have been on reproducibility.
+		The source code is therefore freely available\cite{gitRepoCommit} and all experiments have been conducted with an algebraic forcing function.
+		It is thus simple to examine the source code and verify the results, as well as examine other elements/situations.
+		%It is thus possible to examine the source code and reproduce the results as well as further examine other elements.
+		Other sensory functions can be examined by declaring them in the file \emph{sensoryFuntions.h} 
+			and constructing sensory aurons with the pointer to that function as argument.
+		% All experiments have been conducted with an algebraic forcing function and with a focus on making it possible for others to reproduce the results. 
+
+% //{ KOMMENTERT UT
+%	This work [OMFATTER] two different projects.
+%	The first, and in the beginning the most important project, have been to compare the two $LIF$ neuron simulation schemes.
+%	Both simulators have been implemented from scratch, in order to emphasize the differences between the two models.
+%	%Both simulators was implemented from scratch, to be able to see important differences between the two models.
+%	
+%	The second part of the report that considers the efficiency comparison between $\kappa M$ and $NIM$, % the two simulation models, 
+%		and utilize the resulting simulator software from the first part.
+%	%The second part of the project, involving efficiency comparison between the two models used this implementation when comparing $\kappa M$ and $NIM$.
+%	Both implementations have nodes that are designed as the biological neuron, with four subelements representing the functionality
+%		of [dendrite, soma, axon, synapse].
+%	%Both implementations are designed as a biological neural system, with four sub--compartment in each node.
+%	It can thus be said that both models are designed so that spatiotemporal delay is simulated directly in the artificial neuron.
+%			% as a direct simulation of the biological neuron.
+%%% 	%%	  %%%
+%	It is found that this is not necessary, and only introduce more computational load for the simulation.
+%	Because the task scheduler can be utilized for both neural simulation models, this has not been persuaded any further in the efficiency comparison. %XXX persuaded? Sjekk om dette er feil skrivemåte.. (forfulgt..)
+%	It is possible that implementing the task scheduler for the $NIM$ simulation model introduce more computational load, but it is unlikely that this is more demanding than simulating intracellular signal propagation.
+%	%Delay can instead be implemented by scheduling tasks to happen after the defined delay, and no more computational resources have to be used.
+%	As the efficiency improvement from utilizing the task scheduler only affects the run time and not the results,
+%		utilizing the task scheduler would not affect the simulation results.
+%	The efficiency comparison done in this work would therefore be unaffected by doing this.
+%%the result of a comparison that only considers the accuracy of the simulation results.
+%	It is still recommended that further development of $auroSim$ utilize the task scheduler developed in this work%
+%	(the source code of $auroSim$ can be found at \cite{gitRepoCommit}).
+%	%(for the source code of $auroSim$, if is referred to \cite{gitRepoCommit}).
+%	%It is still recommended that future uses of $auroSim$ utilize the task scheduler developed in this work.
+%	%This would only affect the total run time of the simulation, not the accuracy of the simulation results.
+%
+%	%It is also believed that a multiple--compartment model can be simulated in a single--compartment implementation.
+%	%This is an important direction for further work, as it can greatly improve the efficiency of scientific simulations utilizing multiple--compartment models of the neuron.
+%	
+%	%An other aspect that makes the $\kappa M$ implementation more complex is the use of edge transmission as the derivative.
+%	%TODO Skrive om dette?
+%
+%%TODO Ha med, eller ikkje? XXX:
+%%	The results from the efficiency comparison might have been more credible if an established simulation software was used for the $NIM$ simulation.
+%%	%The best approach, when comparing the efficiency of the two models could be to use established software for the $NIM$ simulation.
+%%	As both implementations are designed and written by the author, the $NIM$ implementation can be criticized for being 
+%%		less accurate than other $NIM$ implementations.
+%%	The approach where both simulation models are implemented from a common framework have still been utilized, 
+%%		to minimize the effect of errors originating from the common framework on the comparison. %on the results.
+%%		%as errors originating from the common framework thus affects both simulation models equally.
+%%	%As both simulation models are implemented in a common framework, and it has been important that all common aspects between the
+%%	%	two models are similar, this approach have still been utilized.
+%%	This causes suboptimal elements from the framework to affect both models, and the two models have a more equal [UTG.PKT].
+%%	%It is believed that all elements that are sub--optimal affects both models equally.
+%
+%
+%%	The efficiency comparison done in this work considers the error from $\kappa M$ and $NIM$ simulations.
+%%	The results from a $NIM$ simulation with a temporal resolution that is two orders of magnitude larger than for the compared simulations is used as the correct time course for the neuron's depolarization.
+%%	%The results that are used as the correct time course for the neuron's depolarization is found by a $NIM$ simulation with a number of time steps that is two orders of magnitude larger than the compared simulations.
+%%	%This approach to finding the correct value is validated, as it is shown that the truncation error is proportional to the size of the computational time step.
+%%	The node is designed to emulate a sensory neuron, where the change in depolarization varies with the sensed signal, enabling algebraic 
+%%		functions to define each experiment.
+%	//}
+
+%	Algebraic input functions are chosen to make the experiments replicable.
+	By an infinite sum of different sine functions with different phase and frequency, any signal can be modelled exactly\cite{CITE}.
+	The forcing function utilized when assessing efficiency is therefore chosen to be a sine function.
+	%The forcing function utilized when assessing efficiency have been used as this can be considered a single [LEDD] in a Fourier series.
+	To assess all possible signals, however, an infinite amount of these experiments have to be considered.
+%%%%%%
+	Because the experiment does not define the time scale, the aspect of different frequencies is irrelevant in this context.
+	The size of $\kappa$ in relation to $\tau$ is defined and gives the inter--spike interval, but the amplitude of the sine function is not linked with the time scale of the simulation.
+	%The amplitude of the forcing function oscillations is not directly linked to the time scale, and implies that the experiment done in this work is but an example of simulator efficiency.
+	This implies that the efficiency experiment is but an example of simulator efficiency.
+	%The domain of the forcing function is chosen so that errors are prominent while still being plausible.
+	The forcing function is chosen so that it is a relevant example that is plausible for neural networks.
+	%The forcing function is chosen so that the example is relevant and plausible for neural network, so that it is a relevant example.
+	Because the forcing function of the efficiency comparison in chapter \ref{chExperimentalEfficiencyMeasurement} has the constraint that $\kappa$ is above threshold for the whole simulation, the experiment has been repeated with a forcing function without this constraint.
+	%Because the forcing function of the efficiency comparison in chapter \ref{chExperimentalEfficiencyMeasurement} is above threshold for the whole simulation to make errors prominent, the experiment has been repeated with a forcing function without this constraint.
+	%Because it is above the firing threshold for the whole simulation to make differences prominent, a simulation has also been conducted with a forcing funtion that goes below this value.
+	For the sake of completeness, method and results of this experiment are presented in appendix \ref{appendixExperiment3}.
+% 		, and shows a similar effect.
+%	The results are presented in appendix \ref{appendixExperiment3} for the sake of completeness, and shows a similar effect.
+	%The results from this experiment have not been included in the main text, but a plot of the results is presented in appendix \ref{appendixExperiment3}.
+
+	%Algebraic input functions are chosen to facilitate
+	%Algebraic input functions are chosen for the sake of replication
+	%Algebraic input functions enable a easier repetition of experiments, and also makes analysis of e.g. the simulated solution possible.
+	A neuron's spiking input from other nodes in a neural network have a complex character, and resembles white noise in the time domain.
+	%The chaotic input from a network of neurons can almost be seen as white noise in the time domain.
+	%The chaotic input from a network of neurons can almost be seen as white noise.
+	The resulting depolarization of the receiving $LIF$ neuron is the integral of this input, and can thus resemble a Wiener process.
+	To test more realistic neural input flows, one should focus less on replication, and utilize a stochastic process to define neural input.
+	%To test a more realistic neural input flow, one could step away from optimizing experiments for replication, and e.g. utilize a Wiener process to define neural input.
+%%%%%	
+%	An algebraic forcing function can be seen as only an example of all possible input functions found in white noise.
+%	All functions can be represented as a Fourier series of trigonometric functions[CITE].
+%	The author therefore thinks that the use of a sine forcing function makes the experiment more general, 
+%		and that this particular input can give general results. %answers.
+%	%As all functions can be represented as a Fourier series of trigonometric functions[CITE], 
+%	%	the author believes that the use of the sine function makes the forcing function more general.
+%	It is left for further work to assess forcing functions that gives a sub--threshold $\kappa$. %TODO Eller ta det inn i denne rapporten?
+%	%The use of an algebraic function defined as a sine function can thus be seen as only one 
+	It is left for further research to assess forcing functions that are defined by e.g. a Wiener process or by synaptic input from an ANN.
+%	It is left for further work to assess forcing functions that also gives sub--threshold activation levels, 
+%		and to assess the two models when a node receives input from an ANN.
+	To simplify further analysis, the source code of $auroSim$ have been published under GPL and the version presented in this report can be found under branch \emph{master} in the git repository found in \emph{https://github.com/leikanger/masterProject}\cite{gitRepoCommit}.
+	%To simplify further analysis, the software developed in this work have been published under GPL,
+	%	and the version presented in this report can be found with the commit id $5e1e609ef_{\ldots}$ at 
+		%\cite{gitRepoCommit}.
+	%	\emph{github.com/leikanger/masterProject}\cite{gitRepositorySida}\cite{gitRepoCommit}.
+	%	\emph{github.com/leikanger/masterProject}\cite{gitRepositorySida}. %TODO TODO TODO Cite viser ikkje vev-sida. Fiks webcitation!
+	
+	
+
+
+
+
+%	\begin{itemize}
+%		\item Har ikkje implementert synaptic plasticity
+%		\item Kanskje skrive om effektivitetsanalysen: at KM er implementert for likt NIM, og vil difor 'suffer' av dette.
+%			KM vil difor bruke meir comp. resources enn nødvendig, noke som kan ha sett KM i dåligare lys.\\
+%			MEN det er alikevel valget å gjøre det slik, siden hovedfokuset i denne teksten er en teoretisk sammenligning(og utvikling av KM)
+%		\item Eg burde brukt meir bibliotek, istadenfor å implementere alt selv (i C++)
+%		\item Eg kunne sammenligna KM med etablert software for effektivitetssammenligning.
+%			\begin{itemize}
+%				\item[+] Dette ville gjort resultata mindre avhengig av min implementasjon av $NIM$.
+%				\item[-] Implementasjonene ville da blitt meir ulike med tanke på f.eks. effektiviteten av tids-simuleringa. Dette ville difor kunne bli feilaktig.
+%				\item[-] Den teoretiske sammenligningen ville ikkje blitt like insiktsfull: mange små detaljer ville forsvunnet.
+%			\end{itemize}
+
+%		\item bare sett på enkelt-neuron(ikkje ANN)
+%			\begin{itemize}
+%				\item[+] Bedre for å reprodusere resultat!
+%				\item[-] Mulig det ikkje gir eit velbalansert svar. I kvit støy finner man alle mulige situasjoner mens
+%					algebraisk funk. vil være rimelig smalt i fohold.
+%				\item[-/+] Diskutere korleis en synaptic flow vil opptrå. Skrive at denne vil ha en kontinuerlig funk. Så kvit støy er umulig.
+%					Heller den integrerte av kvit støy -- wiener process.
+%%				\item[+] Mulig å finne algebraisk løysing
+%			\end{itemize}
+% TODO TODO TODO Skal eg også ta med neste? (har eg ikkje allerede skrevet om dette?) TODO TODO TODO
+%		\item Bruk av edge transmission as the derivative. 
+%			\begin{itemize}
+%				\item[-] Øker kompleksiteten til design uten å forbedre effektivitet
+%				\item[-] Fører til små feil som må handteres for Kappa,  uten å forbedre effektivitet
+%				\item[+] Tvang meg til å tenke gjennom desse aspektene, og lære at dette er bortkastet.
+%			\end{itemize}
+%	\end{itemize}
+
+
+\section{Concluding Remarks}
+	%(Skriv into om K-formalismen først) TODO
+
+	In this work, a new formalism is developed to denote the activation level of a neuron.
+% NESTE SETN ER DÅRLIG: litt feilaktig. TODO TODO Skriv meir presist/ bedre/ rettere. (Det er ikkje at man benytter K-formalismen, men time windows.. TODO
+	By utilizing the concept of time windows and synaptic flow, it is shown that algebraic equations can be used directly in spiking neuron simulators.
+	%By utilizing the concept of time windows and synaptic flow, it is shown that algebraic equations can be used to make activation based spiking neuron simulators.
+	%By utilizing the concept of time windows and synaptic flow, it is shown that a mechanistic model can be used for activation based spiking neuron simulators.
+%	By utilizing this formalism, it is shown that a mechanistic model can be used to design activation based neural simulations.
+%	%By utilizing the new $\kappa$ formalism to denote the activation level of the neuron, 
+%TODO Skriv neste stetninga slika at alle aspekt ved den er interesant og har innhold! TODO
+	By computing the neuron's depolarization every time the activation level is altered, the neuron's spike time estimate can also be updated.
+	%As the neuron's depolarization is updated every time the activation level is altered, this can be used as the initial value in the equations to estimate the neuron's spike time.
+	When the neuron is estimated to fire in the course of the present time step, this estimate can be used as the simulated firing time as $\kappa$ is defined to be constant during a computational time step.
+%	When the the neuron is estimated to fire in the present time step, this estimate will not be altered, and the node can fire.
+	%By updating the neuron's depolarization every time the activation level is altered, the neuron's spike time can be can not only be found on a reactive basis(firing after threshold crossing), but the spike can be scheduled at the estimated spike time.
+%XXX No gir den heller ikkje heilt meining.. "Ka vil han med dette?"
+	%By updating the neuron's depolarization every time the activation level is altered, the neuron's spike time can be fond on a proactive basis, not only by firing after the depolarization variable's threshold crossing(reactive basis).
+	This makes it possible to have spike times with an arbitrary precision, and what is called intra--iteration time accuracy is the result.
+%	This makes it possible for the neuron to spike at a time instance with an arbitrary resolution. %a floating point variable's resolution.
+	Theoretical analysis conclude that this gives more accurate simulation results.
+	%It is theoretzised that this gives more accurate simulation results.
+%	For all conducted experiments, it is shown that this gives more accurate simulation results.
+
+	Theoretical and experimental analysis indicate that the error varies with the derivative of the neuron's activation level in $\kappa M$. %,
+	%	and the absolute simulation error is bounded since synaptic inflow is bounded.
+	This results in a bounded error for $\kappa M$ simulations, as opposed to the error produced when simulating the neuron by numerical integration.
+	%TODO Fortesett på dette: Veldig bra intro til å skrive at man trenger 10 ganger så mange 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	If efficiency can be measured by the temporal resolution needed to accomplish some simulation accuracy requirement, this study shows that utilizing the $\kappa M$ results in a large increase in efficiency.
+%	If the size of the computational time step is used to measure efficiency, this study shows that a large increase in efficiency can be the result of utilizing the $\kappa M$ simulation scheme.
+	In the course of one and a half period of a sinusoidal input, the $\kappa M$ simulation gives more accurate results than a $NIM$ 
+		simulation with ten times the number of computational time steps.
+% 	In the course of one and a half period of a sinusoidal input, a $\kappa M$ simulation gives more accurate results than a simulation
+% 		that utilize numerical integration of input, with ten times the number of time steps.
+% 		%the currently used simulation model based on numerical integration of input.
+	The comparative improvement is further increased if the experiment is simulated over $15$ periods of this input;
+		The absolute error is generally less in the $\kappa M_{100}$ simulation than in the $NIM_{10.000}$ simulation. %, with a computational time step that is $1\%$ of $\kappa M_{100}$'s time steps.
+%		In the second half of this experiment, the absolute error is less in the $\kappa M_{100}$ simulation than in a $NIM_{10.000}$ simulation with a computational time step that is $1\%$ of $\kappa M_{100}$'s time steps.
+	The $NIM_{10.000}$ simulation has a computational time step that is $1\%$ of the $\kappa M_{100}$'s, and the $\kappa M$ can be said to be ``as efficient as'' a $NIM$ simulation that has a number of time steps that is two orders of magnitude larger.
+	This involves a simulator efficiency improvement of an increasing magnitude for longer simulations.
+	%The $\kappa M$ simulation thus generates a smaller error in this experiment than a $NIM$ simulation that have a number of time steps that is two orders of magnitude larger.
+%%%%%%% TODO TODO DODO TODOD TODO TODO SKRIV SISTE TO SETN OM! TODO TODO TDOO TODO
+%	It is concluded that the $\kappa M$ error varies within a bounded domain, while the $NIM$ error is cumulative without an upper limit.
+%	%%					%%							%%									%and does not have an upper limit.
+%	%It is concluded that the comparative efficiency improvement of the $\kappa M$ is partially a result of the stability property of the $\kappa M$ error and the cumulative property of the $NIM$ error.
+%	% It is concluded that the comparative efficiency of the two models is further improved for longer simulations.
+%	The effect of the error properties of the two models are prominent already after 15 periods of a sinusoidal input,
+%		and all results implicate that these difference will diverge further for longer simulations.
+%	%The effect of the error properties of the two models are prominent even thought 15 periods of sinusoidal input can be considered a short simulation.
+%	%Fifteen periods of a sinusoidal input can be considered a short simulation, but the effect of the error properties of the two models are prominent. 
+%	%The effect will be larger for longer simulations, implying that the $\kappa M$ could be a break through when it comes to neural simulation.
+%	%The observed effect will be larger for longer simulations.
+%	%The comparative efficiency of the two models will thus be further improved in longer simulations.
+%	
+%
+%	%The $\kappa$ formalism ... %skrive om at det er mulig å bruke til anna også(?)
+%	%A new formalism for modelling a neuron's activation level is the result.
+%	%The $\kappa$ mathematics enables a more precise discussion about a neuron's activation level.
+%	%skriv f.eks. om kor forvirra dette er no, og kor teit det er å bruke gj.sn. fyringsfreq. som umiddelbart aktivitetsmål!
+%
+		
+	
+
+	The novel spiking ANN model propagate information like a second generation ANN, while still being capable of computing spikes.
+	This is something that makes theory from frequency based ANN relevant.
+	Second generation ANNs or other digital filters, can therefore be interfaced directly by letting its floating point output give $\kappa$ for the interface node.
+	%This can also be done by a ``sensory node'', as in the experiments conducted in this work, and is thus valid for $NIM$ as well.
+	By utilizing a ``sensory node'', similar effect can be achieved for input to a $NIM$ node, but only $\kappa M$ is able to produce a signal that can be utilized by a second generation ANN without signal processing.
+%	
+%	This is valid for both $NIM$ and $\kappa M$, but only $\kappa M$ is able of producing a floating point output signal without signal processing and/or estimation.
+	Elements from second generation ANNs can also be utilized direcly in a $\kappa M$ spiking ANN;
+		$\kappa$ can be used to compute the neuron's ``immediate frequency'' as well as the present and future depolarization values. %, and $\kappa M$ can thus be used for simulating second generation ANNs as well as spiking ANNs.
+	%E.g. learning rules can be applied directly, as $\kappa$ can be used to compute the neuron's ``immediate frequency'' as well as the present and future depolarization values.
+	With a few constraints, $\kappa M$ can therefore be used for either a second generation ANN or a spiking ANN.
+	This makes $\kappa ANN$ very useful for examining theoretical neuroscience, as a full $\kappa M$ simulation can find info om begge..
+
+%	%Begrunn meir: skriv at 2.gen er godt utvikler, mens SANN er heilt nytt.
+
+
+
+
+
+
+
+
+
+
+% Negative ting med arbeidet mitt:
+% 	- Begge simulatorene er designet som NIM-simulatoren, der axonet simulerer spatiotemporal effekter. Dette er dårlig, og eg gjekk vekk fra dette designet. Det henger likevel igjen fra tidlig i prosjektet, 
+% 		og bør designes på nytt i videre arbeid.
+% 	- Synaptisk transmission i KM er implementert som den deriverte. Dette var for å effektivisere oppdateringen av postsynaptisk neuron, da bare de som var oppdatert trengte å resummeres. 
+% 		(Selv om summering er en lett operasjon kan neuronet ha veldig mange input-synapser).
+% 		Mengden med inputsynapser fører selfølgelig til at de aller fleste neuron (så mange at man kan kalle det "alle") får endret K kvar iter.
+% 		Det ville difor vært bedre å bruke en enklere direkte implementasjon, da dette er mindre "error prone" og er lettere å vedlikeholde. Dette er eit viktig aspekt i videreføringen av dette arbeidet!
+% 	- KM har meir konstant workload, men er dette egentlig bra? Diskuter om resultatet alltid er maks(meir enn det burde være).
+% 		Bra diskurs-materiale! (fordi eg trur at det ender med en følelse om at det er bra, spess for real-time applications)
+% 	- Skriv at når man 'for the case of reproducibility' går vekk fra å bruke eit kaotisk ANN, over til å bruke en enkelt node kan dette tviste effektivitetsanalysen. Dette er lite truleg, pga formen på signalet.
+% 		Hovedfokus i dette prosjektet var å sammenligne accuracy. Dette blir ikkje endra om det kommer fra $\xi(t)$ eller fra synaptisk input. Den analytiske input funksjonen er også designa til å være slik at verken verdien eller den deriverte av en vilkårlig grad er konstant. Bra.
+% 		Diskuter frem og tilbake.. slutt med å diskuter for denne approach.
+
+% Det meste som var felles (i i\_auron, i\_...) var skriving til logfil osv. (STEMMER DETTE?) Kan isåfall diskutere at det aller meste er heilt ulikt for KM!
+
+% Skrive om at eg ser i etterkant at eg ikkje burde implementert KM noden som NIM noden. KM noden trenger ikkje simulere intracellular delay, men kan bruke scheduler. (Dette kan for så vidt NIM også)
+
+% Siden dette også var en sammenligning av design av de to SANN simulator modellene, har to implementasjoner blitt skrevet fra grunnen og sammenlignet. Det hadde kanskje vore bedre å sammenlignet KM med SANN implementert av andre når effektivitetssammenligne, men dette ville tatt bort en del fra første aspektet ved denne oppgaven(teoretisk sammenligning av modellene). BLA BLA. Men kunne være interresant. Men sammenligningen ville vært mellom KM-sample--and--hold og NIM med meir avanserte integrasjonsmetoder.
+
+
+% VIDARE ARBEID:
+% 	- Undersøke om det er mulig å gjøre det samme for andre neuron modeller. Kanskje KM er meir egnet til f.eks. exponential neuron model?
+% 	- Transduction mellom generasjoner av ANN(og også andre filter)
+% 	- Har bare sett på det enkle eksempelet med sensor-neuron. Dette er bra for reproducibility, men kan kanskje gjøre noko anna i dette forferdelig komplekse systemet. VIDERE FORSKNING kan difor være å undersøke om dette også stemmer for synaptisk input(ANN).
+% 	- Eg går bare ut ifra at begge modellene har nytte av å bruke meir avanserte numeriske metoder. Kor stor denne nytten er bør undersøkes. Dette har eg satt som utenfor the scope of this project. Dette er viktig element i for further recearch!
+
+
+
+
+% // vim:fdm=marker:fmr=//{,//}

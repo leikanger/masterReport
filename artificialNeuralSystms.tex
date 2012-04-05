@@ -132,11 +132,11 @@
 %TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO 
 %TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO Har tenkt å endre litt:
 % XXX Har gjort dette fra å være subsection til å være section(sjå under=.
-% 		Dette innebærer at 	1) eg må endre label fra ssecDepolarizationSimulationByNIM til å være secSpikingANNsimulation, eller noke.
+% 		Dette innebærer at 	X) eg må endre label fra secSpikingANNBackgroundInfo til å være secSpikingANNsimulation, eller noke.
 % 							2) Eg kan endre det slik at depol-error section for NIM kan ligge her? Dette må eg tenke meir på.
 \section{Spiking Artificial Neural Networks}
 %\subsection{Depolarization Simulation by Numerical Integration}
-	\label{ssecDepolarizationSimulationByNIM}
+	\label{secSpikingANNBackgroundInfo}
 	A node in a SANN is a simulation of the neuron's depolarization.
 	When the depolarization level crosses the firing threshold from below, a spike is initiated and the signal is propagated.
 	Many formal spiking neuron models exist, where the most common is the $LIF$ neuron model\cite{florian03}. %TODO Sjekk om dette står der!
@@ -173,7 +173,7 @@
 	\lim\limits_{t\to t^{(f)}; t>t^{(f)}} v(t) = v_r
 \end{equation}
 
-	To the author's knowledge, the $LIF$ neuron have previously only been simulated by numerical integration.
+	To the author's knowledge, the $LIF$ neuron has previously only been simulated by numerical integration.
 	%To the author's knowledge, the only way of simulating the $LIF$ neuron in the digital computer is by numerical integration.
 	All depolarizing current and the leakage is integrated numerically by summing all synaptic input as discrete transmissions and subtracting the leakage after each computational time step.
 	If the efficiency of the synapse from neuron $j$ to neuron $i$ is modelled by $\omega_{ij}$, the total input current can be found by 
@@ -188,7 +188,8 @@
 	%%The leakage is simulated by subtracting a fraction of the present depolarization every time step.
 	%The fraction is defined by the ``leakage constant'' $\alpha=\tau^{-1}$, where $\tau$ is the system's time constant.
 	Because computational resources are limited, a finite temporal resolution(discrete time) is utilized.
-	This involves discrete steps in simulated time, and the previously computed depolarization level have to be used to find the leakage.
+	%TODO skriv om litt, neste setning.
+	This involves discrete steps in simulated time, and the previously computed depolarization level has to be used to find the leakage.
 	This introduces a delay of the size of the computational step:
 	%The previously computed depolarization level is often used to find the leakage, delayed by the size of the computational step:
 \begin{equation}

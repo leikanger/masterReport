@@ -2,44 +2,213 @@
 
 \section{Introduction}
 
-% Motivasjon: Kvifor er dette gjort?
-% Problemområde: Kva er gjort?
-% Kva har andre gjort? 		(skive om SANN)
+
+%	TODO Skriv om årsaken til like sitering: at all uncited material har eg funnet fram til sjølv. Viktig å poengtere dette i intro!\\
+
+
+	The digital computer can compute tasks that can be stated as simple algorithms.
+	It can compute algebra much faster than any human being, and can be an efficient tool. %is an efficient tool for ???.
+	Digital systems are not directly capable of performing associative tasks or tasks involving pattern recognition or learning\cite{CITE}.
+	An example of this is the anti--bot service ``citeUlike'' that makes it hard for so--called bots to e.g. register account on web sites%%
+	\cite{CITE?_artikkel_som_snakker_om_citeUlike, Heimesida_til_citeUlike}.
+%	To execute such tasks, the digital computer needs to run algorithms that emulates such skills.
+%	%To be able to execute such tasks, the digital computer needs algorithms that enable this.
+	Pattern recognition is useful in tasks that involve recognition of objects\cite{RobotisertIndustri, Bildegjenkjenning} and patterns \cite{artikkelSomViserMoenstergj.kj., enTilOmDet, endaEn, endaEn}
+% TODO   Lån bok "mønstegjenkjenning" på bib, og skriv om dette! TODO 
+
+
+	Bionics is a common description for technology inspired by nature\cite{CITE}. %XXX
+	Artificial Neural Networks(ANNs) is an example of such technology;
+		ANNs emulates the signal processing mechanism of a network biological neurons by letting each node be a simulation of the neuron\cite{CITE}. %XXX
+	%Such networks of biological neurons is what will be referred to as Biological Neural Networks(BNNs) in this text.
+	%Such networks of neural simulators emulates the signalling processing capabilities of networks of biological neurons, referred to as Biological Neural Networks(BNN) in this text.
+	While the digital computer process information by algorithms, networks of neurons can be said to process information by 
+		pattern recognition on its input\cite{CITE}. % the network's input\cite{CITE}.
+	The two presented computational systems thus utilize different computational schemes, 
+		but both can emulate the computational scheme of the other to accomplish certain tasks. % to be able to perform certain tasks.
+	%The two presented computational systems thus utilize different computational schemes, but both can emulate the computational scheme utilized by the other. % to be able to perform certain tasks.
+	By classification of input and producing output based on previously learned patterns and memory, biological neural systems are capable of performing algorithmic tasks. % with serial execution.
+	Digital systems are likewise able to emulate neural abilities by simulating networks of artificial neurons\cite{CITE}. %TODO finn CITE
+	%Digital systems are likewise able to emulate neural networks by utilizing ANN algorithms\cite{CITE}. %TO DO finn noke som passer!
+	%Digital systems can likewise emulate neural networks by the use of ANNs\cite{CITE?}.
+	%Like a biological agent is able of performing algorithms by emulating a serial computation/execution, the digital computer is able of emulating the biological computation by emulating an ANN by algorithms.
+%%%%%
+
+	%TODO Nevne litt om kor mykje det er brukt. Gjennomgang: ANN i teknologi! TODO (og da kommer det fram at det er 2.gen ANN TODO
+
+	Neurons propagate information by discrete output transmissions\cite{CITE}.
+	%As presented in sec. \ref{secBiologicalNeuralSystems}, neurons propagate information by discrete output transmissions.
+	Transmissions are initialized when the depolarization of the neuron, given as a leaky integral of input, goes beyond some threshold\cite{CITE}.
+%	When the integral of input goes beyond some threshold, referred to as the firing threshold, the output synapses have a transmission and the node's state is reset\cite{CITE}.
+	%A transmission happens when the integral of input goes above some threshold\cite{CITE}.
+	This cause an action potential in the neuron that gives transmission through all the neuron's output synapses.
+	%Synaptic transmissions occur after what is referred to as action  potentials of the presynaptic neuron.
+	The size of these transmissions does not vary with the magnitude of the neuron's input, 
+		but is thought to be defined by the strength of the synaptic connection alone\cite{CITE}. %TODO Sitere? Eller bare hene på forrige?
+%		but is thought to be a function of the strength of the synaptic connection only\cite{CITE}. %TOD O Sitere? Eller bare hene på forrige?
+	It is possible to propagate information as e.g. the frequency or the exact timing of these action potentials(``spikes'')\cite{ frekvensCITE, ExactTimingCITE}.
+%	It is possible to propagate information as e.g. the frequency or the exact timing of synaptic transmissions\cite{ frekvensCITE, ExactTimingCITE}.
+	%It is possible to propagate information as e.g. the frequency of synaptic transmissions or the exact timing of synaptic transmissions\cite{ frekvensCITE, ExactTimingCITE}.
+	%It is possible to transmit graded information in this system, e.g. as the frequency of such transmissions or the exact timing of action\cite{ frekvensCITE, ExactTimingCITE}.
+	%Information can, however, be said to propagate as a consequence of the frequency of such transmissions\cite{CITE}. %TODO
+%	The main branch of ANN used for technology models information propagation by a floating point number defined by the immediate input, and can thus be said to represent the neuron in the frequency domain\cite{FDP_report}. %emulated neurons. %TODO
+	The main branch of ANN technology models information propagation by a floating point number, given as a function of the neuron's immediate input\cite{CITE}. %TODO CITE
+	These ANNs can thus only be said to represent the neuron in the frequency domain\cite{FDP_report}.
+		%and can thus be said to simulate the neuron in the frequency domain\cite{FDP_report}. %emulated neurons. %TODO
+%	The main branch of ANN technology models information propagation by a floating point number. This variable is given as a funtion of the neuron's immediate input, and can thus only be said to represent the neuron in the frequency domain\cite{NEVR3004OmModellane, FDP_report}
+
+	%Simulating the neuron in the frequency domain is a great simplication of the system.
+%\begin{quote}
+%	When modelling neurons in the frequency domain, information of spike timing is lost\cite{FDP_report}.
+%\end{quote}
+
+	Simulating the neuron in the frequency domain is a major simplification of the system, 
+		as all information about timing is lost. %the spike timing is lost.
+		%and all information of spike timing is lost in an ANN that only propagates the activation level of neurons.
+	Such models can therefore not be used for exact simulations of the neuron or where the relative spike time of neurons is important\cite{NEVR3004OmModellane}. %TODO TODO Finn anna referanse. Dette er lett å finne CITE på! TODO
+% TODO Skriv om Hebb, gå over mot STDP etterkvart.. 
+%	Simulating the neuron in the frequency domain is a great simplification of the system, and all information of spike timing is lost.
+%	An ANN that propagates a floating point number between its nodes is therefore a great simplification of the system, 
+%		and can not be used for simulations to be used with scientific intent of where the relative spike time of neurons is important.
+% TODO TODO TODO Skriv neste setn. på nytt. Få heller fokus på at Hebb er ustabilt! TODO TODO TODO TODO
+	%As one of the main reasons behind utilizing ANNs is learning and adaptation, mechanisms for synaptic plasticity is important for ANNs.
+	An element of particular importance is synaptic plasticity, what is seen as learning in neuroscience\cite{CITE, NEVR3001synPlast, FDP_report}. %KANDEL? Originalartikkel?   og kanskje FDP
+%	An element of particular importance is synaptic plasticity, what is seen as the background of learning in neuroscience\cite{CITE, CITE2}.
+	%XXX Local learning rule? Var ikkje det noke?
+	In frequency based ANNs, local learning rules can e.g. be a funtion of the presynaptic and postsynaptic spike frequency, $r_j'$ and $r_i$.
+	%\cite{CITE}.
+	%In frequency based ANNs, a local learning rule has to be a funtion of the presynaptic and postsynaptic firing frequency.
+	%In ANNs, this is often modelled as a function of the presynaptic and postsynaptic firing frequency\cite{CITE}.
+\begin{equation}
+	\Delta \omega_{ij} = \sum_j C r_i r_j' \quad,\qquad
+	\begin{tabular}{l}
+ 		$r_j'$ 			\tiny{ is the presynaptic neuron' s firing frequency} \\
+		$r_i$  			\tiny{ is the receiving neuron's firing frequency}  \\
+		$\omega_{ij}$ 	\tiny{ it the synaptic weight between neuron $j$ and $i$} \\ %\tiny{ is the synaptic weight form neuron $j$ to neuron $i$} \\
+		$C > 0$ \\
+	\end{tabular}
+	\label{eqHebbsPostulate}
+\end{equation}
+	where $\omega_{i,j}$ represents the magnitude of the synaptic connection between neuron $j$ and neuron $i$.
+	This is a mathematical interpretation of what is referred to as ``Hebbian learning'' after Donald A. Hebb who first proposed this mechanism.
+\begin{quote}
+	When an axon of cell A is near enough to excite a cell B and repeatedly or persistently takes part in firing it, some growth process or metabolic change takes place in one or both cells such that A’s efficiency, as one of the cells firing B, is increased. \cite{Hebb1949Kap4}
+\end{quote}
+
+	Hebb's postulate or the mathematical interpretation presented in equation \eqref{eqHebbsPostulate} only
+		describes positive change in synaptic weight and is obviously unstable;
+	Any correlation between the two neurons' firing frequency would cause a stronger connection between them and thus increase the correlation.
+%	Any correlation between the two neurons would cause a stronger connection between them and thus increase the correlation in firing frequency.
+	Numerous attempts have been made create stable learning rules in frequency based ANNs, with still increasing complexity\cite{CITE, MASSE, MEIR, EndaFleir - EnTil}. %TODO Finn ref. FINN UT korleis eg lager cite: [2, 4-6] (streken).
+%%
+	%One mechanism that requires special attention is Spike Timing Dependent Plasticity(STDP)\cite{NEVR3004OmModellane}.
+
+%TODO Finn figur. Legg inn figur om STDP, her! (eller skal det være fig. i intro?		TODO
+
+%TODO TODO TODO Sjekk alle referanser i neste avsnitt! Har ikkje sjekka. Bare stjåle fra NEVR3003. TODO TODO TODO
+	In 1987, Gustafsson et al. proposed that the synaptic weight gain from a transmission varies with the postsynaptic neuron's depolarization at the time of transmission\cite{Gustafsson03011987}. %TODO Sjekk artikkelen igjen. Er veldig usikker på om dette stemmer!
+%	This opened for a graded increase in synaptic weight.
+	%TODO Spesielt viktig å sjekke neste! TODO
+	At about the same time, Levy and Steward found that synaptic transmission could cause Long--Term Depression, a decrease in synaptic weight\cite{Levy1983791LTDetterSTDP}. % as a consequence of synaptic transmission\cite{Levy1983791LTDetterSTDP}.
+	%At about the same time, Levy and Steward found that synaptic connections could undergo Long--Term Depression, a decrease in synaptic weight as a result of synaptic transmissions\cite{Levy1983791LTDetterSTDP}.
+%TODO Neste setning er litt dårlig TODO skriv om!
+	These two findings makes stable local learning rules possible, as a single transmission can give graded synaptic plasticity from negative to positive weight change\cite{CITE}.
+	%These two findings makes it possible with stable local learning rules, as the synapse can undergo a graded synaptic plasticity from negative to positive weight change after a single synaptic transmission\cite{CITE}.
+%	These two findings give that a synapse can undergo a graded synaptic plasticity ranging from positive to negative weight change, and could be the basis of a stable local learning rule\cite{CITE}.
+	%These two findings explains that a synapse can undergo a graded synaptic plasticity ranging from positive to negative weight change after transmission, and could be the basis of a stable local learning rule\cite{CITE}.
+	%These two findings explains how it is possible with a graded synaptic plasticity ranging from positive to negative change in synaptic weight. %CITE? XXX
+	The N-methyl-D-aspartic acid($NMDA$) receptor is found to be of a particular importance in this context.
+	%The $NMDA$ receptor is found to be important in this context.
+%	 %\cite{RossumStableHebbVedSTDP}, %TODO Sjekk teksten til artikkl, ikkje bare tittel..
+%	\cite{NEVR3003STDP, RossumStableHebbVedSTDP},
+
+	$NMDA$ receptors consists of ionic gates that open when the receptor is exposed to the right neurotransmitters\cite{CITE}.
+	%In addition to other ions involved in neural depolarizing, this channel lets $Ca^{2+}$ ions flow into the neuron. Calcium is an ion that takes part in regulating synthesis of new receptors\cite{CITE,C}. 
+	As opposed to the $AMPA$ receptor, this channel enable $Ca^{2+}$ ions to flow into the neuron.
+	This ion is thought to take part in regulating the synthesis of new $AMPA$ receptors and is considered important for synaptic plasticity as well as transmission\cite{CITE}.
+	%The $Ca^{2+}$ ion is thought to take part in regulating the synthesis of new $AMPA$ receptors, and is considered important for synaptic transmission and plasticity\cite{CITE}.
+%%
+	%The negative resting membrane potential of about  $-65mV$ pulls positively charged ions to it from outside\cite{CITE}. 
+	The $NMDA$ channel is blocked by a $Mg^{2+}$ ion that covers the opening, stopping all ion flow through the channel\cite{CITE}.
+	%The $NMDA$ channel is blocked by a $Mg^{2+}$ ion covering the opening, stopping all ion flow through the channel\cite{CITE}.
+%%%%%%%%%%%%%
+	%Outside of the $NMDA$ channel lies a $Mg^{2+}$ ion that covers the opening and blocks any flow of ions thought the channel\cite{CITE}.
+	%Outside the opening, there is a $Mg^{2+}$ ion that inhibits a flow of ions thought the channel\cite{CITE}.
+	%There is a $Mg^{2+}$ ion that lies in the opening and inhibits the flow of ions thought the opening\cite{CITE}.
+	When the (negative) membrane potential is sufficiently depolarized, the block is no longer pulled towards the gate and ions is able to pass through the channel. %TODO TODO TODO VÆR HEILT SIKKER på at det er neg. potensial inni i forhold til utafor! TODO
+	%When the (negative) membrane potential is sufficiently depolarized, the block is pushed away from the gate and ions can flow through the channel\cite{CITE}.
+	%The probability of pushing away the block can be seen as a stochastic function of the membrane potential. %FINN CITE? EVT BEGRUNN MEIR!
+	Due to the number of $NMDA$ receptors and variations in $Mg^{2+}$ blocks, this creates a graded magnitude of the $Ca^{2+}$ inflow and thus variations in synaptic plasticity\cite{CITE}.
+	%Due to the number of $NMDA$ receptors and variations in the block in $NMDA$ receptors, this creates a graded response for the magnitude of the $Ca^{2+}$ inflow as a function of the membrane potential at the time of transmission\cite{CITE}. %TODO
+	Synaptic plasticity can thus be modelled as a function of the postsynaptic membrane potential at the time of transmission\cite{CITE}.
+%	Synaptic plasticity thus have a graded response of the postsynaptic membrane potential at the time of transmission\cite{CITE}.
+%	It can therefore be said that synaptic plasticity is a consequence of the postsynaptic membrane potential at the time of transmission.
+	The postsynaptic depolarization often has a correlation with how much time there is left until firing, and might be the reason why this mechanism is called Spike--Time Dependent Plasticity(STDP).
+%	The mechanistic model for synaptic plasticity can be considered one for the main reasons behind simulating neurons in the time domain.
+%	STDP is intrinsically stable, something that enable a higher [FORSTERKNING] of synaptic plasticity.
+	This mechanistic learning rule gives a strong motivation for utilizing spiking neuron simulations in the nodes of an ANN.
+	%STDP is a mechanistic learning rule that gives a strong motivation for utilizing spiking neuron simulations in the nodes of an ANN.
+	%This mechanistic learning rule creates a strong motivation for utilizing spiking neuron simulations for the nodes in the ANN. 
+	Such ANNs are often referred to as Spiking Artificial Neural Networks(SANN).
+	%This creates a graded responce of the $NMDA-R$ dependent on the depolarization of the neuron before transmission\cite{CITE}.
+	
+	Despite its advantages, SANN is seldomly used in technology\cite{CITE}.
+	This is partially caused by the computational complexity of SANN simulations\cite{CITE}.
+	MASSE SKAL TIL FOR AT SANN ER ERROR-fri.
+	The theory for frequency based ANNs is also well established, and can not direcly be used in SANN.
+	FREKVENS-simulering kan ikkje overføres til SPIKE-simulering. Float-variabel vs. diskrete overføringer.
+	-Error: kan ungåes ved å ha fleire computational time steps. MEN dette gjør simulering tyngre.
+	
+	Error har i dette arbeidet blitt analysert, og der sees at NIM har akkumulasjon av feil.
+	Forsøk på å unngå dette : KANN
+
+
+
+%	It is shown that the speed at which biological neural systems compute certain input, 
+%		can not be achieved unless the spike timing is a part of the neural computation. %XXX Cite
+%	SKRIVE OM InnØret og VentroLateralNuclei?
+%%
+%	Networks of nodes that simulates signal propagation by spikes have been referred to as Spiking Artificial Neural Networks(SANN). %XXX Cite
+%	SANN have been used for simulations of neural systems[CITER] as well as for technology[CITE]. %TODO TODO
+%%	It is used for technology both to approach the fast computation of biological neural systems as well as its learning capabilities.
+
+\newpage
+
+	Despite its advantages, SANN have not been used much in technology.  %TODO CITE!
+	This is partially because of the computational complexity of SANN simulations[CITE], 
+		and because ``frequency based ANNs'' is well established.
+	In this work, an attempt to make spiking neuron simulations more effective is conducted.
+	SNAKKE om at det beste er om det går an å lage en modell som har muligheten for å benytte 2.gen teorier for simulering av SANN.
+
+
+Motivasjon! Kvifor simulere neuronet!
+
+Problemet!  - (Såppass kaotisk med ANN at feil kan føre til enorme utslag)
+			- feil som gir feil oppførsel [VEID OPPIMOT]  for treig
+Skriv kven denne teksten er skrevet for. Skriv at eg ikkje går ut fra noe neuroscience bakgrunn, men en grunnleggende matematisk bakgrunn og en relativt god oversikt over C++ er gått ut fra at leser har..
+%Skriv kva gruppe eg skriv til. Kva bakgrunn ser eg for meg at dei har. Eg har tatt med litt bakgrunnsinformasjon om nevro dersom leser ikkje har utpregende kjennskap til dette området. Eg har også forsøkt å ta med litt meir i avsnittene som omhandler C++, ettersom leser også kan være fra neuroscience minjøer uten utpreget kjennskap til programmering. Tilfeller vil difor oppstå der leser har god kunnskap til området, og i dette tilfellet bes leser å skim these sections.
+
+
+	
+
+%	Nevn LIFE ---  sjå ssayNEVR3002\_proprieception 
+%
+%	Simulering av SN: feilaktig simuleing: kvifor der det drit å få feil?\\
+%	
+%	Vanskelig å unngå akumulativ feil!\\
+
+
+
+%	Elements like robustness, ability to handle fuzzy information, fault and failure tolerance, and learning makes ANNs the best tool for handling certain input\cite{jainEtAl}.
+
 % Mi avgrensning.  --Kva har eg utelatt. Kvifor. osv..
-% Disposisjon: Utvida innholdsfortegnelse.
-	% Skriv: Eg har plassert eit kapittel i appendix om synaptisk overføring i appendix. Dette er for å få en meir helhetlig oversikt over det biologiske systemet, men siden det ikkje er direkte knyttet til oppgaven(dårlig formulert) er det ikkje med som en del av hovedteksten. Dette kan brukes for utfyllende informasjon og motivasjon for SANN.
-
-Torebror: jo det er kjekt :)
-	har du noke praktisk ide om korleis desse kunstige neurona kan nyttast?
-me: Tja.. Tenkte på det på toget i natt. Tre hovedelement: ANN, neurosimulering for nevrovitenskap(teste teorier og slikt)
-	og en til.
-	ANN(Artificial Neural Networks) er brukt mykje for å gi datamaskina assosiative egenskaper("hmm, det føler eg at eg har sett, minner meg på ...") og for maskinlæring. Spesiellt mykje brukt i bildegjenkjenning
-Torebror: (...ANN også mykje brukt i geomagnetisk "vær"melding :P )
-me: Nice. Mønstegjenkjenning og assosiative egenskaper!
-	(kanskje..)
-	Neiss, eg har ikkje tenkt så mykje på bruken. Eg bare liker å sysle med det..
-	Kanskje noken har bruk for det..
-	:)
-Torebror: ja, med basis på målingar fra satellittar 1 time herfra mot sola (dvs 1 time for solpartiklar)
-	kan tenke meg det kan brukast mykje i medisinsk kyb
-me: Tja, ikkje enda..
-	Det var den tredje bruksområdet..
-	Dei har klart å lage elektroder som kan brukes som interface direkte til nerve-bunter i kroppen.
-	Dette signalet må behandles på en måte, og da tenker eg det kan være nyttig å gjøre dette ved å la det "snakke" med kunstige neuron i datamaskina. Men dette er veldig visjonært, og ingen har gjort det.
-	Fryktlig spennande! SciFi!
-
-
-
-I FDP ble det teoretisert at 
-	for certain situations, $\kappa M$ is more effective than $NIM$.
-Der skriver eg også litt om kor  vanskelig det er å sjå for seg kor effektivt noke er, spesiellt for ANN.
-Eg har dermed videreført dette prosjektet i dette arbeidet.
-
+	Skriv at eg bare har sett på LIF neuronet. Men dette er den mest brukte neuron modellen i SANN simulering.
+	Ser bare på enkleste form for numerisk integrasjon. Kvifor? Begrunn. Skriv at forbedringer kan mest sansynlig gjøres med like stor impact for begge modeller..
 
 
 
 %Kort motivasjon for å lese vidare. Tenk at dette er dritkjedelig for sensor, og at eg må motivere han til å lese vidare (eit avsnitt)
-%Tidligare arbeid. 
+%
 %  Ting som må være med :
 % 		A statement med målet til teksten. Kvifor vart prosjektet gjort?
 % 		Nok bakgrunnsinfo for å forstå kvifor det er viktig å lese vidare.
@@ -49,15 +218,39 @@ Eg har dermed videreført dette prosjektet i dette arbeidet.
 % 		Verbal table of context. Vær sikker på at det er veldig klart kva som er bakgrunnsinfo og kva som er mitt arbeid.
 
 
+%XXX RAPPORT DISPOSISJON:
+% Motivasjon: Kvifor er dette gjort?
+	Det er mykje dataen ikkje er så flink på. \\
+	For slike oppgaver brukes ofte ANN\\
+	
+	Nevrovitenskapen's fokus på spike times har flere årsaker. Læring og også signal processing i noen spesielle situasjoner.
+	Dette har smittet over på computational neuroscience, både for bruk i simulering av nye teorier og påtenkt: for ANN i teknologi.
+	SANN i ANN er veldig nytt felt, og er ikkje skikkelig utprøvd kanskje hovudsaklig på grunn av at dette krever tunge utregninger(lang tid).
 
-Motivasjon! Kvifor simulere neuronet!
+% Problemområde: Kva er gjort?
+	Det er kanskje spesiellt nyttbart for å utvikle proteser i biomedisinsk bevegelse, etter at LIFE er utviklet.
+	LIFE er ...  og muliggjør en direkte kommunikasjon mellom neuron og teknologi. Dette krever avansert signalbehandlign som kan forstå signala.
+	Dette tenker eg er veldig gunstig å gjøre med nevro-emulatorer lagt som simuleringer av neuronet i datamaskina.
+	Dette skaper en spesiell motivasjon for å utvikle SANN slik at det er mulig å nytte i teknologi(sanntids-utførelse).
 
-Problemet!  - (Såppass kaotisk med ANN at feil kan føre til enorme utslag)
-			- feil som gir feil oppførsel [VEID OPPIMOT]  for treig
+% Kva har andre gjort? 		(skive om SANN)
+	SANN består i dag av mange noder som simulerer neuronet ved numerisk integrasjon av input.
+	Det er en balanse mellom gode simuleringsresultat og lave computational costs(effektivitet); Dersom man vil ha mindre simuleringsfeil kan man øke den temporale oppløyringa, men dette øker computational load.
+% Mi avgrensning.  --Kva har eg utelatt. Kvifor. osv..
+	I dette arbeidet vil eg sjå på muligheten for å simulere neuronet ved å bruke den algebraiske løysinga til neuron modellen som er brukt.
+	Modellen som er sett på er 'the Leaky Integrate-and-Fire(LIF) neuron model', da dette er den modellen som oftest er brukt for SANN.'
+	Andre neuron modeller har ikkje blitt undersøkt, selv om metoden i bruk absolutt kan nyttes for desse også.
+% Disposisjon: Utvida innholdsfortegnelse.
+
+	%Skriv kva gruppe eg skriv til. Kva bakgrunn ser eg for meg at dei har. Eg har tatt med litt bakgrunnsinformasjon om nevro dersom leser ikkje har utpregende kjennskap til dette området. Eg har også forsøkt å ta med litt meir i avsnittene som omhandler C++, ettersom leser også kan være fra neuroscience minjøer uten utpreget kjennskap til programmering. Tilfeller vil difor oppstå der leser har god kunnskap til området, og i dette tilfellet bes leser å skim these sections.
+	% Skriv: Eg har plassert eit kapittel i appendix om synaptisk overføring i appendix. Dette er for å få en meir helhetlig oversikt over det biologiske systemet, men siden det ikkje er direkte knyttet til oppgaven(dårlig formulert) er det ikkje med som en del av hovedteksten. Dette kan brukes for utfyllende informasjon og motivasjon for SANN.
 
 
-Skriv kven denne teksten er skrevet for. Skriv at eg ikkje går ut fra noe neuroscience bakgrunn, men en grunnleggende matematisk bakgrunn og en relativt god oversikt over C++ er gått ut fra at leser har..
 
-%Skriv kva gruppe eg skriv til. Kva bakgrunn ser eg for meg at dei har. Eg har tatt med litt bakgrunnsinformasjon om nevro dersom leser ikkje har utpregende kjennskap til dette området. Eg har også forsøkt å ta med litt meir i avsnittene som omhandler C++, ettersom leser også kan være fra neuroscience minjøer uten utpreget kjennskap til programmering. Tilfeller vil difor oppstå der leser har god kunnskap til området, og i dette tilfellet bes leser å skim these sections.
+
+
+
+
+
 
 % // vim:fdm=marker:fmr=//{,//}

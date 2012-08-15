@@ -13,10 +13,9 @@
 		%\nonumber
 		\label{appendix:eqDifferentialEquation}
 	\end{equation}
-		where I represents the input flow and $\alpha$ represents the leakage constant of the value.
-
+		where I represents the input flow and $\alpha$ represents the leakage constant.
+%%%
 		Laplace transform gives
-	% TODO TODO TODDO TODO TODO Legg utledning av uttrykk i appendix?
 	\begin{equation}
 		\begin{split}
 			sV(s)-v_0 		&= \frac{I}{s} - \alpha V(s) 			\qquad, \; \qquad v_0 = v(t_0) 				\\
@@ -26,7 +25,8 @@
 		\nonumber
 	\end{equation}
 
-	And 
+	and 
+%%%
 	\begin{equation}
 		\begin{split}
 			v(t)  	&= 		\mathscr{L}^{-1}\bigg\{ V(s) \bigg\}  									\\
@@ -37,36 +37,30 @@
  	\end{equation}
 
 	The value equation for the leaky integrator with initial value $v_0$ is only valid for time intervals where $I$ and $\alpha$ remain constant.
-	This includes any time window, as defined in sec. \ref{ssecTheAlgebraicSolution}.
-	%The value equation for the leaky integrator with initial value $v_0$ is only valid for time intervals where $\kappa$ and $\alpha$ remain constant.
-	%Such an interval is referred to as a time window, as defined in sec. \ref{ssecTheAlgebraicSolution}.
-%	%%We arrive at the value equation for the leaky integrator with initial value $v_0$.
-%	%%It is important to emphasize that the value equation \eqref{appendix:eqValueEquationUTLEDING} is only valid for time intervals where $\alpha$ and $I$ remain constant.
+% 	This includes any time window, as defined in sec. \ref{ssecTheAlgebraicSolution}.
+	Such an interval is referred to as a \emph{time window}, defined in sec. \ref{ssecTheAlgebraicSolution}.
 %%
-	The variable that represents time is measured from the start of the current time window, $t_w = t - t_0$.
+	The variable that represents time in the equation is measured from the start of the current time window, $t_w = t - t_0$.
 
 
 
-% FLYTTA TIL TEKSTEN: \section{Firing Time for the LIF Neuron}
-% 	Difor er \label{appendixFiringTime} bore..
 
-
-
-\section{Refration time and simulator time scale}
-\label{appendixRefractionTimeAndSimulationTimeScale} %ssecValueOfAlpha}
+\section{Refraction time and simulator time scale}
+\label{appendixRefractionTimeAndSimulationTimeScale} 
 
 The inter--spike interval for a neuron consists of two phases. 
-The absolute refraction period and the depolarizing phase (se sec. \ref{ssecTheActionPotential}).
+The absolute refraction period and the depolarizing phase (see sec. \ref{ssecTheActionPotential}).
 % % % 
-Equation \eqref{eqPeriodeligningForKonstIntraPeriodKAPPA} models the interval of the depolarizing phase of the neuron. % , $p_d(\kappa)$.
-The equation for the whole inter--spike interval is given by
+Equation \eqref{eqDevelopmentOfFiringTimeEstimateEq} models the depolarizing phase of the neuron. % , $p_d(\kappa)$.
+The equation for the whole inter--spike interval is defined as
 \begin{equation}
 	p_{isi}(\kappa) = p_d(\kappa) + t_r
 	\label{eqHeilePerioden}
 \end{equation}
-
-Where $t_r$ is the refraction period of the neuron. % , and $p_d(\kappa)$ is given in \eqref{eqPeriodeligningForKonstIntraPeriodKAPPA}.
-If we consider the firing frequency of the neuron, $f(\kappa) = p_{isi}^{-1}(\kappa)$ we can see that the asymptote is given by
+%%
+where $t_r$ represents the absolute refraction period of the neuron. % , and $p_d(\kappa)$ is given in \eqref{eqPeriodeligningForKonstIntraPeriodKAPPA}.
+For the firing frequency of the neuron, $f(\kappa) = p_{isi}^{-1}(\kappa)$, the asymptote is defined by
+%If we consider the firing frequency of the neuron, $f(\kappa) = p_{isi}^{-1}(\kappa)$ we can see that the asymptote is given by
 \begin{equation}
 	\begin{split}
 		\lim_{\kappa->\infty}{ f(\kappa)} &= \lim_{\kappa->\inf}\left( \frac{-\alpha}{\ln \left( \frac{\kappa - \tau}{\kappa} \right) - \alpha t_r} \right)   \qquad = \frac{1}{t_r} \\ 
@@ -75,8 +69,11 @@ If we consider the firing frequency of the neuron, $f(\kappa) = p_{isi}^{-1}(\ka
 	\label{eqFrekvensLlim} 
 \end{equation}
 
-From this analysis it can be concluded that the refraction period of the neuron will limit the output frequency of the neuron.
-This can be seen in fig. \ref{figFrekvensMedOgUtenRefractionPeriod}.
+This shows that the absolute refraction period limits the output frequency of the neuron.
+% From this analysis it can be concluded that the refraction period of the neuron will limit the output frequency of the neuron.
+This is illustrated in fig. \ref{figFrekvensMedOgUtenRefractionPeriod}.
+% This can be seen in fig. \ref{figFrekvensMedOgUtenRefractionPeriod}.
+% This aspect can be seen in fig. \ref{figFrekvensMedOgUtenRefractionPeriod}.
 
 \begin{figure}[bhtp]
 	\begin{center}
@@ -86,31 +83,27 @@ This can be seen in fig. \ref{figFrekvensMedOgUtenRefractionPeriod}.
 	\label{figFrekvensMedOgUtenRefractionPeriod}
 \end{figure}
 
-%We can see from this analysis that the refraction period of the neuron is fundamental for restricting the neurons output frequency (se fig. \ref{figFrekvensMedOgUtenRefractionPeriod}).
-For biological neurons, the maximum firing frequency is about 1000 Hz \cite{NeuroscienceExploringTheBrain3edKAP4}. %s 79
+For biological neurons, the maximum firing frequency is about 1000 Hz \cite{NeuroscienceExploringTheBrain3ed}. %\cite{NeuroscienceExploringTheBrain3edKAP4}. %s 79
 \begin{equation}
 	\lim_{\kappa->\infty}{ f(\kappa}) \approx 1000 \, \text{Hz}
 \end{equation}
-%If we define the maximum firing frequency to be 1000, equation \ref{eqFrekvensLlim} gives us the absolute refraction period as
-If we define the maximum firing frequency for the artificial neuron to be 1000 Hz, from equation \ref{eqFrekvensLlim} we get the corresponding refraction period $t_r$:
+If this is defined as the maximal firing frequency of the artificial neuron, the corresponding absolute refraction period $t_r$ can be found by equation \ref{eqFrekvensLlim}.
+% If we define the maximum firing frequency for the artificial neuron to be 1000 Hz, from equation \ref{eqFrekvensLlim} we get the corresponding refraction period $t_r$:
 \begin{equation}
 	t_r = \frac{1}{1000 \text{Hz}} = 1 \, \text{m}s %= 0.001 s = 
 \end{equation}
 
-%TODO Skriv at dette er en kjendt størrelse i neuroscience (finn, referer), og er en indikasjon på rettheten til lingningene (?)
-% 		Kanskje også skrive litt om at dette er "absolute refraction period". Det er også en mild refraction period etter dette (finn,referer). Dette kan implementeres ved 2ms refraction period for auronet. 
-% 		TODO TODO Sjekk andre linja her, og gjør en bestemmelse i forhold til mine ANN. (1 eller 2 ms refraction period?).
-If we define the time step of the simulation to be 1 m$s$, the refraction period will be one time step in the simulation.
-%With a time step of 1 m$s$, the absolute refraction period (the time interval where it is impossible to exite the neuron) can be set to one time step. 
-With a time step of 1 m$s$, the simulation of the refraction period can be done by blocking the input for the durion of one time iteration.
-%For SANN nodes, this means that the node will not change its value for the duration of the next time step. 
-%For $\kappa$ANN this can be implemented more effective by incrementing the estimated firing time by one time iteration. 
+If the absolute refraction period is defined to be $1$$m$s, it is convenient to define the size of a time step to have the same size.
+% If we define the time step of the simulation to be 1 m$s$, the refraction period will be one time step in the simulation.
+In this case, the absolute refraction period can be simulated in $NIM$ by simply blocking input for one time step after the simulated action potential.
+This consideration is not necessary for $\kappa M$.
+% With a time step of 1 m$s$, the simulation of the refraction period can be done by blocking the input for the durion of one time iteration.
 
 
 
 \section{Activation level recalculation} 		%todo todo todo todo todo todo todo todo todo todo todo todo todo todo todo 
 \label{appendixRecalculateKappaClass}
-	The concept of edge transmissions as the derived potentially gives an increase in the efficiency of the simulation, as only the necessary additions have to be executed.
+	The concept of edge transmissions as the derivative potentially gives an increase in the efficiency of the simulation, as only the necessary additions have to be executed.
 	The value is found as the sum of all such edge transmissions, and the effect of an altered activation level is computed after the time step.
 	As the activation level is found as the sum of all preceding edge transmissions, small numerical errors is also integrated and could give a large deviation from the correct activation level.
 	Because of this, an adaptive mechanism for recalculation of the activation variable $\kappa$ is devised.
@@ -118,7 +111,7 @@ With a time step of 1 m$s$, the simulation of the refraction period can be done 
 	The size of the error is hard to estimate, as it can vary with the hardware architecture, the system load and the number of input transmissions to the node in question.
 	%The size of the error from one time step is hard to estimate, as this varies with the number of inputs in the course of the time step.
 	Because of this, the number of time steps between each recalculation in a node is designed to be adaptive.
-	When the activation variable have a small deviation from the actual activation level, the interval to the next recalculation can be set higher than if the deviation is large.
+	When the activation variable has a small deviation from the actual activation level, the interval to the next recalculation can be set higher than if the deviation is large.
 
 	It is important to limit both the minimal and maximal period between recalculation of $\kappa$.
 	This is achieved by the altered sigmoid function \eqref{eqIntervalToNextRecalculationOfKappa}. %, shown in fig. \ref{figIntervalToNextRecalculationOfKappa}.
@@ -139,7 +132,7 @@ With a time step of 1 m$s$, the simulation of the refraction period can be done 
 
 \begin{figure}[bhtp]
 	\centering
-	\includegraphics[width=0.9\textwidth]{intervalToNextRecalculationOfKappa}
+	\includegraphics[width=1.0\textwidth]{intervalToNextRecalculationOfKappa}
 	\caption[Plot of the altered sigmoid function \eqref{eqIntervalToNextRecalculationOfKappa}, used for determination of the interval to the next recalculation of $\kappa$ in a $\kappa M$ node]{
 			Plot of the altered sigmoid function \eqref{eqIntervalToNextRecalculationOfKappa} with $c_1=100$, $c_2=250$, $c_3=10$ and $c_4=0.5$.
 			The minimal interval is given by $c_1$ and the maximum period by $c_1+c_2$.  }

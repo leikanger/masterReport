@@ -1,147 +1,51 @@
 
-%\section{Artificial Neural Networks}
-
-% SKRIV OM! FOkuser på at det er noken ting som ikkje er så bra å gjøre i PC.
-% 	Så skriv litt om pragmatic ANN (som løysing på dette)
-
-%	\subsection{A Review of ANN History}
-
-
 
 \section{Artificial Neural Systems : A Review of ANN History}
 	\label{ssecHistoryOfANN}
-	The pragmatic use neural network simulations started with the ``McCulloch--Pitts neuron'' in 1943.
-	%Warren McCulloch, an early neuroscientist and the young mathematician Walter Pitts formalized the models of the neuron and proposed the first artificial neuron simulator. %artificial neural network.
-	Warren McCulloch, an early neuroscientist and the young mathematician Walter Pitts initiated a formalized discussion about the mechanics of the neuron and the use of neuron simulations in technology. %artificial neural network.
-	This resulted in the first neuron emulator(artificial neuron). %, later referred to as the McCulloch--Pitts neuron. 
-	%When a network of nodes consisting of the artificial neural was set up, McCulloch and Pitts created the very first artificial neural network(ANN).\cite{MccullochPittsHistorie} %TODO Sjekk referansen! TODO
+	The pragmatic use of neural network simulations started with the ``McCulloch--Pitts neuron'' in 1943.
+	Warren McCulloch, an early neuroscientist, and the young mathematician Walter Pitts initiated a formalized discussion about the mechanics of the neuron and the use of neuron simulations in technology.
+	This resulted in the first neuron emulator(artificial neuron). 
 %
-	%TODO Glatt ut: Gjør slik at det eg god flyt i teksten i det som står under her! TODO
-	Artificial Neural Networks based on the McCulloch--Pitts neuron model has later been referred to as the first generation ANN\cite{Maass97networksof}.
-	%What has later been referred to as the first generation ANN is based on the McCulloch--Pitts neuron\cite{Maass97networksof}.
-	%One example of a first generation ANN is the Rosenblatt's Preceptron\cite{HaykinANNbok}.
-	Each node is modelled as a boolean device(with an on--off response), where the node sends output if the immediate input level is large enough.
-	The first generation ANN can therefore be said to be a network of simple threshold gates, %filters called threshold gates.
+	Artificial Neural Networks based on the McCulloch--Pitts neuron model has later been referred to as the first generation ANN\cite{Maass97networksofSN}.
+	Each node is modelled as a boolean device(with an on--off response), where the node sends output if the immediate level of input is large enough.
+	The first generation ANN can therefore be said to be a network of simple threshold gates, 
 		and does not take into consideration the depolarization state of each node. %, and is a tremendous simplification of the biological neuron.
-	%This does not take into consideration the depolarization (state) of each node, and is a tremendous simplification of the biological neuron.
-	%The first generation ANN thus does not take into consideration the depolarization of the neuron, and is a great simplification of the biological neuron.
-	One famous example of an ANN classified as a first generation ANN is Rosenblatt's Perceptron\cite{HaykinANNbok}.
+	One famous example of a first generation ANN is Rosenblatt's \emph{Perceptron}\cite{HaykinANNbok}.
 
-\begin{figure}[hbt!p]
+\begin{figure}[bth!p]
 	\centering
 	\includegraphics[width=0.75\textwidth]{sigmoidCurve}
-	\caption[The sigmoid curve that is often used to compute the output of a node in a second generation ANN]{Sigmoid curve $\frac{1}{1+e^{-x}}$, often used as the activation funtion in a second generation ANN.}
+	\caption[The sigmoid curve that is often used to compute the output of a node in second generation ANNs]{Sigmoid curve $\frac{1}{1+e^{-x}}$, often used as the activation funtion in second generation ANNs.}
 	\label{figSigmoidCurve}
 \end{figure}
 
-	The second generation ANN gives a better simulation of the neuron. % in the frequency domain.
-	%A better simulation of the neuron considers the neuron in the frequency domain.
-	Each node computes the output level as a floating point number based on the immediate input to the node.
-	From sec. \ref{secBiologicalNeuralSystems}, the biological neuron is introduced as a node that sends output when the depolarization goes to suprathreshold levels.
-	A continuous propagation of a floating point number can therefore be said to represent the frequency of such transmissions as a function of present input.
+%TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO CITE TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO Heile neste avsnitt!
+	A better simulation of the neuron is done in the nodes of a second generation ANN\cite{Maass97networksofSN, NEVR3004OmModellane}.
+	Each node computes the output level as a floating point number based on the immediate level of input to the node.
+	From sec. \ref{secBiologicalNeuralSystems}, we have that the biological neuron sends discrete output pulses when its depolarization level goes above the firing threshold.
+	A continuous propagation of a floating point number can therefore be said to represent the frequency of such transmissions as a function of the present input.
 %%%
 	The function used for computing the output is referred to as the \emph{activation function} of the node, and is found to give the best results if it is given by the continuously differentiable sigmoid function\cite{HaykinANNbok}.
-	%The function used for computing the output is referred to as the \emph{activation function} of the node.
-	%The activation function is found to give the best results if the function is a continuously differentiable sigmoid function\cite{HaykinANNbok}.
+
 \begin{equation}
 	\sigma(x)=\frac{1}{1+e^{-x}}   %TODO TODO TODO TODO TODO TODO Lag heller en figur for å vise sigmoid function! (Bytt ut ligning med fig!) TODO TODO TODO TODO TODO TODO TODO
 \end{equation}
-
-	As the biological neuron has a state that gives the depolarization value of the neuron, the stateless computation in the McCulloch--Pitts neuron is gross simplification of the original system.
-	It could be more correct to consider the neuron as being stateless in the frequency domain, and the stateless computation of a second generation ANN can be said to be more correct than in a first generation ANN.
-	%Because it is more right to consider the neuron as stateless in the frequency domain, the stateless computation in a second generation ANN is more correct than the stateless computation in the McCulloch--Pitts neuron model.
-	As the concept of frequency only makes sense for time intervals of a certain size, precise simulations with small computational time steps does not necessarily give accurate simulation results for an ANN of the second generation. 
-	%As the concept of frequency only makes sense for time intervals of a certain size, a second generation ANN can not be used for accurate simulations with small computational time steps.
-	%%%
-		%%the second generation ANN only give accurate simulations for computational time intervals where is makes sense to talk about mean frequency.
-%%%%%%%%%%
-	%It is intuitive that the frequency representation only give good simulation results for time intervals where it makes sense to talk about mean frequency.
-	%This model thus only gives accurate simulations for a very coarse temporal resolution(large computational time steps), and does not take into account temporal effects caused by the time of firing. %%
-	%%This simulation can therefore only be said to only give an accurate simulation for a very coarse temporal resolution(large computational time steps).
-	For more precise simulations of the neuron or simulation where temporal mechanisms in the neuron are important, the frequency representation in second generation ANNs can therefore not be used.  %TODO Finn noe å CITE!
-	Such simulations can only be executed with a neuron simulation model that considers the depolarization of each neuron.
-% TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO 
-% TODO Skriv: Da må depolarisasjonen explisitt simuleres. Dette gjøres i Spiking ANN TODO Bra overgang til neste subsection! TODO
-% TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO 
-	%For more precise simulations of the neuron or of temporal mechanisms, the frequency representation in second generation ANNs therefore can not give good simulation results. %TODO Finn noe å CITE!
-	%%This representation therefore is unsuitable for more precise simulations of neural networks and of mechanisms that depend on temporal elements(like STDP learning rules). 
-%TODO TODO TODO TODO Cite :  Finn steder dette står/ting å cite! TODO TODO TODO TODO
-
-
 	
-% TODO Kommenterte ut følgende uten å sjekke resultatet. TODO Sjekk om alt er med når dette er kommentert ut, og i såfall: slett det.. TODO
-% 	A direct simulation of the signal propagation mechanisms of the neuron is often referred to as a ``spiking'' artificial neuron model. %\cite{Maass97networksof}.
-% 	The depolarization of the neuron is simulated by numerical integration of all events that change the neuron's depolarization.
-% 	The most commonly used model for spiking neuron simulations is the Leaky Integrate--and--Fire(LIF) neuron, where the depolarization of a neuron is simulated as a leaky integration of depolarizing input\cite{florian03}.
-% 	Because all aspects considered important in signal processing are simulated, this model can be used for precise simulation of the neuron and can therefore be used to test neuron models and theories about neural signal propagation.
-% 	%TODO LINJA over: Endre litt, og cite. F.eks. Maass97networksof?? (XXX Last leddsetning does not tell what I intended..)
-% 
-% 	The LIF model describes the depolarization of a neuron as a leaky integration of the neuron's excitatory and inhibitory input, where the depolarization value diminish(towards the resting membrane potential) over time.
-% 	%The leaky aspect of the neuron can be implemented by subtracting a certain ration of the last computed depolarization, every time iteration.
-% %%	Artificial Neural Networks that utilize this simulation model for its nodes is sometimes referred to as Spiking ANN(SANN) and belong to the \emph{third generation ANN}. %TODO Cite en art. av Wulfram Gerstner
-% 	%%Artificial Neural Networks that utilize this simulation model for its nodes is sometimes referred to as Spiking ANN(SANN) and belong to what is referred to as the \emph{third generation ANN}. %TODO Cite en art. av Wulfram Gerstner
-% %%	
-% 	When the simulated depolarization of a node is excited above the firing threshold, a spike is initiates, causing transmission through all the node's output edges. %synapses.
-% 	The signal is propagated as discrete spikes, very similar to the signal processing of a biological neuron\cite{Kunkle02pulsedneural}.
-% 	%TODO Setninga under: Virker  som om eg snakker om LIF neuron. Dette er feil, i såfall. Ikkje LIF som er SANN. TODO FIKS!
-% 	Artificial Neural Networks with this simulation model for its nodes are sometimes referred to as Spiking ANN(SANN) and belong to the \emph{third generation ANN}\cite{Maass97networksof}. %TODO Cite en art. av Wulfram Gerstner
-% 	%%Artificial Neural Networks that utilize this simulation model for its nodes is sometimes referred to as Spiking ANN(SANN) and belong to what is referred to as the \emph{third generation ANN}. %TODO Cite en art. av Wulfram Gerstner
-% 	
-% 
-% 	To summarize this section about ANN history, there are three generations of artificial neural networks, each getting closer to the biological neuron in behaviour.
-% 	%What propagates thought the network, how this is computed and what it represents differs  
-% 	The first generation of artificial neurons where so--called threshold gates, with a boolean output that was [true] if the summed input were above some threshold. %TODO CITE!
-% 	Nodes of the second generation gave, in some respects, a better simulation of the biological neuron.
-% 	The output is not given as discrete states given by the input but as a continuous function that can be interpreted as the firing frequency of the node. % of the level of input to the node.
-% 	With this interpretation it can be said that ANNs of this generation gives a simulation that is closer to the biological neuron in behaviour.
-% 	%If the transmission through the output synapse of a neuron is seen as the firing frequency of that neuron, it can be said that this generation of ANN gives a simulation that is closer to the biological neuron.
-% 	%The third generation ANN is supposed to be an accurate simulation of the neuron, and is as close to the biological neuron as possible.
-% 	The third generation ANN is supposed to give an accurate simulation of the neuron, and achieves this by simulation the neuron's depolarization directly. 
-% 	The neuron has an internal state representing the depolarization and fires if this value goes to supra--threshold levels.
-% 	The signal is propagated in the same manner as in the biological neuron, where excitatory synapses increase the postsynaptic depolarization and inhibitory synapses decrease the postsynaptic depolarization.
-% 	%Errors in the simulation comes as a consequence of numerical errors or from the neuron model used.
-% 	Because the nodes of a SANN is a direct simulation of the mechanisms involved in the neuron's depolarization, only numerical errors and errors in the neuron model used separates the simulation results from the behaviour of a real neuron.
-% 	%Only numerical errors in the digital simulation and errors in the neuron model used separates the simulated result from the behaviour of a real neuron.
-% 
-% %%%	XXX TA MED?    Den observante leser vil dermed se at med kvar ny generasjon ANN, så kommer vi nermere bio-neuronet. 
+	As the biological neuron has a state, defined by the depolarization value of the neuron, the stateless computation of the McCulloch--Pitts neuron is a gross simplification of the original system.
+	It is more correct to consider the neuron as being stateless in the frequency domain, and the stateless computation of a second generation ANN can therefore be said to be more correct than in a first generation ANN\cite{Maass97networksofSN, FDP_report}.
+	Since the concept of mean frequency only makes sense for time intervals of a certain size, precise simulations with small computational time steps does not necessarily give accurate simulation results for an ANN of the second generation. 
+	%%%
+	For more precise simulations of the neuron or simulations where temporal mechanisms are important, one has to simulate the neuron in the time domain by considering its depolarization.
 
 
 
 
-% 2.gen er bedre enn første, fordi begge er "state less". For tidsdomenet blir dette heilt feil. For frekvensdomenet blir det mindre feil. (Heilt rett dersom du ser bort fra syn.p. og modulatory neurotransmitters.
-
-%It is actually so close that the word ``simulation'' will occasionally be used in this report.  	% ".. actually so closa that .." DÅRLIG. Fiks?
-
-%In the third generation ANN it is the action potentials or the "spikes", that is responsible for information processing.  %TODO Skriv om slutten / Feil ord.. 		".. or the "spikes" that is responsible for the information flow.
-%This ANN model is therefore often referred to as ``Spiking Artificial Neural Network''(SANN).
-
-%If the transmissions between nodes is viewed as the firing frequency of the neuron, we can say that the continuous output value represents the output frequency as a function of the input frequency over the time step in the simulation.
-
-%The nodes of the third generation ANN became even more similar to the biological neuron, as the output of a node depend solely on the state of the node.
-
-
-
-
-
-
-%	\subsection{Synaptic Plasticity and motivation for SANN}
-%		- skiv om Hebbian learning: ustabilt. \\
-%		- skiv om STDP og at dette er en viktig grunn til å bruke SANN. \\
-%		Det er truleg at begge 'learning rules' har sannhet. Det ville difor vært bra å kunne benytte begge, ivertfall i forskningssamanheng.
-
-%TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO 
-%TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO Har tenkt å endre litt:
-% XXX Har gjort dette fra å være subsection til å være section(sjå under=.
-% 		Dette innebærer at 	X) eg må endre label fra secSpikingANNBackgroundInfo til å være secSpikingANNsimulation, eller noke.
-% 							2) Eg kan endre det slik at depol-error section for NIM kan ligge her? Dette må eg tenke meir på.
 \section{Spiking Artificial Neural Networks}
-%\subsection{Depolarization Simulation by Numerical Integration}
 	\label{secSpikingANNBackgroundInfo}
-	A node in a SANN is a simulation of the neuron's depolarization.
-	When the depolarization level crosses the firing threshold from below, a spike is initiated and the signal is propagated.
+	A node in a $SANN$ simulates the neuron with respect to its depolarization.
+	When the depolarization value crosses the firing threshold, a spike is initiated and the signal is propagated in the neural network.
+% 	When the depolarization value crosses the firing threshold from below, a spike is initiated and the signal is propagated through the neural network.
 	Many formal spiking neuron models exist, where the most common is the $LIF$ neuron model\cite{florian03}. %TODO Sjekk om dette står der!
-%	Many formal spiking neuron models exist, but we will in this text focus on the Leaky Integrate--and--Fire(LIF) neuron.
-%	The depolarization level of a neuron can be simulated utilizing different formal neuron models, but what is common for all neural simulation models is that a spike is initiated when the depolarization crosses the firing threshold.
 	
 	
 \begin{figure}[tb!hp]
@@ -149,23 +53,20 @@
 	\includegraphics[width=0.85\textwidth]{figRCcircuit}
 	\caption[A schematic diagram of the $LIF$ neuron model]
 			{A schematic diagram of the $LIF$ neuron model. 
-			Each node can be modelled as the circuit inside the dashed circle on the right side of the model.
+			Each node can be modelled as the circuit inside the dashed circle on the right--hand side of the figure.
 			Depolarizing input is represented by the input current $I(t)$, and when the potential over the capacitor is larger than the firing threshold at time $t_i^{(f)}$, a spike $\delta(t-t_i^{(f)})$ is generated. 
-			The left--hand side of the figure shows a model of synaptic transmissions as a low--pass filtering of the presynaptic action potentials $\delta(t_j^{(t)})$, generating a input current $\alpha(t-t_j^{(f)})$ to neuron $i$.
-			(Figure from \cite{gerstnerKistler2002KAP04}).
-% TODO TODO Amund seier at denne referansen oppfattes som om det er figur pluss teks som kommer fra artikkelen. Gjøre om på dette? Hvordan?
+			The left--hand side of the figure shows a model of synaptic transmissions as a low--pass filtering of the presynaptic action potentials $\delta(t_j^{(t)})$, generating a input current $\alpha(t-t_j^{(f)})$ to neuron $i$
+			\cite{gerstnerKistler2002}.
+% TODO TODO Amund seier at denne referansen oppfattes som om det er figur pluss teks som kommer fra artikkelen. Gjøre om på dette?  Korleis?
 % TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO 
 			}
 	\label{figRCcircuitAvNeuronet}
 \end{figure}
+
 	The $LIF$ model is a simple phenomenological model of the biological neuron, and is highly popular due to its simplicity.
-	%The neuron's depolarization is simulated by numerical integration of all membrane--potential changing input, including leakage.
-	%A basic electrical $RC$ circuit, consisting of a resistance in parallel with a capacitor can be used as an analogy to explain the $LIF$ model.
-	%The driving current $I_{tot}(t)$ can be split into two components, $I_R(t)$ that represents the current that ``leaks'' through the resistance and the input current $I_{input}(t)$\cite{gerstnerKistler2002KAP04}. 
-	The leaky integration of the $LIF$ neuron can be modelled by the electrical circuit shown in fig. \ref{figRCcircuitAvNeuronet}.
-	When the membrane potential $v(t)$ crosses the neuron's firing threshold $\tau$, a spike is initiated causing transmissions through all the neuron's output synapses.
-	The neuron's membrane potential is then reset to the resting membrane potential $v_r<\tau$ \cite{gerstnerKistler2002KAP04}.
-	%A spike cause transmissions through all the neuron's output synapses and the neuron's membrane potential to be reset to the resting membrane potential $v_r<\tau$.
+	The leaky integration of the $LIF$ neuron model can be modelled by the electrical circuit shown in fig. \ref{figRCcircuitAvNeuronet}.
+	When the membrane potential $v(t)$ crosses the neuron's firing threshold $\tau$, a spike is initiated and transmissions through all the neuron's output synapses is the result.
+	The neuron's membrane potential is then reset to the resting membrane potential $v_r<\tau$ \cite{gerstnerKistler2002}. %\cite{gerstnerKistler2002KAP04}.
 
 	%If the  TODO Innfør ligning 12 fra \ref{florian03}.
 	% TODO Gjør det her!
@@ -173,51 +74,43 @@
 	\lim\limits_{t\to t^{(f)}; t>t^{(f)}} v(t) = v_r
 \end{equation}
 
-	To the author's knowledge, the $LIF$ neuron has previously only been simulated by numerical integration.
+	To the author's knowledge, the $LIF$ neuron has previously only been simulated by numerical integration in the computer.
 	%To the author's knowledge, the only way of simulating the $LIF$ neuron in the digital computer is by numerical integration.
-	All depolarizing current and the leakage is integrated numerically by summing all synaptic input as discrete transmissions and subtracting the leakage after each computational time step.
-	If the efficiency of the synapse from neuron $j$ to neuron $i$ is modelled by $\omega_{ij}$, the total input current can be found by 
+	The depolarization is integrated numerically by summing all synaptic input transmissions, and subtracting the leakage after each computational time step.
+	%All depolarizing current, and the leakage is integrated numerically by summing all synaptic input transmissions, and subtracting the leakage after each computational time step.
+	If the efficiency of the synapse from neuron $j$ to neuron $i$ is modelled by $\omega_{ij}$, the total input current during a time interval can be found by 
 \begin{equation}
 	I_i(t_n) = \sum_j \omega_{ij} \sum_f a(t_n - t_j^{(f)}) + \xi_i(t_n)
 \end{equation}
+	where $a(t- t_j^{(f)})$ is defined by the neuron's synaptic input currents and $\xi_i(t_n)$ comes from other sources of depolarizing input\cite{florian03}.
 	%TODO TODO Slutten av neste setning er nok ikkje fra {florian03}. Sjekk dette, og isåfall endre neste setning.. TODO TODO Fiks det slit ag neste setning stemmer med florian03-referansen. Sjekk ligningene hans..
-	where $a(t- t_j^{(f)})$ is given by the neuron's synaptic input currents and $\xi_i(t_n)$ comes from external sources of depolarizing current, e.g. current induced through a probe or the activation of a sensory neuron\cite{florian03}.
+	Examples of this can be a current inserted through a probe, or the sensed signal of a sensory neuron.
 
-%TO O TD XXX XXX XXX HER HER HER OTOD TODO TODO TDODO TOO TODO TODO
 	Leakage can be simulated by subtracting a fraction of the present membrane potential every time step.
-	%%The leakage is simulated by subtracting a fraction of the present depolarization every time step.
-	%The fraction is defined by the ``leakage constant'' $\alpha=\tau^{-1}$, where $\tau$ is the system's time constant.
 	Because computational resources are limited, a finite temporal resolution(discrete time) is utilized.
-	%TODO skriv om litt, neste setning.
-	This involves discrete steps in simulated time, and the previously computed depolarization level has to be used to find the leakage.
-	This introduces a delay of the size of the computational step:
-	%The previously computed depolarization level is often used to find the leakage, delayed by the size of the computational step:
+	This involves discrete steps in simulation time, and the previously computed depolarization level has to be used to find the leakage $l(t_n)$.
+	This introduces a delay, with the size of the computational time step, and establishes an error source for the simulation.
+%	This introduces a delay, with the size of the computational time step, and is an error source for the simulation.
 \begin{equation}
 	%I_R(t_n) = \alpha v(t_{n-1})
 	l(t_n) = \alpha v(t_{n-1})
 \end{equation}
-	The discretization of time thus introduces an error defined by the size of the computational time step;
-	%This introduces an error defined by the size of the computational time step;
-		If the computational time steps are increased, the size of the simulation error is also increased.
-	%Accurate simulations can be designed by decreasing the size of the computational time steps, but this also increases the computational load of the simulation.
-	More accurate simulations can be designed by making the computational time step smaller, but this simultaneously increase the computational load of the simulation. %Xxx , but this makes the computational load larger. ELLER NOKE. XXX
-	%More accurate simulations can be designed by decreasing the computational time step, but this also increases the computational load.
+%%
+	Thus, the discretization of time introduces an error defined by the computational time step ---
+		if the size of the computational time step is increased, the simulation error becomes larger.
+	More accurate simulations can therefore be accomplished by making the computational time steps smaller, but this simultaneously increase the computational load of the simulation.
+% Veit ikkje om eg skal sitere dette. Det er forsåvidt mitt arbeid, men dei satte meg på ideen!
+% 	\cite{PlesserStraubeMorrisonPlesser2007}.
 	
-	% 	The simplest form of the $LIF$ neuron utilize sample--and--hold numerical integration.
 
-%	This can be simulated by implementing a direct simulation of the $LIF$ neuron's depolarization, as modelled by the electrical $RC$ circuit in fig. \ref{figRCcircuitAvNeuronet}.
 
-% TODO ?: Write eq. 4.4, page 95 in gerstnerKistler2002KAP04 (threshold criterion).
+	% 	The simplest form of the $LIF$ neuron utilize sample--and--hold numerical integration. %%% I think this statement can be found in  Maass97networksofSN
 
-	%The depolarization of a node is a time integral of all depolarizing input and the total ``leakage'' of depolarization value,  and is implemented by numerical integration. %and can be implemented by numerical integration.
-	%The size of the leakage is computed by the last computed value for the neuron's depolarization, delayed by the size of the computational time step.
-	%XXX The error from each iteration, referred to as the local truncation error, thus increases with the size of the computational time step.
-	%Accurate simulations can therefore be designed by decreasing the size of the computational time step.
 
-% TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO 
+
 % TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO  Lag figuren som viser ANN på nytt! Litt slurvete, nå.
 % TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO 
-\begin{figure} %[hbt!p]
+\begin{figure}[hbt!p]
     \centering
     \subfloat[Model of Spiking ANN Connections]{
         \label{figAuronE:subfigModel}
@@ -229,39 +122,24 @@
         \includegraphics[width=0.55\textwidth]{auronE_depol}
         \label{figAuronE:subfigDepolarization}
     }
-    \caption[An artificial neural circuit to illustrate numerical integration of the $LIF$ neuron. Schematic model and simulation results.]
-			{ % TODO TODO TODO Litt rart å bruke auron, her? Vil gjerne bruke auron, men dette må innføres først. Do It! TODO
-			(\ref{figAuronE:subfigModel}) A schematic model of the synaptic connections in a neural circuit intended to illustrate neural integration.
-			The synaptic connections in fig. \ref{figAuronE:subfigModel} are represented as a factor of the firing threshold, meaning that a transmission thought a synapse with $\omega_{ij}=1$ will cause the postsynaptic auron to fire.
-			The neural circuit $[A1, A9]$ is thus self sustaining, and cause synaptic transmissions through the synapse from auron $[A*]$ to auron $E$.
+    \caption[An artificial neural circuit to illustrate numerical integration of the $LIF$ neuron. Schematic model and simulation results.]{
+			(\ref{figAuronE:subfigModel}) A schematic model of the synaptic connections in an artificial neural circuit intended to illustrate neural integration.
+			The synaptic connections in fig. \ref{figAuronE:subfigModel} are represented as a factor of the firing threshold.
+			A single transmission through a synapse with $\omega_{ij}=1$ therefore cause the postsynaptic artificial neuron (``auron'') to fire.
+			Thus, the neural circuit $[A1, A9]$ is self sustaining, and causes synaptic transmissions through the synapse from auron $[A*]$ to auron $E$.
 			\mbox{(\ref{figAuronE:subfigDepolarization}) The} resulting depolarization curve for auron $E$.
 			Every auron but $A7$ is connected to auron $E$, making the effect of leakage prominent.
-			Auron $A7$ is disconnected, causing a small decrease in auron $E$'s depolarization every ninth iteration.
-			%%Auron $A7$ is disconnected to show the effect of the leakage, that can be seen by the decrease in auron $E$'s depolarization every ninth iteration.
-			%(The figure is generated by \emph{$_s{AuronSim}$}, a simulator utilizing numerical integration implemented in the preliminary project to this work) 
-			(The figure is from the preliminary project and is generated by $auroSim_s$, the part of $auroSim$ that ulilize numeical integration)
-			%(The figure is generated by \emph{${AuronSim}_s$}, the part of a simulator implemented in the preliminary project to this work that utilize numerical integration) 
-			%(The figure is generated by \emph{AuronSim}, a simulator utilizing numerical integration implemented in the preliminary project to this MS thesis) %this work)
+			Note the small decrease in auron $E$'s depolarization, every ninth time step.
+% 			Auron $A7$ is disconnected, causing a small decrease in auron $E$'s depolarization every ninth iteration.
+%TODO TODO Dersom eg lager figuren på nytt: Skriv 
+			(Figure \ref{figAuronE:subfigDepolarization} is generated by $auroSim_{N}$, the part of \emph{auroSim} with numerical integration) \cite{FDP_report}
+		%	(Figure \ref{figAuronE:subfigDepolarization} is from the preliminary project\cite{FDP_report}, and is generated from $auroSim_{N}$, the part of \emph{auroSim} with numerical integration)
+		%	(Figure \ref{figAuronE:subfigDepolarization} is from the preliminary project\cite{FDP_report}, and is generated from $auroSim_{N}$, the part of \emph{auroSim} that utilize numerical integration)
+% 			(The figure is from \cite{FDP_report} and is generated by $auroSim_{N}$, the part of \emph{auroSim} that utilize numerical integration)
                 % TODO TODO Make auron A7->A9. This is better for the text.. TODO TODO Also make figure figAuronE:subfigModel more pretty: redraw! TODO TODO TODO
 				}
-    \label{figExperiment2}
 \end{figure}
 
-
-%TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO 
-%TODO Flytt neste 5 linjene til en anna plass. Funker ikkje så bra her?  Kanskje heller i experiment: Efficiency Mesurements (?)..
-%TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO 
-% 	If all nodes are updated each time step, the computational load scale linearly with the number of nodes and the inverse of the size of the computational time step.
-% 	By halving the size of the computational time step, the computational load increase as if the number of nodes are doubled.
-% 	By having precise simulation algorithms, fewer time iterations can be utilized to accomplish the same accuracy for the simulation.
-% 	This explains that the accuracy of simulation algorithms can be used as a good measure of efficiency, and establish the motivation for having precise simulation algorithms.
-% 	More sophisticated numerical integration techniques are therefore often used to accomplish a high accuracy in numerical simulations\cite{PlesserStraubeMorrisonPlesser2007}.
-
-
-% TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO 
-% TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO  Flytt det over, over til comparison of the two models!
-% TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO  		(Bra opplegg, som eg bør skrive om!) Fokuser dermed på at spatiotemporal delay simuleres og bruker resurser.
-% TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO 
 
 
 		

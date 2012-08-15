@@ -1,9 +1,0 @@
-
-
-Dårlig med KANN: Vanskeligare å implementere (Moore modell).
-Opplegget med ekplisitt floating point fyringstidspunkt gjør at vi må ta hensyn til mange ting. Opplegget med intra--iteration time accuracy fører f.eks. til at vi må enten holde oppføringer sortert, 
-	eller sjekke dEstimatedTT for alle, før de utføres.
-
-Eksplisitt floating point time fører også til mykje meir optimalisert kode. Istadenfor å simulere spatiotemporale effekter(som AP propagering gjennom axonet), kan vi heller bare sei at utsynapsen legges til om gitt tid.
-	Task blir også utført ved eit mykje rettare tidspunkt. Feilen som kommer av diskretisering av initiering av hendelser FORSVINNER HELT!
-	(Hendelser er ikkje begrensa til å skje på diskrete tidspunkt, men har en mykje større oppløysing(double accuracy floating point format) ).

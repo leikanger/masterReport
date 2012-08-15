@@ -1,37 +1,53 @@
 \chapter{UML Class Diagrams}
-
+	To make this report a better documentation of $auroSim$, the UML class diagrams of the most important classes have been included in this appendix.
+	In addition to the different subelement classes, the UML diagram of $time\_class$ is presented in this appendix.
+	All elements are derived from class $time\_interface$, making all elements inherit the pure virtual functions $doTask()$ and $doCalculation()$.
+	Unless these are overloaded in the derived class, that class is also abstract and no instances of it can be made from it.
+	
+	
+\newpage
 \section{Time Class}
 		\begin{figure}[hbt!p]
 			\centerline{ \includegraphics[width=0.9\textwidth]{UML/classDiagramForTimeClass} }
 			\caption[UML class diagram for \emph{time\_class}]{
-				The main responce of class \emph{time\_class} is all aspects of simulation time. 
-				pWorkTaskQueue have all objects with tasks, including an object of time class, whose main responcibility is to iterate time.
+				The main response of class \emph{time\_class} is all aspects of simulation time. 
+				pWorkTaskQueue have all objects with tasks, including an object of time class, whose task's main responsibility is to iterate time.
 				Most elements of \emph{time\_class} is declared \emph{static}, and have a class--wide scope.
 					}
 		\end{figure}
 
+\newpage
 \section{Node Subelement Classes}
 \label{appendixUMLofAllNodeSubelementClasses}
-	Litt introtext. Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla 
+	The artificial neuron has a design like the functional lay out of a biological neuron, as illustrated in fig. \ref{figFigurAvNeuronet}.
+	This gives the design presented in fig. \ref{figUMLClassDiagramForASingleNeuron}.
+	The UML class diagram of the different subelement classes is presented in this appendix.
 
 		\begin{figure}[hbt!p]
 			\centerline{ \includegraphics[width=0.9\textwidth]{UML/classDiagramForDendrite} }
-			\caption[UML class diagram for dendrite subelement]{asdf}
+			\caption[UML class diagram for dendrite subelement]{UML class diagram for the dendrite subelement.}
 		\end{figure}
 
 		\begin{figure}[hbt!p]
 			\centerline{ \includegraphics[width=0.9\textwidth]{UML/classDiagramForAuronSubclass} }
-			\caption[UML class diagram for auron subelement]{asdf}
+			\caption[UML class diagram for auron subelement]{UML class diagram for the auron subelement. The sensory auron, used in the experiments, is a specialization of the auron.}
 		\end{figure}
 
 		\begin{figure}[hbt!p]
 			\centerline{ \includegraphics[width=0.9\textwidth]{UML/classDiagramForAxon} }
-			\caption[UML class diagram for axon subelement]{asdf}
+			\caption[UML class diagram for axon subelement]{
+						UML class diagram for axon subelement.
+						It is found that $\kappa M$'s ability to schedule tasks can be used to simulate spatio--temporal effects like axonic transmission.
+						The axon is therefore not nessecary in the $\kappa M$ implementation.
+					}
 		\end{figure}
 
 		\begin{figure}[hbt!p]
 			\centerline{ \includegraphics[width=0.9\textwidth]{UML/classDiagramForSynapse} }
-			\caption[UML class diagram for synapse subelement]{asdf}
+			\caption[UML class diagram for synapse subelement]{
+				UML class diagram for synapse subelement. 
+				Both $K\_synapse$ and $s\_synapse$ is derived from the abstract class $i\_synapse$.
+			}
 		\end{figure}
 \newpage
 	

@@ -1,56 +1,28 @@
 
-%\section{Design of software to analyze the two models}
-%	\label{secDesignOfSoftwareToAnalyzeTheTwoModels}
-% 
-% 	Software intended primarily to compare the two simulation models can be designed by inheritance; 
-% 		All common aspects between the two simulation models are placed a ancestor class and derived to the model--specific emulators. %, $NIM$ and $\kappa M$. 
-% 	Aspects that differ have been implemented separately in the derived classes.
-% 	The differences between the two models are thus more prominent.
 
-	
-% %TODO Skriv ny intro, og flytt dette ned i "Class Hierarchy .. " TODO TODO
-% 	%TODO Her trenger ikkje stå noke. Flytt teksten ned i "Class Hierarchy -- Differentiation by inheritance" TODO TODO
-% 	% Sto først i section..
-% 	The implementation of the $NIM$ and $\kappa M$ simulation is designed so that all common aspects of the two are placed in a common ancestor class.
-% 	Derived classes inherits the functions as well as the relevant variables, and elements common to both simulation models can be placed in the ancestor class. %TODO CITE TODO
-% 	%This makes the differences and similarities between the two simulation models more prominent, as only the aspects that differ between $NIM$ and $\kappa M$ have to be overloaded in the derived classes.
-% 	This makes the differences and similarities between the two simulation models more prominent, as only the aspects that differ between $NIM$ and $\kappa M$ have to be implemented separately in the derived classes.
-% 	An analysis based on the observed differences is presented in section \ref{secComparisonOfTheTwoModels}.
-% %	Before the class hierarchy and specific aspects for the two simulation models are presented, the general design of the simulator is presented.
-% 	%The general design of the software used in this work is presented in this section.
-% 	%The general design of a software meant to emphasize the differences between the two models is presented in this section.
 
 
 	\section{General Design of the Simulation Software}
-		When simulating a system of asynchronous elements, simulation time has to be designed to allow multiple actions to happen simultaneously. % in the serial computation of the digital computer.
-		To achieve asynchronism for the nodes of the simulation, time can be separated into discrete time slices(``iterations'') and time expressed by the integer iteration number.
-		%To achieve asynchronism in a simulation, time can be separated into discrete time slices(``iterations'') and time expressed by the integer iteration number.
-		%To achieve asynchronism in a simulation, time can be separated into discrete time slices(``computational time steps'') and time expressed by the integer iteration number.
-%% 		%%
-		%An iteration is also referred to as the computational time step, as the computations on the activation variable(depolarization for $NIM$ and depolarizing flow for $\kappa M$) are updated once per iteration.	%are executed at most once per iteration. 
-		Before designing time for the simulator, the concept of concurrency is defined so that it can be applied in discrete time simulations.
-	
-		\begin{mydef}
-			Two tasks occur simultaneously if they can not be separated by their time of occurrence. % happen at the same time. % the discrete time simulator if they occur
-		\end{mydef}
-		This means that all events occurring in the same time step are defined to happen simultaneously unless additional information about timing is provided.
-		%%By this definition, all events occurring in the same time step are per definition simultaneous unless more information about timing is provided.
-		%By this definition we have that if time is measured by the discrete time step number, two events occurring in the same time step are per definition simultaneous. 
-		%%				%%											%%										%%							%are defined to happen simultaneously.
-	%%This means that if time is only measured by the discrete time step number, two events occurring in the same time step can be said to happen simultaneously in the simulation.
-		The concept of concurrency is fundamental when simulating the massively parallel artificial neural network, and the simulation's time mechanism have to be designed carefully to achieve this gracefully.
-		%The concept of concurrency is fundamental when simulating the massively parallel computations in a neural network, and simulation time have to be designed carefully to achieve this aspect gracefully.
 
-		One approach for emulating concurrency is to let discrete time be defined as a discretization of the real world's clock(RWC).
-		Each computational time step is defined as a time interval of RWC, and all tasks executed at any particular iteration is defined to happen simultaneously if no more information about timing is provided.
-		%Each computational time step is defined as a time interval of RWC, and all tasks executed at this time can be defined to happen simultaneously.
-		%Each computational time step is defined as a time interval of RWC, and all tasks executed in this time interval is defined to happen simultaneously.
-		It is important that the whole list of tasks is completed before time is iterated, so that no tasks are lost or delayed to the subsequent iteration.
-		%It is important that all tasks are executed before time is iterated, so that they are not lost or delayed to the subsequent iteration.
-		This creates a strong dependence between the maximal workload in the course of a simulation and the minimal computational time step.
-		%This creates a strong dependence between the maximal workload of the system and the minimal computational time step.
-		Such a dependence is wasteful and clearly undesirable.
-		%This creates a strong dependence between the workload of the system and the simulation results that is undesirable.
+		When designing a simulator of neural networks, one has to consider simulation time explicitly.
+		Networks of neurons are highly concurrent, but have to be simulated by a sequential composition in the digital computer. 
+		Thus, asynchronism for the nodes has to be emulated in the simulation.
+		One way to achieve this is to separate the considered simulation time interval into discrete time slices(``time steps''), and let time in the simulation be expressed by the integer time--step number.
+		Before the design of time emulation in $auroSim$ is presented, the concept of concurrent is defined in a way that is valid for discrete time.
+
+		
+		\begin{mydef}
+			Two tasks occur simultaneously if they can not be separated by their time of occurrence. 
+		\end{mydef}
+
+		Two events during the same time step are therefore defined to happen simultaneously, unless additional information about timing is provided.		
+		One approach for emulating concurrency is to let discrete time be defined as a discretization of the real world's clock($RWC$).
+%		One approach for the emulation of concurrency is to let discrete time be defined as a discretization of the real world's clock(...abbreviation...).
+		It is important that the whole list of tasks is completed before time is incremented, so that no tasks are lost or delayed to subsequent time steps. %iteration.
+%TODO TODO TODO TODO  Dependence: Find a synonym. Uses it too many times.. (two times on two subsequent sentences) TODO TODO TODO TODO TODO 
+%		This creates a strong dependence between the maximal workload of the simulation and the minimal computational time step.
+		This creates a strong dependence between the maximal workload and the minimal computational time step in a simulation.
+		Such a constraint is wasteful and clearly undesirable.
 
 \begin{figure}[hbt!p]
 	\centering
@@ -60,54 +32,29 @@
 			Iteration $t_{n-1}$ have list $A$ as the active list. Two new tasks, $t_{1,1}$ and $t_{1,2}$ is generated by task $t_1$ and inserted into the alternative list(list $B$). Task $t_2$ generates task $t_{2,1}$.
 			When all tasks in the active list $A$ is completed, time is iterated and list $B$ is set as the active list. 
 			The next computational time step with $B$ as the active list is illustrated in the lower part of the figure.
-			%In the lower part of the figure, iteration $t_n$ with $B$ as the active list is illustrated.
 			Note that no tasks are inserted into the currently active list.
 			}
 	\label{figTimePropagationByAlternatingTaskLists}
 \end{figure}
 
 		An alternative approach is to utilize a scheme based on serial execution.
-		%A better approach could be to utilize a scheme based on serial execution.
-		If all tasks to be executed concurrently are located in one of two lists(list A), new tasks induced by these actions can be inserted into the other list(list B).
-		%If all tasks that are to be executed one iteration are put into one of two lists, e.g. list A, new tasks induced by these actions can be inserted into the other list.
-		When all tasks in one list are completed, time is iterated and the alternative list becomes the active list.
-		As causality is defined so that the effect happens \underline{after} its cause, elements can not be inserted into the active list during that list's execution.
-		%As a consequence of causality, that one event leads to another that is executed after the first, it is defined that no elements can be inserted into the active list.
-		By utilizing an approach based on serial execution, concurrency can be simulated without dependence on RWC, and the relation between simulated time and RWC can be variable depending on the immediate workload of the system.
-%TODO Skriv heller at dette gjør det mulig å beregne seg "vidare" når man har lite comp.load, og bruke av bufferen når man har for mykje comp.load! TODO (slutten på forrige setning) TODO TODO TODO TODO
-			 % and all events in one list is per definition executed simultaneously if no more information on timing is provided.
-		%In this way, concurrency can be simulated without dependence on RWC, and all events in one list is per definition executed simultaneously if no more information on timing is provided.
-		The simulator software implemented in this work is a modification of this time scheme, and is introduced in section \ref{ssecTime}. %later in the section. 
-		Before \emph{auroSim}'s time simulation scheduler can be described, the general design of the implementation is presented.
-		%The simulator software implemented for this work is a modification of the mentioned time scheme, and is introduced after the general design of the simulator is presented.
+		If all tasks to be executed simultaneously are located in one of two lists(list A), new tasks induced by these actions can be inserted into the other list(list B).
+		When all tasks in one list are completed, the variable that represents time is incremented, and the alternative list becomes the active list.
+		Since causality defines that the effect happens \underline{after} its cause, elements can not be inserted into the active list during its execution.
+		This serial approach enables concurrency to be simulated without dependence of $RWC$, and one does not have to consider the maximal work load of the simulation. %system.
+		The simulation software implemented in this work utilize a modification of this latter time scheme, as presented in section \ref{ssecTime}.
 
 
 
-% 		An other aspect important when simulating time is causality.
-% %		Causality is defined in the oxford dictionary as "The relationship between cause an effect".
-% 		As causality dictates that the effect happens as a consequence of the cause, the two elements can not happen simultaneously.
-% 		Unless special considerations are taken, this implies that all actions in one time time step occurs simultaneously in the simulation.
-%  
-% % ANNA?
+		\subsection{Simulator Design} 
 
-% 
-% 		Causality between two events implies that these one event happens after the other, meaning that the two can not happen simultaneously.
-% 
-% 		For normal discrete time simulations, this implies that if two actions happen at the same computational time step, one can not affect the other in that time step.
-% 		The subject of intra--iteration time accuracy removes this constraint, and will be further discussed in section \ref{ssecAnalysisOfErrorsForTheTwoModels}.
- 
- 
-
-		\subsection{Simulator Design} 	%om time_interface, time_class, auron-elementa, osv
-%TODO TODO CITE masse fra stroustrup! TODO TODO
-			Classes in \emph{auroSim} can be classified into two groups; Classes that represent mechanisms dependent on time and classes outside the simulation.
-			%When designing \emph{auroSim}, the classes was classified into two groups, the classes with objects that represents mechanisms depending on time and the objects outside the simulation.
-			All objects directly involved in the simulation depends on time and are derived from the abstract \emph{class timeInterface}. %, and inherits its variable and pure virtual functions.
-			The derived classes inherits the pure virtual functions of \emph{class timeInterface}, and are thus abstract unless these functions are overloaded in the derived class.
-			This ensures that all objects of classes derived from \emph{class timeInterface} have defined its own \emph{doTask()} and \emph{doCalculation()} functions.
-			It is referred to \cite{Stroustrup2000KAP12} for more about abstract classes and pure virtual functions. 
-			%The derived classes are thus abstract unless the pure virtual functions are overloaded in the derived class, 
-			%	ensuring that all objects of a class derived from \emph{timeInterface} have defined its own functions \emph{doTask()} and \emph{doCalculation()}.
+			The classes of $auroSim$ are classified into one of two groups, classes that represent mechanism dependent on time and classes that are not directly involved in the simulation.
+			Objects in the  simulation have causality, and are instantiated from classes derived from the abstract class \emph{timeInterface}.
+			These classes inherit the pure virtual functions of \emph{timeInterface}, and are abstract unless the functions are overloaded in the derived classes.
+			This assures that all objects directly involved in the simulation have defined its own \emph{doTask()} and \emph{doCalculation()} functions.
+			The reader is referred to \cite[chap. 12]{Stroustrup2000} for more about abstract classes in C++, and appendix \ref{appendixUMLofAllNodeSubelementClasses} for $UML$ class diagrams of $auroSim$.
+% 			It is referred to \cite[chap. 12]{Stroustrup2000} for more about abstract classes in C++, and appendix \ref{appendixUMLofAllNodeSubelementClasses} for $UML$ class diagrams of $auroSim$.
+% 			It is referred to \cite{Stroustrup2000KAP12} for more about abstract classes in C++, and appendix \ref{appendixUMLofAllNodeSubelementClasses} for $UML$ class diagrams of $auroSim$.
 
 
 
@@ -116,40 +63,28 @@
 				\includegraphics[width=0.99\textwidth]{UML/simulatorKlassedesign}
 				\caption[UML class diagram of \emph{auroSim}, the neuron simulator designed to compare $NIM$ and $\kappa M$.]{
 						UML class diagram for \emph{auroSim}. % of the simulated classes in the simulator.
-						All classes directly involved in the simulation are derived from \emph{class time\_interface}.
+						All classes directly involved in the simulation are derived from \emph{class timeInterface}.
 						The classes listed on the right hand side of the figure are abstract classes meant to be inherited to neuron subelements of the two simulation 
-							models, $NIM$ and $\kappa M$. %(e.g. \emph{s\_dendrite} and \emph{K\_dendrite} for the \emph{i\_dendrite} abstract class).
-						Class \emph{time\_class} is currently designed only to have one instance, \emph{timeSeparationObj}. %but this can be further developed if the simulator is to be used in distributed computation.
-						For any of the derived classes of \emph{class time\_interface} to be instantiated, the pure virtual functions \emph{doTask()} and \emph{doCalculation()} have to be defined for that class.
-						This ensures that all objects involved in the simulation have defined its behaviour in time.
-						%Each class that can be instantiated therefore have overloaded the pure virtual class \emph{doTask()} that defines its behaviour in time.
+							models, $NIM$ and $\kappa M$. 
+						For a derived class of \emph{timeInterface} to be able to make objects, the pure virtual  functions \emph{doTask()} and \emph{doCalculation()} have to be defined for that class.
+						This ensures that all objects involved in the simulation have a defined behaviour in time.
 						}
 				\label{figUMLclassDiagramOfSimulator}
 			\end{figure}
 
-			The common aspects between the simulation models are located in abstract subelement classes of the node, \emph{i\_dendrite}, \emph{i\_auron}, \emph{i\_axon} and \emph{i\_synapse}.
-			These are derived to the model--specific subelements of the $\kappa M$ and $NIM$ implementation.
-			%The common aspects(between the simulation models) of the simulated neuron's subelements are represented in the abstract classes \emph{i\_dendrite}, \emph{i\_auron}, \emph{i\_axon} and \emph{i\_synapse}.
-			Functionality that differ are overloaded/defined separately in the derived [\emph{K\_dendrite}, \emph{K\_auron}, \emph{K\_axon}, \emph{K\_synapse}] for the $\kappa M$ implementation and 
-				[\emph{s\_dendrite}, \emph{s\_auron}, \emph{s\_axon}, \emph{s\_synapse}] for the $NIM$ implementation.
+			All common aspects of the two simulation models, $NIM$ and $\kappa M$, are located in the abstract neuron subelements classes 
+				\emph{i\_dendrite}, \emph{i\_auron}, \emph{i\_axon} and \emph{i\_synapse}.
+			These are derived to the model--specific neuron subelements for the $\kappa M$ and $NIM$ simulator.
+			Thus, only the functionality that differ between the two models are implemented separately. %, making differences in the design of the two simulation models more distinct.
 
 			The main loop of the simulation is located in the function \emph{void* taskSchedulerFunction(void* )}.
-			While \emph{bContinueExecution} is set, the first element of \emph{pWorkTaskQue} is popped and its \emph{doTask()} member function is executed.
-			All classes derived from an abstract class have to define all pure virtual functions to be able to instantiate objects\cite{Stroustrup2000KAP12}.
-			All objects instantiated from \emph{time\_interface} derived classes therefore have an overloaded version of the \emph{doTask()} member function that describes that class' behaviour in time.
-			The task scheduler function thus enables the simulation of elements in time(derived from class \emph{timeInterface}).
-			%All clases derived from \emph{time\_interface} therefore have to overload the \emph{doTask()} function that describes that object's behaviour in time.
-%%%%% eller : %%%
-			%As all classes derived from an abstract class have to define all pure virtual functions to be able to instantiate objects,	all objects of classes derived from \emph{time\_interface} have overloaded the \emph{doTask()} function that describes that object's behaviour in time.
-			%As all classes derived from an abstract class have to define that class' pure virtual functions to be able to instantiate objects,
-			%	all objects in the simulation have overloaded a \emph{doTask()} function that describes that object's behaviour in time.
-			%%As all objects of classes derived from the abstract class \emph{time\_interface} have to define it's own version of it's pure virtual functions, 
-			%%	all objects of \emph{time\_interface} derived classes have defined their own \emph{doTask()} funtion, describing its behaviour in time.
-			%The rules in C++ ensures that the member functions of the interface class is overloaded for all derived classes that can be instantiated\cite{Stroustrup2000KAP12}, 
-			%	meaning that all objects of classes derived from \emph{class timeInterface} have a specialized \emph{doTask()} function defining the class' behaviour in time.
-			%This gives different behaviour for different \emph{time\_interface}--derived classes.
+			While \emph{bContinueExecution} is set, the first element of \emph{pWorkTaskQueue} is popped and its \emph{doTask()} member function is executed.
+			New elements are inserted at the end of \emph{pWorkTaskQueue}. % Thus, the task scheduler function is responsible for simulating 
+%% fjærna..
+% 			Thus, the task scheduler function is responsible for driving causality forward in the simulation.
+ 			In this way, the task scheduler function is responsible for driving causality forward in the simulation.
+			A graceful termination of the simulation is possible by setting \emph{bContinueExecution = false}.
 
-%TODO Vær sikker på at dette er det som kjøres! (Endra nettop main-loop fra å ta ut element etter utførelse, til å poppe det først!)
 \begin{lstlisting}
 void* taskSchedulerFunction(void* )
 {
@@ -158,40 +93,35 @@ void* taskSchedulerFunction(void* )
     // Simulation's main-loop:
     while( bContinueExecution )
     {
-        // Pop first element before execution. Save pointer to static pConsideredElementForThisIteration
+        // Pop first element before execution: Save pointer to the 
+		// pointer variable pConsideredElementForThisIteration
         static timeInterface* pConsideredElementForThisIteration;
         pConsideredElementForThisIteration = time_class::pWorkTaskQue.front();
 
-        // pop element from pWorkTaskQue:
+        // Then pop element from pWorkTaskQue:
         time_class::pWorkTaskQue.pop_front();
 
-        // Execute task:
+        // Perform task:
         pConsideredElementForThisIteration->doTask();
     }
     return 0;
 }
 \end{lstlisting}
 			
-			The most important class for time is \emph{time\_class}.
-			%The most important class for time, and thus the most important class for the simulation is the \emph{class time\_class}.
-			%This class contains the static members \emph{pCalculationTaskQue} and \emph{pWorkTaskQue}, in addition to the variable \emph{ulTime} that updates the time iteration's number($t_n$).
-			As can be seen in figure \ref{figUMLclassDiagramOfSimulator}, this class contains the static members \emph{pCalculationTaskQue} and \emph{pWorkTaskQue} in addition 
-				to the variable \emph{ulTime} that represents discrete time $t_n$ and \emph{doTask()} that is responsible for iterating time.
-			This class will be the main focus of the next section, where it is revealed how time can be simulated by the sequential execution of a single linked list.
-			%Class \emph{time\_class} functionality and its role in the simulation of time is presented next, revealing how time can be simulated by sequential execution of a single linked list.
+			In order to simulate time by the serial execution performed by \emph{taskSchedulerFunction(void*)}, \emph{time\_class} has been designed as a time separation object.
+			As can be seen in fig. \ref{figUMLclassDiagramOfSimulator}, this is where \emph{pWorkTaskQueue} is located as a \emph{static} member.
+			Class \emph{time\_class} also contains the variable that represent $t_n$, \emph{static unsigned long ulTime}, and a \emph{doTask()} function that is responsible for incrementation of this variable.
+			Since this class is fundamental for time simulation in $auroSim$, and enables time to be emulated by a single linked list, a whole section is reserved for introducing this class.
 
 
 		\subsection{Time}
 		\label{ssecTime}
-	%% 		%%
-			Before the main loop of the simulation starts, \emph{pWorkTaskQue} is initialized by inserting an object of \emph{time\_class} into the queue. %TODO Skriv kva som er gjort for å hindre at fleire vert lagt inn! TODO (Finn ut korleis dette skal gjørs)
-			%This is done in the function \emph{initializeWorkTaskQue()} that is marked as a friend function of \emph{time\_class} and can access its private variables.
-			This is done in the function \emph{initializeWorkTaskQue()}, marked as a friend function of \emph{time\_class}.
-			The \emph{friend} keyword is a way of allowing other elements to access the \emph{private} parts of a class declaration\cite{Stroustrup2000KAP11}. 
-		%TODO? Ta vekk linja over? TODO? 
-			%Friend functions of a class can access its private variables\cite{STROUSTRUP_KAP??}, and the static flag \emph{bPreviouslyInitialized} prevents reinitialization of \emph{pWorkTaskQue}. %TODO Poengter kva static betyr ? TODO
-			The static flag \emph{bPreviouslyInitialized} prevents reinitialization of \emph{pWorkTaskQue}. %TODO Poengter kva static betyr ? TODO
-%TODO TODO Endre navnet på init-funk til å være initializeWorkTaskQue(), og implementer koden slik den står i lstlisting: 	TODO TODO
+			Class \emph{time\_class} contains the elements \emph{pWorkTaskQueue}, \emph{pCalculationTaskQueue} and \emph{ulTime} as static member variables.
+			Before the main loop of the simulation starts, \emph{pWorkTaskQueue} is initialized by inserting a single \emph{time\_class} object into the linked list. %queue.
+			This is done in the function \emph{initializeWorkTaskQueue()}, marked as a friend function of \emph{time\_class}.
+			The \emph{friend} keyword is a way of allowing other elements to access the \emph{private} parts of a class declaration\cite[Appendix C.11]{Stroustrup2000}. %\cite{Stroustrup2000KAP11}. 
+			The static flag \emph{bPreviouslyInitialized} is used to prevent reinitialization of \emph{pWorkTaskQueue}. 
+
 \begin{lstlisting}
 void initializeWorkTaskQue(){
 {
@@ -200,7 +130,7 @@ void initializeWorkTaskQue(){
 	if(bPreviouslyInitialized)
 		return;
 
-	// Insert pointer to object of time_class allocated in the free store	 
+	// Insert pointer to object of time_class, allocated in the free store	 
  	time_class::pWorkTaskQue 	.push_back( new time_class() );
 
 	// Set flag to prevent reinitialization of pWorkTaskQue
@@ -210,73 +140,71 @@ void initializeWorkTaskQue(){
 			
 % TODO Flytt talla fra "Before task execution" til å gjelde "Action" i figuren TODO
 % TODO Teikn med når element B og C blir urført også. Dette er interresant, men kan gjøres mindre i figuren, siden dette ikkje er så viktig. TA MED! TODO
+%TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO 
+%TODO TODO TODO TODO TODO Denne er litt feil: det er ikkje t_n som skal stå på høgresida, men computation-number N. TODO Skriv begge deler (t_n og N)TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO 
+%TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO 
 \begin{figure}[htb!p]
 	\centering
 	\includegraphics[width=0.95\textwidth]{pWorkTaskQueue}
 	\caption[A schematic model of time propagation in \emph{auroSim}]{
-			%A schematic model of time propagation in \emph{auroSim}.
-			An illustration of how concurrency is simulated in \emph{SuroSim}.
+			The first sketch of how concurrency is simulated in \emph{auroSim}.
+			%A schematic model of how concurrency is simulated in \emph{auroSim}.
 			taskSchedulerFunction() pops the first element of pWorkTaskQueue and executes its \emph{doTask()} member function.
 			1) Element $T$, representing \emph{timeSeparationObj}, iterates \emph{ulTime} and inserts a \emph{self} pointer at the back of \emph{pWorkTaskQueue}.
 			2) Element $A$ generates two new tasks, $A_1$ and $A_2$, before the pointer is removed from \emph{pWorkTaskQueue} by \emph{taskSchedulerFunction()}.
-			%Element $B$ and $C$ does not generate any new tasks, and at time (5), actions similar to those executed at $t_n=(1)$ are performed and element $T$ is again moved to the back of the list.
-			%Element $B$ and $C$ does not generate any new tasks, and at time (5), the same actions to those executed at $t_n=(1)$ are performed and the \emph{timeSeparationObj} pointer is moved to the back of the list.
-			Element $B$ and $C$ does not generate any new tasks.
-			At time (5), \emph{timeSeparationObj} is again moved to the back of the list, and we get a situation similar to the list after the action at $t_n=(1)$. 
-			%This illustrates
+% 			No new tasks are generated by the tasks represented by $B$ and $C$.
+ 			Element $B$ and $C$ do not generate any new tasks.
+			Computation nr. $5$ moves  \emph{timeSeparationObj} to the back of the list, and the situation is similar to \emph{pWorkTaskQueue} after action nr. 1.
+% 			At time (5), \emph{timeSeparationObj} is again moved to the back of the list, and we get a situation similar to the list after the action at $t_n=(1)$. 
 			}
 	\label{figTimePropagationbypWorkTaskQueue}
 \end{figure}
 
-	Because the \emph{time\_class} object is allocated in the free store, that object will exist for as long as the implementation runs or the free store is explicitly deallocated\cite{Stroustrup2000KAP6}. %TODO CITE STROSTRUP!
-	A pointer to this element is legal to insert into \emph{std::list$<$timeInterface*$>$ pWorkTaskQue} as \emph{time\_class} is derived from \emph{class time\_interface}.
-%%%
-	%The \emph{time\_class} object inserted into \emph{pWorkTaskQue}, referred to as {\bf timeSeparationObj} in this text, is responsible for propagating time and maintain order in the simulation.
-	The \emph{time\_class} object inserted into \emph{pWorkTaskQue}, referred to as {\bf timeSeparationObj} in the remainder of this text, is responsible for propagating time and administrating elements that concern time in the simulation.
-	%When \emph{timeSeparationObj.doTask()} is called, time is iterated after a \emph{self}--pointer is pushed onto the back of \emph{pWorkTaskQue}, and in this way act as a time separator that separates two computational time steps.
-	When \emph{timeSeparationObj.doTask()} is called, \emph{ulTime} is increased after a \emph{self}--pointer is pushed to the back of \emph{pWorkTaskQue}\cite{FDP_report}.
-	In this way, the \emph{timeSeparationObj} acts as a time separation object, and the execution of its \emph{doTask()} function is the only way new computational time steps can be initialized in the simulation.
-	%When \emph{timeSeparationObj.doTask()} is called, the first action is to push a \emph{self}--pointer onto the back of \emph{pWorkTaskQue}, and in this way act as a time separator that separates two computational time steps.
-% F	The result is a mechanism that behave as the alternating two lists mentioned in the introduction to this section.
+	Because the \emph{time\_class} object is allocated in the free store, that object will exist for as long as the implementation runs or is explicitly deallocated. 
+	A pointer to this element is legal to insert into \emph{std::list$<$timeInterface*$>$ pWorkTaskQueue} since \emph{time\_class} is derived from \emph{class timeInterface}.
+	The \emph{time\_class} object inserted into \emph{pWorkTaskQueue}, referred to as {\bf timeSeparationObj} in the remainder of this text, is responsible for administration of time in $auroSim$. 
+	When \emph{timeSeparationObj.doTask()} is called, \emph{ulTime} is incremented after a \emph{self}--pointer is pushed to the back of \emph{pWorkTaskQueue}\cite{FDP_report}.
+	In this way, \emph{timeSeparationObj} acts as a time separation object, where the execution of its \emph{doTask()} function is the only way a new time step can be initialized in $auroSim$.
 
-	When an element is called by \emph{taskSchedulerFunction()}, the pointer to it is removed from \emph{pWorkTaskQue}(see fig. \ref{figTimePropagationbypWorkTaskQueue}). %(as seen in the in fig. \ref{figTimePropagationbypWorkTaskQueue} and in the earlier presented source code).
-	%Other elements are removed from \emph{pWorkTaskQue} by \emph{taskSchedulerFunction()} before they are executed.
-	Some tasks creates other tasks, causing them to be inserted at the end of \emph{pWorkTaskQue}. % and thereby inserting them at the end of \emph{pWorkTaskQue}.
-	%Some of the tasks cause other tasks to be inserted at the end of \emph{pWorkTaskQue}.
-	As \emph{timeSeparationObj} lies after all tasks in the current computational time step, new tasks are thus inserted by their order of creation in the next iteration. %time of creation
-	%As \emph{timeSeparationObj} always lies after all tasks in the current computational time step, new tasks are therefore inserted by their order of creation in the next iteration. %time of creation
-	This maintains a correct order of execution for the planned tasks, and the single \emph{pWorkTaskQue} list behaves as the two alternating lists illustrated in fig. \ref{figTimePropagationByAlternatingTaskLists}.
-	%The result is a mechanism that behave as the alternating two lists mentioned in the introduction to this section.
+	When an element's task is performed from \emph{taskSchedulerFunction(void*)}, the pointer to that element is removed from \emph{pWorkTaskQueue}. 
+	Some elements create other tasks, inserting them at the end of \emph{pWorkTaskQueue}.
+	Since \emph{timeSeparationObj} defines the separation of two computational time steps, this element lies after all other tasks in the current time iteration. 
+	New tasks are therefore inserted by their order of creation in the subsequent time step (after \emph{timeSeparationObj} in \emph{pWorkTaskQueue}).
+	This enables a single linked list to behave like the two alternating lists in fig. \ref{figTimePropagationByAlternatingTaskLists}.
+	Time simulation with a single linked list, and the use of \emph{timeSeparationObj} is illustrated in fig. \ref{figTimePropagationbypWorkTaskQueue}.
 
-		\subsubsection{Task Scheduling of a $\kappa M$ Node}
-			Utilizing the proactive firing time computation in the $\kappa M$ simulation scheme demands a more sophisticated way of scheduling tasks.
-			The direct simulation of a neuron's signal propagation can be executed by a direct approach where only the current and the next computational time step have to be considered.
-			The $\kappa M$ utilize a more advanced method based on estimation task times, and demands that the implementation considers these to find the firing time of each node.
-			
-			Two alternatives for scheduling tasks have been tested for the simulator.
-			The first is based on a continuously updated linked list of lists with tasks. %that can be considered a variable array.
-			When a task is scheduled for execution e.g. in the iteration after the next, the object's pointer is inserted into the second inner list in the outer linked list.
-			Before each time step, the first element of the outer list is popped and all the tasks of the inner list is inserted into \emph{pWorkTaskQueue}.
-			This gives a list of lists that gives the relative time of scheduled tasks, where each list contains jobs scheduled for future time iterations.
-			
-			An alternative approach is to implement time scheduling by letting the \emph{time\_interface} abstract class have a variable \emph{double dEstimatedTaskTime}.
-			This element is updated every time the neuron's firing time estimate is updated and checked by \emph{time\_class::doTask()} when time is iterated:
-				If an element is scheduled for execution during the next computational time step, the pointer to that element is inserted into \emph{pWorkTaskQueue}.
-			This causes the task to be executed during the correct computational time step, 
-			%As introduced in section \ref{ssecTime}, this causes the task to be executed during the correct computational time step, 
- 			%This causes the task to be executed during the correct computational time step, 
-				and the double precision floating point variable \emph{dEstimatedTaskTime} enables an intra--iteration time accuracy for tasks. 
-				% if \emph{pWorkTaskQueue} is sorted by this variable.
+%TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TA VEKK NESTE SECTION: trengs ikkje! TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO 
+% 		\subsubsection{Task Scheduling of a $\kappa M$ Node}
+% 			The simulation time scheme enables 
+% 			Utilizing the proactive firing time computation in the $\kappa M$ simulation scheme demands a more sophisticated way of scheduling tasks.
+% 			The direct simulation of a neuron's signal propagation can be executed by a direct approach where only the current and the next computational time step have to be considered.
+% 			The $\kappa M$ utilize a more advanced method based on estimation task times, and demands that the implementation considers these to find the firing time of each node.
+% 			
+% 			Two alternatives for scheduling tasks have been tested for the simulator.
+% 			The first is based on a continuously updated linked list of lists with tasks. %that can be considered a variable array.
+% 			When a task is scheduled for execution e.g. in the iteration after the next, the object's pointer is inserted into the second inner list in the outer linked list.
+% 			Before each time step, the first element of the outer list is popped and all the tasks of the inner list is inserted into \emph{pWorkTaskQueue}.
+% 			This gives a list of lists that gives the relative time of scheduled tasks, where each list contains jobs scheduled for future time iterations.
+% 			
+% 			An alternative approach is to implement time scheduling by letting the \emph{time\_interface} abstract class have a variable \emph{double dEstimatedTaskTime}.
+% 			This element is updated every time the neuron's firing time estimate is updated and checked by \emph{time\_class::doTask()} when time is iterated:
+% 				If an element is scheduled for execution during the next computational time step, the pointer to that element is inserted into \emph{pWorkTaskQueue}.
+% 			This causes the task to be executed during the correct computational time step, 
+% 			%As introduced in section \ref{ssecTime}, this causes the task to be executed during the correct computational time step, 
+%  			%This causes the task to be executed during the correct computational time step, 
+% 				and the double precision floating point variable \emph{dEstimatedTaskTime} enables an intra--iteration time accuracy for tasks. 
+% 				% if \emph{pWorkTaskQueue} is sorted by this variable.
+% 
+% 			The efficiency of the two methods have been tested by comparing the total run time for a similar experiment set up.
+% 			Because the second alternative is simpler to implement and thus simpler to maintain,
+% 				and because it was found to have about the same grade of efficiency(about $5\%$ faster for the conducted experiment),
+% 				%and have about the same grade of efficiency(about $5\%$ faster for the conducted experiment), 
+% 				the second approach is used for time scheduling in $auroSim$. % this implementation.
+% 				%the alternative with the \emph{time\_interface::dEstimatedTaskTime} is used for time scheduling in this implementation.
+% 			%The second alternative was somewhat more efficient($<5\%$ faster run time) in addition to being simpler to implement and maintain.
+% 			%This alternative was therefore chosen.
+ 			
 
-			The efficiency of the two methods have been tested by comparing the total run time for a similar experiment set up.
-			Because the second alternative is simpler to implement and thus simpler to maintain,
-				and because it was found to have about the same grade of efficiency(about $5\%$ faster for the conducted experiment),
-				%and have about the same grade of efficiency(about $5\%$ faster for the conducted experiment), 
-				the second approach is used for time scheduling in $auroSim$. % this implementation.
-				%the alternative with the \emph{time\_interface::dEstimatedTaskTime} is used for time scheduling in this implementation.
-			%The second alternative was somewhat more efficient($<5\%$ faster run time) in addition to being simpler to implement and maintain.
-			%This alternative was therefore chosen.
-			
 %TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO  
 % 	%TODO Flytt neste subsubsection! Passer ikkje så godt inn her, og er nok bra en annen plass TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO 
 % 			\subsubsection{Task Scheduling for Other Tasks}
@@ -288,39 +216,12 @@ void initializeWorkTaskQue(){
 % 				In this way, a more efficient axon delay can be simulated with floating point accuracy.
 
 
-		
-			
 
-% Bra design: Snakk litt om tid, før eg går over til å snakke om time propagation!
-
-% F		\subsection{Time} 				%Om arv fra time_interface og doTask() 				{Time -- Simulated asynchronism}: 	-Write about simulated asynchronism; time, pWorkTaskQue, doTask().
-% F betyr at det er flytta til anna plass
-% F			To achieve simulated asynchronism in an artificial neural network, simulation time have to be separated into discrete time iterations.
-% F			Each such time step can also be referred to as the computational time step, as the computations on the simulated variable(depolarization for $NIM$ and depolarizing flow for $\kappa M$)
-% F				are executed once every computational time step.
-
-% F			One approach to achieving this is to let discrete time be defined as a discretization of the ``real world time''(RWC).
-% F			Each iteration is defined as a time interval of RWC, and all tasks executed in this time interval is defined to happen simultaneously.
-% F			It is important that all tasks are executed before time is iterated, so that they are not lost or delayed to the subsequent iteration.
-% F			This creates a strong dependence between the workload of the system and the simulation results that is undesirable.
-
-% F			%An alternative approach is to utilize a scheme based on serial execution.
-% F			A better approach is to utilize a scheme based on serial execution.
-% F			If all tasks that are to be executed one iteration is put into one of two lists, list A, new tasks induced by these actions can be inserted into the other list.
-% F			When all tasks in one list have been executed, time is iterated and the alternative list(list B) becomes the active list.
-% F			In this way, concurrency can be simulated without dependence on RWC.
-% F			The simulator software utilized in this work is a modification of this time scheme, but before this can be discussed, the general class design of the simulator have to be introduced.
-
-% %			If all objects that are interfaced with time are derived from a common abstract class \emph{time\_interface}, containing the pure virtual function \emph{doTask()}, time can be simulated by having two 
-
-% %			Because this creates a strong dependence on the workload of the system, this approach 
-			
-
- 		\section{The Artificial Neuron} %Om oppbygginga til kvar node.
-			The artificial neuron in this work is designed as a simplification of the biological neuron as shown in fig. \ref{figFigurAvNeuronet}.
+ 		\section{The Artificial Neuron} 
+			The artificial neuron in $auroSim$ is designed as a simplification of the biological neuron as shown in fig. \ref{figFigurAvNeuronet}.
 			Each node contains the most important elements of the neuron with regard to signal propagation, %, as illustrated in the sketch in fig. \ref{figModellAvEnkeltauronet}.
-				located in four subelements representing [synapse, dendrite, auron, synapse].
-			Each subelement of the artificial neuron have a pointer to the previous and the next element in the signal pathway, enabling a direct simulation of the intracellular communication of the neuron.
+				located in four subelements that represent [synapse, dendrite, soma, axon].
+			Each subelement of the artificial neuron has a pointer to the previous and the next element in the signal pathway, enabling a direct simulation of the intracellular communication of the neuron.
 			
 \begin{figure}[hbt!p]
 	\centering
@@ -328,81 +229,36 @@ void initializeWorkTaskQue(){
 	\caption[A sketch of the subelement design of a node in the ANN, enabling the intracellular communication scheme used for signal propagation in the artificial neuron]
 				{A diagram of the subelements of the artificial neuron.
 				The signal is propagated from the left to the right in the figure.
-				%Each subelement contains a pointer to the previous and the next subelement in the signal pathway.
 				Transmissions in a synapse calls the postsynaptic dendrite's \emph{newInputSignal()}.
-				When it is time for the neuron to fire(checked by \emph{newInputSignal()} in the $NIM$ version of the dendrite), the pointer to the node's auron element is inserted into \emph{pWorkTaskQue}.
-				Auron's \emph{doTask()} function push its axon pointer to the back of \emph{pWorkTaskQue}, and the axon's delay is simulated in the same manner.
-				%The $s\_axon$'s \emph{doTask()} function adds the next element to \emph{pWorkTaskQue}.
-	%			A more accurate simulation of the axon's delay can be achieved by adding more axon elements in series and decreasing the size of the computational time step.
-				%%The final element of the axon before a particular synapse adds the pointer to that synapse into \emph{pWorkTaskQue}, causing a transmission the subsequent iteration.
-				%%The axon simulates the spatio--temporal delay in the axon, before a transmission is initialized in the neuron's output synapses.
-				%Finally, a transmission is initiated in the neuron's output synapses.
+				When it is time for the neuron to fire(checked by \emph{newInputSignal()} in the $NIM$ version of the dendrite), the pointer to the node's auron element is inserted into \emph{pWorkTaskQueue}.
+				Auron's \emph{doTask()} function push its axon pointer to the back of \emph{pWorkTaskQueue}, and the axon's delay is simulated in the same manner.
 				}
 	\label{figUMLClassDiagramForASingleNeuron}
 \end{figure}
 
-			\subsubsection{Spatiotemporal simulation in $NIM$}
-			In a $NIM$ simulation, synaptic transmission is simulated by \emph{s\_synapse::doTask()} calling the postsynaptic node's \emph{newInputSignal(\emph{double})}, located in the dendrite. %\emph{s\_dendrite}.
-			This function adds the size of the transmission to the node's depolarization variable and checks whether it crossed the firing threshold.
-			In this case it inserts the node's \emph{s\_auron} pointer to the back of \emph{pWorkTaskQue}.
-			%Synaptic transmission is simulated by \emph{synapse::doTask()} calling the postsynaptic node's \emph{s\_dendrite::newInputSignal(\emph{double})}, located in the dendrite.
-			%In the $NIM$ implementation, this function adds the size of the transmission to the node's activation variable and when the node's depolarization crosses the firing threshold, 
-				%its \emph{s\_auron} pointer is pushed to the back of \emph{pWorkTaskQue}.
-			%%% Eller:
-			%In the $NIM$ implementation, this function adds the size of the transmission defined by the synaptic weight to the node's depolarization variable.
-			%When the node's depolarization crosses the firing threshold, the node is scheduled for firing by the dendrite element inserting its auron pointer to the back of \mbox{\emph{pWorkTaskQue}}.
-			%If the node's depolarization crosses the firing threshold, the \emph{s\_auron} subelement is scheduled for execution by letting \emph{s\_dendrite} push its pointer to the back of \mbox{\emph{pWorkTaskQue}}.
+
+
+
+
+
+		\subsection*{Construction of Node Elements}
+
+			The object design of a node enables the implementer to specify the spatio--temporal resolution in the simulation.
+			To achieve a higher resolution, a smaller computational time step can be defined.
+			The axonic delay before any particular synapse is defined by the number of serially linked axon elements, scaled by the size of the computational time step.
+
+
+			Since the subelements of the artificial neuron are designed to be separate entities linked by pointers, special effort has to be made to make each node act as a single object.
+% 			As each subelement of the artificial neuron is designed to be separate entities linked by pointers, special effort has to be made to make each node act as a single object.
+			In $auroSim$, this is achieved by considering the whole node as a ``metaobject'', where all elements are allowed to access the next and previous subelement's protected parts.
+			The \emph{friend} keyword allows another class or function to access the \emph{private} or \emph{protected} elements of the class. %Skrevet før. Dessuten har eg gått vekk fra å cite kapittel: \cite{Stroustrup2000KAP11}.
+			In this way, all subelements of a node metaclass are given the same privileges as if it was defined to be a single node class.
+			This design opens many opportunities for the uses of $auroSim$, but is also makes the construction of a node non--trivial.
+
 			
-			The \emph{s\_auron::doTask()} function resets the node's depolarization and inserts the first \emph{s\_axon} element to \emph{pWorkTaskQue}.
-			The neuron's axon can be implemented as a liked list of \emph{s\_axon} subelements, representing a series of axon compartments.
-			%This enables a precise simulation of the axon's spatiotemporal delay as there is a delay of one time step per axon compartment.
-			Small computational time steps and a large number of serially linked axon elements thus creates a more precise simulation of the delay before any particular synapse.
-			%This enables a precise simulation of the axon's spatiotemporal delay by simulating a delay of one iteration per axon compartment.
-			When a pointer to a synapse is located in the axon compartment, that pointer is inserted into \emph{pWorkTaskQue}.
-			Synaptic transmission is thus initiated after the synapse's predefined spatiotemporal delay.
-			%When a pointer to a synapse is located in the axon compartment, that pointer is inserted into \emph{pWorkTaskQue} and a synaptic transmission is initiated after that synapse's predefined spatiotemporal delay.
-	%alternativt: skriv ei setning til, der eg skriver: Synaptic transmission is thus initiated after that synapse's spatiotemporal delay. TODO
-
-%			Gå gjennom oppbygginga for subelementa av auronet. Vis til section:theBioNeuron. (Oppbygging av kvart neuron (sjå på i\_auron), ikkje Class Hierarchy: det kommer i neste section!
-%			Nevn også korleis eit sensorneuron kan lages ved $\xi$ gitt av en funksjonspeiker!
-
-			\subsubsection{Spatiotemporal simulation in $\kappa M$}
-			In a $\kappa M$ simulation, spatiotemporal delay in the neuron can be simulated by utilizing the native task scheduling capabilities of $\kappa M$;
-			%%
-			As the task scheduler use a member variable from \emph{class time\_interface}, task scheduling can be used for all classes that is part of the simulation.
-			An important example of this is the \emph{synapse}: % The synaptic transmission for all output synapses of a node can therefore 
-				When the neuron fires, the auron object of the node can write to all the node's output synapses' \emph{dEstimatedTaskTime} variable.
-			The time can be written to the present time plus the predefined axonic delay before that synapse's transmission.
-			In this way, a more efficient axon delay can be simulated with floating point accuracy.
-
-			Because this project considers the method of integration for the $LIF$ neuron model, this way of simulating spatiotemporal delay have not been implemented for the $\kappa M$ simulation.
-			The method can also easily be implemented for a $NIM$ simulation, and is thus of less importance for the comparison between the two models.
-			The ability of utilizing intra--iteration time accuracy is only advantageous for the $\kappa M$ simulation model, and it is questionable whether the introduction of this method for task scheduling is more efficient for a $NIM$ implementation.
-			%Utilizing an intra--iteration time accuracy is only advantageous for the $\kappa M$ implementation.
-	
-
-		\subsection{Construction of Node Elements}
-			%The node design presented in fig. \ref{figUMLClassDiagramForASingleNeuron} makes the construction of a node nontrivial; 
-			The node design presented in fig. \ref{figUMLClassDiagramForASingleNeuron} causes the construction of a node to be nontrivial; 
-				As each subelement is seen as separate entities linked by pointers, special efforts have to be made to make a node act like a single object.
-				%As each subelement is constructed individually and linked by pointers, special effort has to be made to make a node act like a single object.
-			%1 A neuron design based on a distributed design of several linked subelements makes the construction of a node nontrivial.
-			%1 Because every subelement is constructed individually and liked by pointers, special effort has to be made to make a node act like a single object.
-			One way of achieving this effect is to consider a whole node as a ``metaobject'', where all elements are allowed to access the next and previous subelement's protected parts.
-			A \emph{friend} of an class is allowed to access objects of that class' \emph{private} parts\cite{Stroustrup2000KAP11}, so this can be accomplished by letting all subelements of the node metaclass be declared \emph{friend} of each other. %all others.
-			%This can be accomplished by defining the subelement classes as \emph{friend} of each other\cite{Stroustrup2000KAP11}.
-%% 			%%
-			%%%%%A \emph{friend} function/class of a class is one way of allowed other elements to access the \emph{private} parts of a class declaration\cite{Stroustrup2000KAP11}.
-%			The important concept of encapsulation can therefore be said to be preserved for the metaobject as a whole. 
-			%On the scale of the metaobject, the important concept of encapsulation can therefore be said to be presented.
-			The node metaobject, consisting of the four elements shown in fig. \ref{figUMLClassDiagramForASingleNeuron}, can in this case be said to preserve 
-				the concept of encapsulation	as all subelements of the node can be considered an internal part of the metaobject. 
-				%as other subelements can be seen as an internal part of the metaobject. 
-			
- 			To construct the node metaobject consisting of the linked subelements of the neuron, it is most convenient to start at a subelement with only one previous and one subsequent element.
-			As seen in fig. \ref{figUMLClassDiagramForASingleNeuron}, the only element that satisfies this constraint is the \emph{auron} subelement.
-			%The constructor of this subelement can be illustrated by the constructor for a symbolic auron subelement:
-			This can be illustrated by a representative constructor for the auron subelement:
+			To construct the node metaclass object illustrated in fig. \ref{figUMLClassDiagramForASingleNeuron}, it is most convenient to start with a subelement with only one previous and one subsequent element. %%%%
+			The only element that satisfies this constraint is the [auron] subelement.			
+			The construction of this element can be represented by the notional constructor \emph{auron::auron()}.
 \begin{lstlisting}
 auron::auron() : timeInterface("auron"){
 	...
@@ -411,35 +267,21 @@ auron::auron() : timeInterface("auron"){
 	...
 }
 \end{lstlisting}
-			The classes [auron, axon, dendrite and synapse] does not exist in the implementation but are used in this section to illustrate how the constructor of the model specific
-				subelements \emph{s\_\{element\}} and \emph{K\_\{element\}} are designed.
+			The classes [auron, axon, dendrite and synapse] do not exist in the implementation, but are used in this section to illustrate how the constructor of the model specific
+				\emph{s\_\{element\}} and \emph{K\_\{element\}} are designed.
 			Because the implementation always use dereferenced pointers, the \emph{free store} is used for the node subelements.
-			The \emph{new $<T>$} operator allocates memory for an object of type $<T>$ in the free store, and give the same results as \emph{malloc(size($T$))} for memory allocation in C \cite{Stroustrup2000KAP19}. %TODO Skriv malloc(size(<T>) heller enn bare malloc() ?
-			%The \emph{new $<T>$} operator allocates memory for an object of type $<T>$ in the free store, and give the same results as \emph{malloc()} in C \cite{Stroustrup2000KAP19}. %TODO Skriv malloc(size(<T>) heller enn bare malloc() ?
-		%	The \emph{free store} enables distributed construction of elements in local scopes that lasts for the remainder of the execution or until deallocated\cite[Appendix~C.9]{Stroustrup2000}.
-			Utilizing the dynamic memory enables a more precise control of the scope of each node subelement existence, 
-				as an element in the free store lasts for the remainder of the execution or until deallocated\cite[Appendix~C.9]{Stroustrup2000}.
-			When a network of nodes is implemented, this will grant more explicit control of a node subelement's existence. %over the scope of an element's existence.
+%			Because the implementation always use dereferenced pointers, the \emph{free store} can be used for the node subelements.
+			The \emph{new $<T>$} operator allocates memory for an object of type $<T>$ in the free store, and give the same results as \emph{malloc(size($T$))} for memory allocation in C \cite{Stroustrup2000}. %% -- KAP19... %%%%%
+			Utilizing the dynamic memory enables a more precise control of the scope of each element existence, 
+				as an element in the free store lasts for the remainder of the run or until explicitly deallocated \cite[Appendix~C.9]{Stroustrup2000}.
 
 			
-
-
-
-			
-		\subsection{Destruction of Node Elements}
-		
-			If a class have member variables located in the free store, it is important to explicitly deallocate the memory when an object is destructed. %deleted.
-			This is the main reason to have a destructor in a class; to avoid memory leaks in the implementation.
-			For the node metaclass, it is also important that pointers to the object in question are removed to avoid errors from dereferencing pointers to a deleted object.
-			%
-			%Elements is the free store lasts for the remainder of the runtime of the program or until explicitly deallocated.
-			%The destructor of each element of the node metaobject therefore has to be designed with this in mind to avoid memory leaks. %for this to avoid memory leaks.
-		%%	%%Because each node subelement contains pointer to objects allocated in the \emph{free store}, a destructor have to be designed to avoid memory leaks.
-			%The first aspect to be considered in the destructor is therefore deallocation of elements located in the free store by the constructor. 				%TODO TODO XXX MERK: I write about the first element: Continue this later!
-
-			The destruction of a whole node starts at the auron subelement and spreads to its more distal parts.
-			For the elements that lies furthest from the auron, the dendrite and the axon, a \emph{while} loop is used to remove all incoming synaptic connections.
-			%In the elements that lies furthest from the auron, the dendrite and the axon, a \emph{while} loop is used to remove all incoming synaptic connections.
+		\subsection*{Destruction of Node Elements}
+			To avoid memory leaks in C, elements constructed in the free store have to be explicitly deallocated.
+			In $auroSim$, this is done by the subelement's \emph{destructor}.
+ 
+			Like for the construction, the destruction of a whole node starts at the [$auron$] subelement and spreads to the node's more distal parts.
+ 			For the [$dendrite$] and [$axon$] element, a \emph{while} loop is used to remove all synaptic connections.
 \begin{lstlisting}
 /*** Deallocation is common for both models' dendrite, and therefore located in i_dendrite ***/
 i_dendrite::~i_dendrite()
@@ -450,21 +292,15 @@ i_dendrite::~i_dendrite()
 	}
 }
 \end{lstlisting}
-			The function \emph{std::list::empty()} returns 0 as long as the list contains elements, and \empty{std::list::begin()} returns a pointer to the first element of the list.
-			The function \emph{delete($X$)} deallocates the memory for element $X$ and calls its destructor. %  OG KALLER DESTRUCTOR
+			The function \emph{std::list::empty()} returns \emph{false} as long as the list contains elements, and \emph{true} if it is empty.
+			The function \empty{std::list::begin()} returns a pointer to the first element of the list.
+			The free--store memory used by $X$ is deallocated by the function \emph{delete($X$)}. 
+			This also calls the destructor of $X$. %XXX ELLER:
+% 			This also calls its destructor.
 
 			If an axon sends a signal to a deallocated synapse, the action is undefined and errors might occur.
-			%If an axon sends a signal to a deallocated synapse, it is unknown what will happen and errors might occur.
-			To avoid undefined behaviour% by dereferencing the pointer to an object that does not exist
-				, the destructor of a class is responsible for removing all pointers a destructed object.
-			This is possible as all pointers to a node subelement object are located in other node subelements, 
-				and these can be accessed because all node elements are declared \emph{friend} of each other.
-			%It can do this because all pointers to a neuron object are located in other node elements, and because all node subelements are declared \emph{friend} of each other.
-			%It can remove pointers from other node elements because all subelements of the node metaclass are defined as friend of each other.
-			%%For the node metaobject, it is legal to access elements of other node subelements as these are marked as \emph{friend} of each other.
-			%%%For the node metaobject, it is legal to remove pointers from other subelements as all elements of a node are declared \emph{friend} of each other. %the other subelements.
-			%The synapse's destructor does the following: % TODO TA vekk, eller ta med?
-			%The synapse's destructor have the following source code:
+			To avoid undefined behaviour, the destructor of a class is responsible for removing all pointers to the destructed object.
+			This can be seen in the destructor of $s\_synapse$:
 \begin{lstlisting}
 /*** Destructor for s_synapse ***/
 s_synapse::~s_synapse()
@@ -487,90 +323,56 @@ s_synapse::~s_synapse()
 	...
 }
 \end{lstlisting}
-		%TODO Gjør det klarere at eg snakker om synapse-destruktoren som står OVER..
-		The presynaptic and postsynaptic element have at least one pointer to the synapse in question.
-		%The destructor iterates though all these element's pointers to previous and subsequent subelements and removes pointers to itself.
-		The destructor therefore iterates though all their synapse pointers and removes all pointers to itself, something that explains how \emph{i\_dendrite::$\sim$i\_dendrite()} can safely delete all its synapses so carelessly. %casually.
-% TODO Ta vekk resten (neste to linjene)? Blir kanskje litt mykje. Dessuten ligger det som en godskatt inne i koden..
-		The function \emph{erase($X$)} calls the destructor for element $X$, but because the argument in the listed source core is a pointer, 
+		The [$synapse$] destructor iterates over all pre-- and postsynaptic elements' synapse pointers, and removes all pointers to itself.
+		This shows why the [$dendrite$] element's destructor can safely delete its synapses without consideration of postsynaptic pointers to the synapse element.
+% 		This illustrates how the [dendrite] element's destructor can safely delete its synapse pointes so carelessly.
+		The function \emph{erase($X$)} also calls the destructor for element $X$, but since the argument is a pointer in the listed code, 
 			the pointer's destructor is called instead of the synapse's destructor.
-		In this way, an infinite recurrent \emph{s\_synapse::$\sim$s\_synapse()} destructor loop is avoided. 
+		In this way, an infinite recursive \emph{synapse::$\sim$synapse()} destructive loop is avoided. 
 
 
 
 	\section{Class Hierarchy -- Differentiation by Inheritance}
 
-		% XXX Skriv om at NODE superclass inneholder subelementa auron,dendrite,axon og synapse. For at neurona skal ha rett type peiker til desse ulike elementa er dei initiert av de modellspesifikke klassene.
-		% 	Peikertypen blir også overlagra: i_axon* pOutputAxon mdl.variabelen blir til s_axon* pOutputAxon for NIM og K_axon* pOutputAxon for KM. XXX
+		All classes that are part of the simulation are derived from class \emph{timeInterface} \cite{FDP_report}.
+		As seen in fig. \ref{figUMLClassDiagramForAuronElementForNIMandKM}, the pure virtual functions \emph{doTask()} and \emph{doCalculation()} stay undefined in $i\_auron$.
+		This is also valid for the other subelement classes of the node metaclass, causing the $i\_\{element\}$ classes to be abstract ($\{element\} \in [$$dendrite$$, $ $auron$$, $ $axon$$,$ $synapse]$).
 
+\begin{quote}
+	A class with one or more pure virtual functions is an abstract class, and no objects of that abstract class can be created \cite{Stroustrup2000}.
+\end{quote}
 
+		Figure \ref{figUMLClassDiagramForAuronElementForNIMandKM} shows the class diagram for the $auron$ subelement of a node, where it can be seen that all pure virtual functions are overloaded in \emph{s\_auron} and \emph{K\_auron}.
+		These classes can therefore be instantiated and objects can be made.
+		The $UML$ class diagram of the other subelements are presented in appendix \ref{appendixUMLofAllNodeSubelementClasses}, showing a similar class hierarchy composition for the other node elements.
+ 		Because all differences between the two models are implemented separately, the similarities and differences between the two models were emphasized to the author.
+% 		The most important elements are presented in the remainder of this chapter. % and will now be presented.
 
-		%XXX Er ikkje dette repitisjon? TODO Skriv om(?) :
-
-		%In the introduction to this section, it is mentioned that the implementation done in this work is designed so that all common aspects between the two simulation methods are placed in a common ancestor class.
-		The software developed in this work is designed for comparison of the two neuron simulation models $NIM$ and $\kappa M$.
-		%The software implemented in this work is developed for comparing the two introduced neuron simulation models.
-		All aspects common to the two simulation models are located in a common abstract ancestor class, and elements that differ are implemented separately in the classes that comprise a node of a $\kappa M$ and $NIM$ node.
-		%All aspects common to the two simulation models are located in a common abstract ancestor class, and elements that differ are implemented separately for the classes meant for $\kappa M$ and $NIM$ simulation.
-%		As introduced in the beginning of this chapter, a specialized design for comparison is used, where all common aspects of the two simulation models are located in a common ancestor class
-%			and elements that differ are implemented separately for the classes of the two models. 
-		%In the introduction to section \ref{secDesignOfSoftwareToAnalyzeTheTwoModels}, it is mentioned that all common aspects between the two simulation models are placed in a common ancestor class 
-		%	and only the differences are implemented separately for elements of the two models.
-		The class hierarchy of the node metaclass, as illustrated in the right--hand side of fig. \ref{figUMLClassDiagramForASingleNeuron} will be properly introduced in the remainder of this chapter.
-		%The classes of the node metaclass, as illustrated in fig. \ref{figUMLclassDiagramOfSimulator} and their derived classes will be properly introduced in the remainder of this chapter.
-		%The classes of the node metaclass, as illustrated in fig. \ref{figUMLclassDiagramOfSimulator} and their derived classes will be properly introduced in this subsection.
 
 \begin{figure}[htb!p]
 	\centering
-	\centerline{ %To make the figure lie at the center. Useful for figures that have different size than 1\textwidth
+	\centerline{ %To make the figure lie at the center. Useful for figures that have different size than 1\text width
 	\includegraphics[width=0.9\textwidth]{UML/classDiagramForAuronSubclass}}
 	\caption[UML class diagram for the auron subelement of a node, $NIM$ and $\kappa M$]{
 		UML class diagram of the auron subelement of a node.
-		The \emph{i\_auron} element in fig. \ref{figUMLClassDiagramForASingleNeuron} is derived to the model specific classes \emph{s\_auron} and \emph{K\_auron}.
+		The \emph{i\_auron} element in fig. \ref{figUMLClassDiagramForASingleNeuron} is inherited to the model specific classes \emph{s\_auron} and \emph{K\_auron}.
 		%It is worth noting how simple the $NIM$ auron is in comparison with the $\kappa M$ model.
 		The auron classes are further derived to the sensor\_auron classes for the two models, introduced in section \ref{appendixSensoryNode}.
 		}
 	\label{figUMLClassDiagramForAuronElementForNIMandKM}
 \end{figure}
 
-		As seen in fig. \ref{figUMLClassDiagramForAuronElementForNIMandKM}, the pure virtual inherited \emph{doTask()} and \emph{doCalculation()} functions from \emph{timeInterface} stays undefined in the \emph{i\_auron} class.
-		%This is also valid for the other subclasses of the node metaclass, and an \emph{i\_\{element\}} class can not be initiated($\{$element$\} \in [$dendrite$,$ auron$,$ axon$,$ synapse$]$).
-		This is also valid for the other subclasses of the node metaclass, causing the \emph{i\_\{element\}} classes to be abstract($\{$element$\} \in [$dendrite$,$ auron$,$ axon$,$ synapse$]$). %\cite{Stroustrup2000KAP12}.
-%		The \emph{i\_\{element\}} classes therefore stays abstract. %, and no instances(objects) can be instantiated of these classes. 
-\begin{quote}
-	A class with one or more pure virtual functions is an abstract class, and no objects of that abstract class can be created. \cite{Stroustrup2000KAP12}
-\end{quote}
 
-		Figure \ref{figUMLClassDiagramForAuronElementForNIMandKM} shows the UML diagram for the auron element of a node, and it can be seen that all inherited purely virtual functions are overloaded in \emph{s\_auron} and \emph{K\_auron}.
-		%As can be seen, all purely virtual functions from \emph{time\_interface} is overloaded in \emph{$\kappa$\_auron} and \emph{$S\_neuron$}.
-		%The purely virtual function \emph{writeDepolToLog()}, introduced in \emph{i\_auron} have also been defined, and objects of \emph{K\_auron} and \emph{s\_auron} can be instantiated. %TODO Gjør denne abstract i i_auron - UML TODO
-	%	This is also the case for the other subelements of a node, as can be seen in appendix \ref{appendixUMLofAllNodeSubelementClasses}.
-		The UML class diagram of the other subelements are presented in appendix \ref{appendixUMLofAllNodeSubelementClasses}, showing a similar class hierarchy composition for the other node elements. %and it can be seen that the class hierarchy of these elements have the same composition.
-		%The other subelements have similar composition, and the UML diagrams of these classes can be found in appendix \ref{appendixUMLofAllNodeSubelementClasses}.
-		%TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO SKRIV DETTE APPENDIX! TODO TODO 
-		Objects of the model--specific classes can therefore be instantiated.
-		Because all differences between the two models are implemented separately, the similarities and differences between the two models were emphasized to the author.
-		%Objects of the model--specific classes can therefore be instantiated, and because all differences are implemented separately, these differences were emphasized to the author.
-		%The most important of these are presented in the remainder of this chapter. %TODO OG SPESIELLT SEC. \ref{secComparisonOfTheTwoModels}!!! TODO skriv dette!
-		The most important are presented in the last section of this chapter and in chapter \ref{chDiscussion}.
+	\subsection{$NIM$ -- Design and Implementation}
 
-
-%	-Even if the two simulation models are diametrically different with regard to several aspects, an attempt has been made to make most elements common between the two. Write about the class hierarchy of NIM and KM.
-		%i_synapse -> s_synapse og K_synapse. Snakke litt om forskjeller for denne(eller en annen som er meir viktig(t.d. auron)).
-% F		\subsection{Construction of Node Elements}
-% F		\subsection{Destruction of Node Elements}
-
-	%TODO Det er ikkje "Design and Implementation", men kanskje bare "Design"?
-	\subsection{$NIM$ -- Design of Implementation}
-		A direct simulation of the neuron's depolarization can be implemented by numerical integration of all mechanisms that alter the node's depolarization.
-		This include synaptic input and the gradual reset of the neuron's depolarization to the resting potential, modelled as leakage.
-		The simplest way of implementing this is by numerical integration.
-
-		The Numerical Integration Method($NIM$), sums up all depolarizing and hyperpolarizing input in the course of a computational time step, and adds this to the node's state variable. 
+		A spiking neuron is often simulated by a Numerical Integration Method ($NIM$), where the depolarization is found by numerical integration.
+		All depolarizing and hyperpolarizing input in the course of a time step is added to the node's depolarization value.
 		Leakage is simulated by subtracting a fraction of the difference between the current depolarization value and the defined resting potential.
-		For simplicity, the resting membrane potential is defined to be zero and the leakage constant is written as $\alpha=1-l_f$, where $l_f$ is the leakage fraction.
-		In this way, leakage can be implemented as a single multiplication.
+		For simplicity, the resting membrane potential is defined to be zero in $auroSim$. 
+		The leakage constant is written as $\alpha=1-l_f$, where $l_f$ is the leakage fraction.
+		In this way, the computation of leakage can be implemented as a single multiplication.
 
+%TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO
 % TODO TODO TODO Ligningene er for dersom man ikkje har input! Dersom man har input gjelder de øverste ligningene, men dette ble litt rotete. Bruk litt tid på denne, og få det correct OG fint! TODO TODO TODO
 \begin{equation}
 	\begin{split}
@@ -584,25 +386,22 @@ s_synapse::~s_synapse()
 	\label{eqLeakageForLIF}
 \end{equation}
 		
-		Time can be measured by the discrete time step $t_n$, and leakage is computed every iteration in this implementation. %, and if the neurons does not receive input one iteration, leakage can be computed by using $\alpha^x$, where $x$ is the number of iterations since last computation.
-	%Because of the order of magnitude for synaptic input connections in a biological neuron, it is highly likely that all neurons receives synaptic transmissions every time step.
-		Because of the order of magnitude for synaptic input connections in a biological neuron, it is highly likely that a neuron receives synaptic input every time step.
-		For very small neural networks or incredibly small time steps, it might be more efficient to implement leakage as $v(t_n) = \alpha^x \cdot v(t_{n-x})$,
-			as the probability of not getting input in every time step is larger.
-		%For very small neural networks or incredibly small time steps, it could be more efficient to implement this as $v(t_n) = \alpha^x \cdot v(t_{n-x})$. 
-		%For very small neural networks, however, it could be more efficient to implement this as $v(t_n) = \alpha^x \cdot v(t_{n-x})$. 
+		Because of the order of magnitude for synaptic input connections in the biological neuron, it is highly likely that a neuron receives synaptic input every time step.
+% 		Because of the order of magnitude for synaptic input connections is large in the biological neuron, it is highly likely that a neuron receives synaptic input every time step.
+		Leakage is therefore computed every time step in $auroSim$.
+		For sparse neural networks or for simulations with very small time steps, it could be more efficient to implement leakage as $v(t_n) = \alpha^x \cdot v(t_{n-x})$,
+			since the probability of not getting input every time step is larger.
 
 		\subsubsection{The Nodes' Input}
-		The dendrite handles the input to the neuron.
-		% TODO Skriv om det prinsippet som seier at ei synapse enten er inhibitorisk eller exitatorisk: I "the biological synapse". Referer dit (Cite, der)
-		As introduced in sec. \ref{ssecTheAxonAndActionPotential}, the size of the transmission at any particular synapse is given by the synaptic weight of that synapse.
-		Depending on whether the synapse is excitatory or inhibitory, the postsynaptic membrane potential is either increased or decreased 
-			by the size of the synaptic weight after a synaptic transmission.
-		In \emph{auroSim}, this is implemented as the synapse sending [$(1-2\, \text{bInhibitorySynapse})\cdot \omega_{ij}$] as an argument to the postsynaptic dendrite's \emph{newInputSignal(double)} function.
+		In $auroSim$, the [$dendrite$] receives all input to the artificial neuron.
+		As introduced in sec. \ref{ssecTheAxonAndActionPotential}, the size of the transmission at any particular synapse is defined by the synaptic weight of that synapse.
+		Depending on whether the synapse is an \emph{excitatory} or \emph{inhibitory} synapse, the postsynaptic membrane potential is either increased or decreased. %by the size of the synaptic weight after a synaptic transmission.
+		In \emph{auroSim}, this is implemented by letting the synapse send [$(1-2\, \text{bInhibitorySynapse})\cdot \omega_{ij}$] as an argument to the postsynaptic dendrite's \emph{newInputSignal(double)} function.
 \begin{lstlisting}
 inline void s_synapse::doTask()
 {
 	// If the synapse is inhibitory, send inhibitory signal(subtract):
+	//  (bInhibitorySynapse is a boolean variable that defines whether the synapse is inhibitory or not)
  	pPostNodeDendrite->newInputSignal( (1-2*bInhibitoryEffect)*(FIRING_THRESHOLD * dSynapticWeight) );
 
 	// Write to log:
@@ -611,146 +410,94 @@ inline void s_synapse::doTask()
 					<<" ;   \t#Synpaptic weight\n" ;
 }
 \end{lstlisting}
-		The postsynaptic dendrite's \emph{newInputSignal(double)} function adds the input to the node's activity variable(depolarization).
-		If the depolarization goes beyond the firing threshold, an action potential is initialized by \emph{s\_dendrite::newInputSignal(double)} 
-			pushing the node's first axon pointer to \emph{pWorkTaskQueue}.
+		The postsynaptic dendrite's \emph{newInputSignal(double)} function adds the input to the node's depolarization.
+		If this variable goes beyond the firing threshold, an action potential is initialized by pushing the node's first axon pointer to \emph{pWorkTaskQueue}.
+
+
 
 		\subsubsection{Action potential in $NIM$}
-		The spatiotemporal delay of the axon can be simulated by a linked list of axon objects, each pushing the next on \emph{pWorkTaskQueue} as one of the actions of \emph{doTask()}.
-		For greater temporal resolution, smaller computational time steps and a higher number of linked axon elements can be utilized.
+		Spatio--temporal delay in the axon is simulated by a linked list of [$axon$] objects, each pushing the next element on to \emph{pWorkTaskQueue}. % as one of the actions of its \emph{doTask()}.
+		For a greater temporal resolution, smaller computational time steps and a larger number of serially linked axon elements can be utilized.
 	%%	
-		When one of the axon elements contains a pointer to an output synapse, that synapse pointer is pushed to \emph{pWorkTaskQueue},
-			causing synaptic transmission to happen the subsequent time step.
+		When one of the axon elements contains a pointer to an output synapse, that synapse's pointer is pushed to \emph{pWorkTaskQueue},
+			causing synaptic transmission to happen in the following time step. %subsequent time step.
 
-%		Because the main focus of the later experiments are to assess the efficiency of the two integration methods, 
-%	%		and because the $\kappa M$ enables more efficient spatiotemporal simulation, 
-%			the implementation in this work utilize a single--compartment implementation of the axon, meaning that all synapses have the same delay.
+
+
+	\subsection{$\kappa M$ -- Design and Implementation}
+		As seen in fig. \ref{figUMLClassDiagramForAuronElementForNIMandKM}, the design of \emph{K\_auron} is more complex than for \emph{s\_auron}.
+		This is partially because the node has to keep an overview of the floating point time instance for initiation of new time windows.
+		A near--continuous resolution for the initiation of time windows, combined with the ability to compute the exact firing time by equation \ref{eqEstimatedTimeToFiring},
+			enables the use of intra--iteration firing time accuracy.
 		
-		%The synaptic transmission is implemented as a Dirac delta function. DETTE ER FEIL: Write about this in discussion?!? TODO TODO TODO TODO
-		
-
-		%HUGS: TODO?
-		%\begin{itemize}
-	%		\item siden AP fører til at alle ut-synapser får samme membrane potential, og dette gir størrelsen på syn.trans., kan vi la overføringen være gitt av syn.W.
-	%			(SJÅ FDP\_final.pdf)
-	%		\item dirac-delta overføring er ei stor forenkling. Vil ikkje forfølge dette vidare..
-	%	\end{itemize}
-
-		%\section{Example: Depolarisation Curve for $NIM$ Implementation} 	% TA DEN MED HER ISTADEN for lenger oppe?
-
-	\subsection{$\kappa M$ -- Design of Implementation}
-		As seen in the UML diagram presented in fig. \ref{figUMLClassDiagramForAuronElementForNIMandKM}, the implementation of a \emph{K\_auron} 
-			is more complex than a \emph{s\_auron}.
-		This is partially because the node have to keep an overview of the floating point time instance for initiation of new time windows.
-		A high precision for initiation of time windows combined with the ability to compute the exact time for firing 
-			by equation \ref{eqEstimatedTimeToFiring} enables the use of intra--iteration time accuracy, as discussed in section \ref{ssecTheActionPotential}.
-																										%introduced in section \ref{ssecTheActionPotential}.
-		
-		Because synaptic flow is utilized instead of discrete synaptic input transmissions, the activation variable of a $\kappa M$ node is defined 
+		Since synaptic flow is utilized instead of discrete synaptic input transmissions, the activation variable of a $\kappa M$ node is defined 
 			to represent the activation level $\kappa$ from equation \ref{eqValueEquation}.
-		Every time a new time window is initialized, the initial depolarization $v_0 = v(t_0)$ is updated and saved to a member variable of the \emph{K\_auron} object.
-		By also saving the time of initiation, eq. \eqref{eqValueEquation} can be computed for any time instance(continuous time resolution) in the new time window.
-		This enables a $\kappa M$ simulation utilizing the theory from chapter \ref{chapDevelopmentOfANovelModel}, possibly with a higher simulation accuracy than a $NIM$ simulation.
-		%In this way can the depolarization of a neuron be simulated by utilizing the theory from sec. \ref{ssecTheAlgebraicSolution}.
+		Every time a new time window is initialized, the initial depolarization $v_0 = v(t_0)$ is updated by computing the new value by eq. \ref{eqValueEquationForEachTimeWindow}.
+		By also saving the time of initiation, $t_0$, this equation can be used to update the neuron's depolarization the next time a new time window is initialized. %after the new time window.
+		This enables $\kappa M$ to be used to simulate the neuron's depolarization by the algebraic value equation.
 
 		%To get an intuitive understanding of how $\kappa$ can be used as the activation variable, 
+% TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO 
 		% LAG, og vis de to plotta i fig. 3.4 i FDP_final.pdf
 
 		\subsubsection{The Node's Input}	
-		
-		In section \ref{ssecSynapticFlow}, discrete synaptic flow(utilized in $NIM$) is defined by the synaptic weight scaled by the number of transmissions in a time step.
-		%In section \ref{ssecSynapticFlow}, it is introduced that the postsynaptic change in membrane potential in a time interval is given the number of transmissions in that interval. %, scaled by the synaptic weight.
+		In section \ref{ssecSynapticFlow}, discrete synaptic flow is defined as the number of transmissions, $N_{j, \Delta t}$,  scaled by the synaptic weight for that synapse.
 \begin{equation}
 		\Delta v_{ij}(\Delta t_n) = N_{j, \Delta t} \cdot \omega_{ij, t_{n-1}} \qquad,\;j\in\mathcal{D}
 		\nonumber
 \end{equation}
-		%From section \ref{ssecSynapticFlow}, it is introduced that a synapse's influence on the change in postsynaptic neuron membrane potential is given by the number of transmissions scaled by the synaptic weight of a synapse.
-		In section \ref{ssecSynapticFlow} it is also hypothesized that the $\kappa M$ can have a higher resolution for the propagated variable, so that a floating point resolution can be utilized for computing synaptic flow instead of the integer number of transmissions.
-		%Section \ref{ssecSynapticFlow} also discusses the possibility of having a higher resolution for the propagates variable, so that a floating point accuracy can be utilized for computing synaptic flow instead of the integer number of transmissions.
-		%In a $\kappa M$ simulation, the number of transmissions $N$ is not constrained to being an integer, and a floating point accuracy can be utilized for the synaptic flow.
-		%An appropriate description of $N$ scaled by $\omega_{ij}$ is the \emph{synaptic flow of activation level}, as this have a direct influence on the postsynaptic node's depolarization variable.
-		An appropriate description of $\Delta v_{ij}(\Delta t_n)$  is the \emph{synaptic flow of activation level} $\kappa_{ij, t_n}$, as if has a direct influence on the postsynaptic node's activation value $\kappa_i$.
+		An appropriate description of $\Delta v_{ij}(\Delta t_n)$  is the \emph{synaptic flow of activation level}, since the flow has a direct influence on the postsynaptic node's activation value $\kappa_i$.
+		By the use of synaptic flow $\kappa_{ij}$, defined by the presynaptic neuron's activation level, a data format of higher precision than integers can be used.
+		The postsynaptic activation level can be written as
 
 \begin{equation}
 	\kappa_{i, t_n} = \sum_j \kappa_{ij, t_n} \qquad, \, j\in \mathcal{D}
 	\nonumber
 \end{equation}
-		%where $\mathcal{D}$ is the set of integers representing all presynaptic neurons to neuron $i$.
 		where $\mathcal{D}$ is the set of integers representing neurons with a synaptic connection to neuron $i$.
-		%All inflows of activation level sum up to the total activation level of the node. %, and the effect of the altered $\kappa_i$ is computed once at the end of the time step.
-		For a $\kappa M$ implementation, it might be advantageous to consider edge transmissions $\kappa_{ij}^*$ as the \emph{change} in synaptic flow. %
-			%(defined by the change in presynaptic activation level, $\Delta \kappa_j$).
-		%If what is propagated in a $\kappa M$ ANN is the differential of the synaptic flow, the postsynaptic node can update its activation variable by simply adding new input. 
+		For a $\kappa M$ implementation, it could be advantageous to consider edge transmissions $\kappa_{ij}^*$ as the \emph{change} in synaptic flow. %
 \begin{equation}
-	\kappa_{ij,t_n}^* = \dot{\kappa_{ij}}(t_n) = \kappa_{ij,t_{n}} - \kappa_{ij,t_{n-1}} \quad, \, j\in \mathcal{D}
+	\begin{split}
+		\kappa_{ij,t_n}^* 	&= \frac{\mathrm{d}}{\mathrm{d}t} {\kappa}_{ij}(t_n) \quad, \, j\in \mathcal{D} \\
+							& = \kappa_{ij,t_{n}} - \kappa_{ij,t_{n-1}} 
+	\end{split}
 	%\nonumber
 \end{equation}
 		
-		When a subset $\mathcal{M}$ of the presynaptic neurons give an altered synaptic flow, this method gives a more efficient simulation,
-			as only flow in the edges from $\mathcal{M}$ have to be added to the postsynaptic node's activation level.
-			%as only the synapses from $\mathcal{M}$ have to be added to the postsynaptic node's activation level.
+		When a subset $\mathcal{M}$ of the presynaptic neurons have an altered synaptic flow, this method gives a slightly more efficient simulation ---
+			only the edge transmissions from $\mathcal{M}$ have to be added to the postsynaptic node's activation level.
 		This can be written as
-			 %.. subset of of input synapses where the synapses have an altered flow, $\mathcal{M}$, have to be summed to the postsynaptic node's activation level.	
-		%When only a subset of the input synapses have an altered flow, this technique gives a more efficient simulation
-		%	as only the set of synapses with an altered flow, $\mathcal{M}$, have to be added to the postsynaptic node's activation level.	
-%%
-		%This means that only the altered synaptic flows have to be summed, 
-			%and a more efficient simulation is the result when only a subset of the input synapses have an altered flow.
 \begin{equation}
 	\kappa_{i, t_n} = \kappa_{i. t_{n-1}} + \sum_l \kappa_{il, t_n}^* \qquad,\, l\in \mathcal{M} \subseteq \mathcal{D}
-	%\kappa_{i, t_n} = \kappa_{i. t_{n-1}} + \sum_l \kappa_{il, t_n}^* \qquad,\, \Delta \kappa_l \neq 0 \quad,\, l\in \{j\} % \neq gir rett teikt("ulik") for pdf, men ikkje for dvi..
 \end{equation}
 
 		Because edge transmission as the derivative demands numerical integration, the accumulation of error has to be considered.
-		%Because this approach utilize an integration of edge transmissions, numerical errors have to be considered.
-		%The numerical integration induce errors, and the activation have to be recalculated .. bla bla AVOGTIL..
-		A specialized \emph{time\_interface}--derived class whose \emph{doTask()} recalculate the node's activation level is devised for this purpose.
-		An object of this class is included as a member variable of a $\kappa M$ node, and produce a periodic recalculation of the node's activation level.
-		The recalculation is designed to be dynamic, so that if the node's activation variable have a small deviation from the real activation level, the interval to the next recalculation is longer than if the error is large.
-		It is referred to appendix \ref{appendixRecalculateKappaClass} for more about the design of \emph{recalcKappaClass}.
-		%For more about \emph{recalcKappaClass}, it is referred to appendix \ref{appendixRecalculateKappaClass}.
-		%Because this class does not directly concern the simulation, the subject of \emph{recalcKappaClass} is moved to appendix \ref{appendixRecalculateKappaClass}
-%Skrive om recalculate Kappa- klassen!
-		
-		
+		A specialized \emph{timeInterface} derived class, whose \emph{doTask()} recalculate the node's activation level is devised for this purpose.
+		An object of this class is included as a member variable of the \emph{K\_auron} class, and gives a periodic recalculation of the node's activation level.
+		The recalculation is designed to be dynamic, in such a way that the period to the next recalculation is longer if the deviation from the recalculated activation level level is small.
+% 		The recalculation is designed to be dynamic, so that if the node's activation variable have a small deviation from the real activation level, the interval to the next recalculation is longer than if the error is large.
+		Documentation for \emph{recalcKappaClass} can be found in appendix \ref{appendixRecalculateKappaClass}.
+% 		See to appendix \ref{appendixRecalculateKappaClass} for more about \emph{recalcKappaClass}. %the mechanisms of \emph{recalcKappaClass}.
 		
 
 
-		%Skrive om synaptic transmission og korleis informasjon overføres/propageres. Float-periode-estimat for å finne overføring(som skrevet i section (KANN-modellering)
-		%-også om synaptic transmission as the derivative.. (sjå FDP\_final)
 
-		%\subsection{Recalculation of $\kappa$} %XXX Or is this introduced in section: [New Aspects to be Considered for the Novel Model] ? XXX
 		\subsubsection{Action Potential in $\kappa M$}
+		As discussed in section \ref{ssecTheActionPotential}, the use of the algebraic solution when simulating the neuron enables the node's spike times to have a near--continuous time resolution.
+		In $auroSim$, this is implemented by letting \emph{time\_class::doTask()} insert an $auron$'s pointer when it is estimated to fire during the next time step.
+%		In $auroSim$, this is implemented by letting \emph{time\_class::doTask()} insert the auron's pointer when its firing time is estimated to be during the next time step.
+		Since this is done before time is incremented, the element will execute its task during the correct computational time step. %time iteration.
+		By sorting the \emph{K\_auron} tasks by the \emph{dEstimatedTaskTime} member variable, neuron firing is scheduled by the estimated task time instead of the tasks' order of creation.
+		This could be of importance when multiple processing units are utilized for simulation of a large network of neurons.
+%		This can show important when multiple processing units are utilized for simulation of a large network of neurons.
 
-		As discussed in section \ref{ssecTheActionPotential}, the use of the algebraic solution to the $LIF$ neuron's differential equation enables the use of spike times with a near--continuous time accuracy.
-		This can be implemented by letting \emph{time\_class::doTask()} insert elements' pointers if their \emph{dEstimatedTaskTime} lies within the next iteration.
-		If this is done before time is iterated, the element will execute its task during the correct time iteration.
-		By sorting the tasks of \emph{pWorkTaskQueue} by their \emph{dEstimatedTaskTime}, the correct order of execution is the result.
-
-		To simulate the spatio--temporal delay of the axon, the output synapses can be scheduled after the predefined delay.
-		If the axonic delay before a synapse is defined to be e.g. $2.15$ time steps and the node fires at time $141.2$, the synapse's task can be scheduled for execution at time $143.35$(after the defined delay) by writing this time to the synapse's \emph{dEstimatedTaskTime}.
-		The synapse will thus execute its task at that time.
+		To simulate spatio--temporal delay in the axon, each output synapse is scheduled after its predefined transmission delay.
+		For example, if the axonic delay before a synapse is defined to be $2.15$ and the node fires at time $141.2$, the synapse's task can be scheduled for execution at time $143.35$ by writing this time to the synapse's \emph{dEstimatedTaskTime}.
+		Due to the mechanisms described in sec. \ref{ssecTime}, the synapse will execute its task at that time without the need for simulation of axonic propagation delay.
 		%%
-		%The simulation will have a more constant workload, as the implementation does not have to simulate axonic delay, something that would be positive in an implementation designed to be used for real--time applications.
-		As the simulation does not depend on simulating axonic delay, the execution will have a more constant workload.
-		This would be positive for an implementation that is to be used in real--time applications, and should be considered if technology is developed that utilize $\kappa M$.
-		%As the simulation does not depend on simulating the axonic delay, the simulation will have a more constant workload.
-		%A constant work load is positive if the simulation is to be used for real time applications.
-		
-		
-
-
+		This gives a more constant work load for the simulation, something that is very advantageous if spiking neuron simulations are to be used for real--time applications.
 	
-		%\subsection{Synaptic Transmission} 	%Skrive det som før. Dette blir mat for kva eg burde gjordt annaledes: ha den deriverte innfører fleirer feil, og er dårlig.
-												% Siden man alltid får overføring blir det ekvivalent med 
-%xxx	\subsection{Intra--Iteration Time Accuracy}
-%			% -at i NIM fyrer man på reaktiv basis, mens i KM kan man fyre med proactiv scheduling!
-%			-At the end: Write that a high precision for spatiotemporal time delay can be achieved without having small computational time steps: By intra--iteration times accuracy!
-%			(Referer til avsnitt [The Artificial Neuron], der eg nevnte dette som en metode i starten..)
 
-%					%%				%%		% den enklere formen for synaptisk overføring: Alltid overføre nå-verdi, og summere dette kvar gang. Vil antaklig gi mindre feil! DISKUTER TODO DISKUTER TODO In discussion!
-		% F	\subsection{pCalculationTaskQue} %Sjå: FDP::Implementation of Synaptic Transmission}
-		% F	\subsection{Recalculation of $\kappa$}
 
 
 

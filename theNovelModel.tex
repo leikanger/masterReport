@@ -1,47 +1,29 @@
 
 
-%	TODO TODO TODO TODO Kjør masse sitering: \cite{FDP_report} TODO TODO TODO TODO TODO 
 
-\section{Synaptic Flow: New Formalism for Neural Acivity} %Activation Level}
+%\section{Synaptic Flow: New Formalism for Neural Acivity} %Activation Level}
+\section{The $\kappa$ Formalism for Neural Activity}
 %\section{Spiking Neuron Simulation Based on Synaptic Flow}
 	\label{secDevelopmentOfTheNovelANNmodel}
-	A system that behaves like a leaky itegrator is a bucket with a set of small holes at the bottom.
-	%An intuitive leaky integrator is a bucket with a set of small holes at the bottom.
+	One system that behaves like a leaky integrator is a bucket with a set of small holes at the bottom.
 	If the LIF neuron is visualized as a leaky bucket with input from a gutter, excitatory synaptic input can be represented by an agent pouring cups of water into that gutter.
-	%If the LIF neuron is visualized as a leaky bucket with input from a gutter, synaptic transmissions is represented by pouring cups of water into this gutter.
 	When the number of agents pouring water into the gutter becomes very large and the size of each transmission is small, this can again be visualized as rain.
-	%The resulting water level in the leaky bucket can be simulated by either counting the number of raindrops or by estimating the corresponding flow in the input gutter and utilizing the algebraic solution to find the water level.
 
-	The resulting water level in the leaky bucket can either be simulated by counting the number of raindrops(and computing the size of the leakage in every computional time step)
-	%The resulting water level in the leaky bucket can be simulated by either counting the number of raindrops(and computing the leakage after each computational time step)
-		or by estimating the corresponding flow through the gutter and utilizing the algebraic solution to find the water level.
-%%%%%
-	%If the simulation has a bounded temporal accuracy(discrete time), the author believes that a more accurate simulation result can be achieved when the algebraic solution is utilized to simulate the systems value. 
-	For simulations with a bounded temporal accuracy(discrete time), more accurate simulations may be achieved by utilizing the algebraic solution to simulate the systems value.
+	The resulting water level in the leaky bucket can either be simulated by counting the number of raindrops(and computing the size of the leakage in every computational time step)
+		or by estimating the corresponding flow through the gutter and utilizing the algebraic solution to the system's differential equation to find the water level.
+	For simulations with a bounded temporal resolution(discrete time), more accurate simulations can be achieved by utilizing an algebraic equation than by numerical integration.
 	This is tested in chapter \ref{chExperimentalEfficiencyMeasurement}.
-	%Experiments test this is set up in chapter \ref{chExperimentalEfficiencyMeasurement}.
-	%For simulations with a bounded temporal accuracy(discrete time), it is found that a more accurate simulation result can be achieved when the algebraic solution is utilized to simulate the systems value.
-	%TODO Dropp setninga over? NEI: første biten er jævla bra! 			Men det etter her er litt dårlig: avslører for mykje om kva eg finner ut?
-%%                 %%                                                          %%                                                  %%                                              % input is represented as a flow.
-	%This implies that fewer iterations are needed to accomplish some accuracy goal, and a more efficient simulator model is the result.
-	In this section, the mathematics and necessary concepts for a flow simulation is developed and presented.
+%TODO TODO Neste setning skurrer litt. TODO TODO Skriv om? TODO
+	In this section, the mathematics and necessary concepts of a flow simulation is presented.
+% 	In this section, the mathematics and necessary concepts for a flow simulation is developed and presented.
 
 
 
 
-% 	The subthreshold integration of a LIF neuron can be visualized as a leaky bucket with input from a gutter.
-% 	Excitatory synaptic input can further be represented by an agent pouring cups of water into that gutter.
-% 	%The subthreshold integration of a LIF neuron can be thought of as a leaky bucket with small holes at the bottom.
-% 	%If the LIF neuron is modelled as a leaky bucket with input from a gutter, excitatory synaptic input can be represented by pouring cups of water into that gutter. %this gutter.
-% 	When the number of incoming synaptic connections are very large and the size of each transmission is small, this can again be visualized as rain.
-% 	The resulting water level in the bucket can either be simulated by counting the number of rain drops and estimating the size of each, or by estimating the corresponding flow out of the gutter and utilizing the 
-% 		algebraic solution to find the water level. %algebraic solution to the differential equations to find the water level.
-% 	If the simulation has a bounded temporal resolution(discrete time), it is found that a more accurate simulation can be achieved by considering depolarizing flow instead of discrete synaptic transmissions.
-% 	In this section, the mathematics and necessary concepts for flow simulation are developed and presented.
 
 	\subsection{Algebraic Solution for the LIF Neuron's Depolarization}
 	\label{ssecTheAlgebraicSolution}
-		Subthreshold integration in the LIF neuron is defined by general leaky integrator's differential equations\cite{gerstnerKistler2002KAP04}.
+		Subthreshold integration in the LIF neuron is defined by the general leaky integrator's differential equation\cite{gerstnerKistler2002}: %\cite{gerstnerKistler2002KAP04}.
 		\begin{equation}
 			\begin{split}
 				\dot{v}(t)&= \dot{v}_{in}(t) - \dot{v}_{out}(t) \\
@@ -50,18 +32,17 @@
 			%\nonumber
 			\label{eqDifferentialEquation}
 		\end{equation}
-		The inflow is represented by $\dot{v}_{in}(t) = I(t)$, and $\dot{v}_{out}(t)$ represents the ``leakage'' of the neuron's depolarization value.
-		The leakage is thus given as the neuron's present depolarization level scaled by the system's leakage constant $\alpha$.
+		The inflow is represented by $\dot{v}_{in}(t) = I(t)$, and ``leakage'' is represented by $\dot{v}_{out}(t) = \alpha v(t)$.
+% 		The leakage is defined as the neuron's present depolarization level, scaled by the system's leakage constant $\alpha$.
 		The algebraic solution to \ref{eqDifferentialEquation} is derived in appendix \ref{appendixAlgebraicSolution}.
-		For time intervals where $\kappa$ and $\alpha$ are constant, it is found that the system's subthreshold depolarization is given by %can be found by TODO Skriv om! "is given by" er dårlig!
+ 		For time intervals where $\kappa$ and $\alpha$ are constant, it is found that the system's subthreshold depolarization is defined by %given by %can be found by TODO Skriv om! "is given by" er dårlig!
 		\begin{equation}
 			v(t_v) = \kappa - \left( \kappa - v_0 \right) e^{-at_v} 	\quad,\; \kappa = \frac{I}{\alpha} % \quad,\;t_v = t-t_0
 			\label{eqValueEquation}
 		\end{equation}
-
-		The variable $v_0$ represents the initial value for the neuron's depolarization and $t_v$ is the time from the start of the considered time interval\mbox{($t_v = t - t_0$)}.
-% Var sammenkobla med Recall that equation \ref{eqValueEquation} ...
-%TODO Lag figur på nytt! Endre litt på teksten som står (t_p -- time from start of period    er dårlig. Bl.a.)
+%%%%%%
+		The variable $v_0$ represents the neuron's initial depolarization value and $t_v$ represents the time from the start of the considered time interval\mbox{($t_v = t - t_0$)}.
+% 		The variable $v_0$ represents the initial value for the neuron's depolarization and $t_v$ is the time from the start of the considered time interval\mbox{($t_v = t - t_0$)}.
 \begin{figure}[htb!p]
     \centering
     \includegraphics[width=0.65\textwidth]{demonstrasjonAvUlikeKappaforVerdifunksjonen}
@@ -69,10 +50,12 @@
 	%		A leaky integrator can be simulated by utilizing the concept of time windows.
 			The figure shows how the concept of time windows enables the use of \eqref{eqValueEquation} for simulating the neuron's depolarization.
 			In the time interval $t_p = [0, 100]$, $\kappa_0 = 0.7$ is valid.
-			At time $t_p = 100$, $\kappa$ is changed to $\kappa_1 = 0.5$, before it finally is set to $\kappa_2 = 1$ at time $t_p = 150$.
+			At time $t_p = 100$, $\kappa$ is changed to $\kappa_1 = 0.5$, before being set to $\kappa_2 = 1$ at time $t_p = 150$.
+			\cite{FDP_report}
 			}
 \end{figure}
-		Recall that equation \ref{eqValueEquation} only is valid for time intervals where $\kappa$ and $\alpha$ remain constant.
+		Recall that equation  \ref{eqValueEquation} is only valid for time intervals where $\kappa$ and $\alpha$ remain constant.
+% 		Recall that equation \ref{eqValueEquation} only is valid for time intervals where $\kappa$ and $\alpha$ remain constant.
 		To formalize such an interval for later discussions, the concept of time windows is introduced. % defined.
 		\begin{mydef}
 			A time window is a time interval where $\kappa$ and $\alpha$ are constants, within one inter--spike period.
@@ -80,7 +63,7 @@
 		\end{mydef}
 
 		When the neuron's input flow is changed or the neuron fires an action potential, a new time window is initialized.
-		The initial value $v_0$ can be found by computing the last value of the previous time window, and $t_0$ is acquired by saving the time of initiation for the new time window\cite{FDP_report}.
+		The initial value $v_0$ can be found by computing the last value of the previous time window, and $t_0$ is acquired by saving the time of initiation for the new time window. %\cite{FDP_report}.XXX?cite?
 
 
 
@@ -88,8 +71,8 @@
 	\label{ssecTheActionPotential}
 %TODO TODO TODO TODO TODO TODO TODO TODO   Legg inn plott av K som viser kappa og fyring: FDP::fig.3.4    TODO TODO TODO TODO TODO TODO TODO
 	As introduced in sec. \ref{secBiologicalNeuralSystems}, the neuron fires an action potential when the depolarization value crosses the firing threshold.
-	%In continuous time, 
-	The firing time for a neuron in continuous time can therefore be found by the equation $v(t_w^{(f)}) = \tau$, where $\tau$ is the firing threshold for the neuron.
+	The firing time for a neuron can therefore be found by the equation $v(t_w^{(f)}) = \tau$, where $t_w^{(f)}$ is the firing time and $\tau$ is the firing threshold of the neuron.
+%	The firing time for a neuron in continuous time can therefore be found by the equation $v(t_w^{(f)}) = \tau$, where $t_w^{(f)}$ is the firing time and $\tau$ is the firing threshold of the neuron.
 
 	\begin{equation}
 		\begin{split}
@@ -102,68 +85,44 @@
 		\label{eqDevelopmentOfFiringTimeEstimateEq}
 	\end{equation}
 
-	If an absolute refraction time $t_r$ is defined for the neuron where the depolarization remain constant after firing, this value is added to eq. \eqref{eqDevelopmentOfFiringTimeEstimateEq}.
-	%If an absolute refraction time $t_r$ is defined for the neuron where the depolarization remain constant after firing, $t_r$ has to be added to eq. \eqref{eqDevelopmentOfFiringTimeEstimateEq}.
-	An other way of viewing the resulting equation is as the remainder of current inter--spike interval, $p_r(\kappa, v_0)$.
+	If an absolute refraction time $t_r$ is defined for the neuron, where the depolarization remains constant after firing, this value has to be part of the equation for the estimated firing time.
+	Another way of viewing the resulting equation is as the remainder of current inter--spike interval, $p_r(\kappa, v_0)$.
 
-	%It is shown in appendix \ref{appendixFiringTime} that the firing time, represented as the remainder of the current inter--spike period can be estimated by % is given by
 \begin{equation}
 	p_r(\kappa, v_0)  	= -\alpha^{-1} \, \ln \left( \frac{\kappa - \tau}{\kappa - v_0} \right) + t_r
 	\label{eqEstimatedTimeToFiring}
 \end{equation}
 
-	As eq. \eqref{eqEstimatedTimeToFiring} is derived from \eqref{eqValueEquation}, the same constraints are valid;
-		The estimate for the remainder of the current inter--spike interval is only valid until a new time window is initialized.
-	%This means that when a new time window is initiated, the old firing time estimate becomes invalid.
+	Since eq. \eqref{eqEstimatedTimeToFiring} is derived from \eqref{eqValueEquation}, the same constraints are valid.
+	The estimate for the remainder of the current inter--spike interval is only valid until a new time window is initialized.
 %%
 	If depolarizing inflow is defined to be constant during a computational time step, a firing time estimate during the current time step can not change before the estimated time. % the neuron fires.
-	%If depolarizing inflow is defined to be constant during a computational time step, a firing time estimate in the current iteration can not change before the estimated time. % the neuron fires.
-	%If depolarizing inflow is defined to be constant during a computational time step, a firing time estimate in the present time step can not change before that time. %the neuron fires.
-%%%%%%%%%
-%	The estimated firing time can therefore be utilized as the simulation's firing time, and an action potential can be initiated with an intra--iteration time accuracy defined by the data format used in the computations. %, e.g. the \emph{double} data formate. %given by e.g. the \emph{float} data format.
-	The estimated firing time can therefore be utilized as the emulated neuron's firing time. %, giving a set of possible spike times that has a near--continuous temporal resolution.
-	If the double precision floating point formate is utilized, this gives a near--continuous temporal resolution for the neuron's firing times.
-%%
-%	The set of possible spike times therefore has a near--continuous temporal resolution, only limited by the accuracy of the format used. %e.g. the double precision floating point format.
+	The estimated firing time can therefore be utilized as the artificial neuron's firing time. %, giving a set of possible spike times that has a near--continuous temporal resolution.
+	If the double precision floating point format is utilized in the simulator, this gives a near--continuous temporal resolution for the neuron's firing times.
 
-% asdf@jeje12
 
-% XXX Er det for langt hopp? Vil gjerne gå over til neste section: synaptic flow of activation level.
 	An inter--spike interval is finalized by the neuron firing an action potential, after which the neuron's depolarization is reset to the membrane resting potential before the process starts anew.
-	The immediate estimate of the total inter--spike interval can be computed by eq. \eqref{eqEstimatedTimeToFiring}, from the neuron's reset potential $v_r$.
-	%The current estimate of the total inter--spike interval can be computed by eq. \eqref{eqEstimatedTimeToFiring} from the neuron's reset potential $v_r$.
-	%An immediate estimate of the total inter--spike interval can be found by computing eq. \eqref{eqEstimatedTimeToFiring} from the neuron's reset potential $v_r$.
-	%The total inter--spike interval can therefore be estimated as the remainder of the inter--spike period from the neuron's reset potential $v_r$.
+	The immediate estimate of the total inter--spike interval can be computed by eq. \eqref{eqEstimatedTimeToFiring}, from the neuron's \underline{reset potential $v_r$}.
 \begin{equation}
 	p_{isi}(\kappa) = p_r(\kappa, v_r)% IKKJE: + t_r
 	\label{eqEstimateOfInterSpikePeriod}
 \end{equation}
-	This equation will show important when we next consider synaptic flow of activation level.
+ 	This equation is important when we next consider synaptic flow of action level.
+% 	This equation will show important when we next consider synaptic flow of activation level.
 	
-	%This process can be modelled by 
 
 
     \subsection{Synaptic Flow}
 	\label{ssecSynapticFlow}
-%	Neural input that changes the neuron's depolarization can be separated into two sets, a subclass of synaptic input that changes the postsynaptic neuron's depolarization and other depolarizing input.
-%	Synaptic depolarizing input can be mediated through ligand--gated channels, as introduced in section \ref{ssecTheBiologicalSynapse}.
-%	%The synaptic part of depolarizing input can be mediated through ligand--gated channels, as introduced in section \ref{ssecTheBiologicalSynapse}.
-%	This is what will be referred to as synaptic input in the remainder of this text.
 
-%todo todo todo todo todo todo todo todo todo todo todo todo todo todo todo todo todo todo todo todo todo todo todo todo todo todo todo todo todo todo todo todo todo 
 %todo todo todo todo           Lag en figur som viser skematisk kva input eit neuron har(K_ij og xi_i)                   todo todo todo todo todo todo todo todo todo 
-%todo todo todo todo todo todo todo todo todo todo todo todo todo todo todo todo todo todo todo todo todo todo todo todo todo todo todo todo todo todo todo todo todo 
 
 	Let all synaptic input be modelled as the flow $\kappa_{ij}$, where $j$ represents the presynaptic neuron and $i$ the receiving neuron.
 	Other input that changes neuron $i$'s depolarization is represented by $\xi_i(t)$.
-	The final value for the neuron's depolarization, $\kappa_i = \frac{I_i}{\alpha}$, is defined as the sum of all the neuron's input flows.
-	%The final value for the neuron's depolarization $\kappa_i$ is defined by the sum of all input flows for neuron $i$.
+	The final value for the neuron's depolarization, $\kappa_i = \frac{I_i}{\alpha}$, is defined by the sum of all the neuron's input flows.
 	If $\mathscr{D}$ is the set of integers representing neuron $i$'s presynaptic neurons, the total inflow during the $n$'th iteration can be written as
-	%The total inflow in the $n$'th iteration can therefore be written as
 
 		\begin{equation}
-% TODO HUGS: K = I/a : dermed må I være sum(k_ij + xi)*alpha
-			% I_{i, t_n} = \sum_{j} \kappa_{ij, t_n} + \xi_{i, t_n}
 			\begin{split}
 			I_{i, t_n} 	&= \kappa_{i,t_n} \cdot \alpha \\
 						&= \left( \sum_{j} \kappa_{ij, t_n} + \xi_i(t_n) \right) \alpha \quad,\; j\in\mathscr{D}
@@ -171,69 +130,43 @@
 			\label{eqSynapticIntegrationForKANN}
 		\end{equation}
 
-	Synaptic input $\kappa_{ij}$ is the most important element for neural signal processing\cite{PrinciplesOfNeuralScience4edKAP10}, and is the main focus of this section.
-	%Synaptic input $\kappa_{ij}$ is the most important neural input for signal processing\cite{PrinciplesOfNeuralScience4edKAP10}, and will be the main focus of this section.
-	%The most important depolarizing input for neural signal processing is synaptic input\cite{PrinciplesOfNeuralScience4edKAP10}. Synaptic input will therefore be the main focus in this section.
-	%The main focus of this section is therefore synaptic transmissions.
-	%The main focus of this section will therefore be synaptic transmissions.
-	%TODO Skriv om neste setn., litt. (rundt "have")
-	The funtion $\xi_i(t)$, representing other input, can have different forms for different depolarizing sources.
+	Synaptic input, $\kappa_{ij}$, is the most important element for neural signal processing\cite{PrinciplesOfNeuralScience4edKAP10}, and is the main focus of this section.
+	The function $\xi_i(t)$, representing other input, can have different forms for different depolarizing sources.
 	This element therefore has to be modelled separately for each such source.
-	%The funtion $\xi_i(t)$, representing other input, can have different forms for different depolarizing sources and have to be modelled separately for each such source.
-	%Other input $\xi_i(t)$ have different forms for different sources and have to be modelled separately for different such mechanisms.
-	%The form of other input $\xi_i(t)$ varies for different sources of the signal and have to be modelled separately for each such mechanism. 
-	%XXX BRA XXX: One example of another source for changing a neuron's depolarization is the instrumentation done by sensory neurons. %TODO TODO TODO Skriv om dette en plass, og referer dit!  
 
 \begin{figure}[hbt!p]
 	\centering
 	\includegraphics[width=0.70\textwidth]{epsp_ipsp}
 	\caption[Illustration of neural integration of synaptic input]{
 			A simulation of neural integration of synaptic input. 
-			Excitatory Postsynaptic Potentials(EPSP) increase the membrane potential of the postsynaptic neuron and thus excite the neuron toward firing.
-			Inhibitory Postsynaptic Potentials(IPSP) hyperpolarizes the postsynaptic neuron, and inhibits the postsynaptic neuron with respect to firing.
-			When the membrane potential at the axon hillock crosses the firing threshold, set to $-10mV$, an action potential is fired.
-			%Figuren kommer fra http://techlab.bu.edu/resources/software_view/epsp_ipsp/
-			%The simulation result presented in the figure is produced with the educational ``\emph{EPSP IPSP}'' software intended to illustrate EPSP and IPSP after synaptic transmissions.
-			(The figure is found on the website of the educational ``\emph{EPSP IPSP}'' software intended for illustration of EPSP and IPSP after synaptic transmissions).
-			% TODO Gjør forrige setninga mindre, og FÅ MED AT DET IKKJE ER EG SOM HAR LAGA DEN!
+			Excitatory Postsynaptic Potentials(EPSP) increase the membrane potential of the postsynaptic neuron and excite the neuron toward firing.
+			Inhibitory Postsynaptic Potentials(IPSP) hyperpolarize the postsynaptic neuron, thus inhibiting the neuron with respect to firing. %and inhibits the postsynaptic neuron with respect to firing.
+			When the membrane potential at the axon hillock crosses the firing threshold, set to $-10mV$ in this simulation, an action potential is fired.
+			%Figure is from http://techlab.bu.edu/resources/software_view/epsp_ipsp/
+			(The figure is from the website, {\tiny{\emph{http://techlab.bu.edu/resources/software\_view/epsp\_ipsp/}}}, of the educational  ``\emph{EPSP IPSP}'' software, intended for illustration of EPSP and IPSP after synaptic transmissions).
+% 			(The figure is found on the website of the educational ``\emph{EPSP IPSP}'' software, intended for illustration of EPSP and IPSP after synaptic transmissions).
 				}
 	\label{figIllustrationOfEPSPandIPSP}
 \end{figure}
 
 
 	Let the synaptic weight $\omega_{ij}$ be defined as the postsynaptic change in depolarization after one synaptic transmission. 	
-	%Let the synaptic weight $\omega_{ij}$ be defined as the postsynaptic change in depolarization after one transmission in the synapse.
-	Synapse $j$'s contribution to the total change in depolarization after a time interval $\Delta t$ can therefore be written as the number of transmissions in that interval scaled by the synaptic weight $\omega_{ij}$.
+	Synapse $j$'s contribution to the total change in depolarization after a time interval $\Delta t$ can be written as the number of transmissions in that interval scaled by the synaptic weight $\omega_{ij}$.
 	%In discrete time simulations, this can be written as
 	\begin{equation}
-% TODO Skriv det som N
-%		\Delta v_i(\Delta t) = f_j(t_{n-1})\Delta t \cdot\omega_{ij} = \frac{\omega_{ij}}{p_{isi}(t_{n-1}}
-		%\Delta v_{i, t_n}(\Delta t) = N_{j,t_n}\cdot\omega_{ij, t_n} %								%= f_j(t_{n-1})\Delta t \cdot\omega_{ij} % = \frac{\omega_{ij}}{p_{isi}(t_{n-1}}
-		\Delta v_{i}(\Delta t_n) = N_{j,\Delta t}\cdot\omega_{ij, t_{n-1}} \qquad,\; j\in\mathscr{D}%								%= f_j(t_{n-1})\Delta t \cdot\omega_{ij} % = \frac{\omega_{ij}}{p_{isi}(t_{n-1}}
+		\Delta v_{i}(\Delta t_n) = N_{j,\Delta t}\cdot\omega_{ij, t_{n-1}} \qquad,\; j\in\mathscr{D}
 	\end{equation}
-	where $N_{j,t_n}$ represents the number of transmissions in the synapse from neuron $j$ to neuron $i$ in the time interval $\Delta t_n$, 
-	and $\omega_{ij,t_{n-1}}$ the synaptic weight updated at time $t_{n-1}$.
-	%where the variable $N_{j,t_n}$ represents the number of transmissions from neuron $j$ in time interval $\Delta t_n$, and $\omega_{ij, t_{n-1}}$ represents the synaptic weight updated at time $t_{n-1}$.
-	%where the number of transmissions is found by the last computed firing frequency of the presynaptic neuron $f_j(t_{n-1})$ multiplied by the length of the time interval $\Delta t$.
+	where $N_{j,t_n}$ represents the number of transmissions in the synapse from neuron $j$ to neuron $i$ in the time interval $\Delta t_n$.
+	The variable $\omega_{ij,t_{n-1}}$ represents the synaptic weight, updated at time $t_{n-1}$.
 
-	In $\kappa M$, a continuous variable representing the present estimate of the inter--spike interval can be sent instead of the integer number of transmissions. 
-	%In the flow simulation model($\kappa M$), a continuous variable representing the present estimate of the inter--spike interval can be sent instead of the integer number of transmissions. 
-	This enables a higher resolution for the propagated signal and thus less discretization errors. %XXX Kanskje bedre enn den under?
-%	This enables a higher resolution for the propagated signal and thus a more accurate simulation. %XXX Kanskje litt drøyt: more accurate - dette kan også ha med andre ting, som f-eks- modellen som er brukt..
-	%For a time interval where the presynaptic activation level $\kappa_j$ is constant(a time window for the presynaptic neuron), synaptic flow of activation level can be written as
+	In $\kappa M$, a continuous variable representing the present estimate of the inter--spike interval can be used instead of the integer number of transmissions. 
+	This enables a higher resolution for the propagated signal and thus a smaller simulation error.
 	For a time interval where the presynaptic activation level $\kappa_j$ is constant, synaptic flow of activation level can be written as
 	\begin{equation}
-	%	\kappa_{ij} = \frac{ \omega_{ij} }{ p_{isi}(\kappa_{j})}\Delta t
-		\kappa_{ij, t_n} = \frac{ \omega_{ij, t_n} }{ p_{isi}(\kappa_{j, t_n}) } \Delta t \qquad,\; j\in\mathscr{D}% TODO SKRIV kva \Delta t   er for noke! TODO TODO SKVIVE DET SOM FREKVENS, først? = f(t) \omega \cdot \Delta t
+		\kappa_{ij, t_n} = \frac{ \omega_{ij, t_n} }{ p_{isi}(\kappa_{j, t_n}) } \Delta t \qquad,\; j\in\mathscr{D}
 	\end{equation}
 
-	For a simulation with constant computational time steps $\Delta t = C_t$, this constant can be further be incorporated into the variable that represents synaptic weight $\omega_{ij}$. % equation for synaptic flow $\kappa_{ij}$.
-%	For a simulation with constant computational time steps $\Delta t = C_t$, this constant can be incorporated into the equation for synaptic flow $\kappa_{ij}$.
-	%
-	%If we let the simulation be carried out with constant time steps $\Delta t = C_t$, this constant can be incorporated into the equation for synaptic flow $\kappa_{ij}$.
-	% ELLER:
-	%Let the simulation be carried out with constant time steps $\Delta t = C_t$.
-	%This constant can then be incorporated into the equation for synaptic flow $\kappa_{ij}$.
+	For a simulation with constant computational time steps $\Delta t = C_t$, this constant can further be incorporated into the variable that represents synaptic weight $\omega_{ij}$.
 	We arrive at the equation for synaptic flow of activation level for constant time steps:
 	\begin{equation}
 		\kappa_{ij} = \frac{ \omega_{ij} }{ p_{isi}(\kappa_{j})} \qquad,\;j\in\mathscr{D}
@@ -243,38 +176,48 @@
 	When synaptic plasticity is introduced, it is important to remember that synaptic weight is scaled by the constant $C_t$.
 	For consistency, it is important to scale synaptic plasticity by the same factor.
 
-%[Her stod tidligare en analyse av feilen for de to ANN modellene]. Dette er flyttet inn i analysisOfTheTwoModels.tex
 
-	%TODO La denne være discussion for dette kapittelet! (Ta "Summary" inn i denne section!)TODO
+	%TODO Let this be the discussion for this chapter. (Do the summary in this section).
 	\section{Implications of $\kappa$--Mathematics}
 		Algebraic analysis of a node's activation level is possible when neural input is represented as a continuous flow.
-		The propagation of information as activation level can be modelled as the distribution of a changed $\kappa$, 
-			and algebraic transfer functions can be set up for a neural network.
+		The propagation of information is represented by the distribution of a changed $\kappa$.
 		This makes it possible to utilize a less confusing jargon when talking about neural activation level.
-		%In ANNs, this might actively be used to compute propagation of activation level.
+		Algebraic transfer functions can also be set up, making it possible to do computations on the filter properties of a neural network.
 
-		Combined with the concept of synaptic flow and time windows, the $\kappa$ formalism enables a new neural simulation scheme, the $\kappa$ simulation model($\kappa M$).
-%		The $\kappa$ mathematics also enables an entirely new neural simulation scheme, the $\kappa$ simulation Model -- $\kappa M$. 
-		By letting the activation level $\kappa$ be propagated as a mechanistic function for the presynaptic neuron's firing frequency,
-		%By letting the activation level $\kappa$ be propagated as a function of the presynaptic neuron, 
-			neural network dynamics can be simulated and eq. \ref{eqValueEquation} can be used to find the neuron's depolarization.
-%		This makes it possible to utilize a propagation of activation level like in a 2. generation ANN, to simulate a spiking neuron.
-		The $\kappa$ simulation model thus has elements from second as well as third generation ANNs.
-%		$\kappa M$ thus has elements from second as well as third generation ANNs.
+		Combined with the concept of synaptic flow and time windows, the $\kappa$ formalism enables a novel neural simulation scheme, the $\kappa$ simulation model($\kappa M$).
+		By letting the activation level, $\kappa$, be propagated as a mechanistic function of the presynaptic neuron's firing frequency,
+			neural network dynamics can be simulated, and eq. \ref{eqValueEquation} can be used to find the neuron's depolarization.
+		Thus, the $\kappa M$ simulation model has elements from second as well as third generation $ANN$s.
 
-		The concept of time windows from definition \ref{defTimeWindow} makes it possible to utilize equation \ref{eqValueEquation}
-			to simulate the neuron's depolarization;
+		The concept of time windows from definition \ref{defTimeWindow} makes it possible to utilize equation \ref{eqValueEquation} to simulate the neuron's depolarization.
 		Every time the neuron's activation level is altered, a new time window is initialized by updating the initial depolarization 
 			value $v_0$ and saving the time of initiation, $t_0$.
-		The depolarization value can therefore be found for any time $t$ in a time window, by the equation
-$$v(t_v) = \kappa - \left( \kappa - v_0 \right) e^{-at_v} 	\quad,\; t_v = t - t_0 . $$
-%%%%%%%%
-		%The size of synaptic flow can be found by utilizing equation \ref{eqSynapticTransmissionForKANN}, making it possible to create Artificial Neural Networks with nodes simulated by the flow simulation model, $\kappa M$.
+		The depolarization value can be found for any time $t_v$ in a time window, by the equation
+\begin{equation}
+ 	v(t_v) = \kappa - \left( \kappa - v_0 \right) e^{-at_v} 	\quad,\; t_v = t - t_0
+	\label{eqValueEquationForEachTimeWindow}
+\end{equation}
 
-		The next firing time can be found by eq. \ref{eqEstimatedTimeToFiring} every time a new time window is initialized.
-		This variable can be used to have spike times with an intra--iteration time resolution, and a near--continuous resolution for possible spike times is the result.
+		The next firing time can be estimated by eq. \ref{eqEstimatedTimeToFiring}. %whenever a new time window is initialized.
+		This makes it possible to have spike times with an intra--iteration time accuracy, and a near--continuous resolution for possible spike times can be accomplished.
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+% FERDIG. Resten er utkommentert: Sjå gjennom, om du vil.. (sikkert noke bra innhold, inni der..)
 
 
 % 	\section{Summary, $\kappa M$ neuron simulation model}

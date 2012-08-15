@@ -30,14 +30,11 @@
 
 
 \documentclass[b5paper,12 pt]{report}
-%\documentclass[a4paper,10 pt, twocolumn]{report}
 
 
 \usepackage[utf8]{inputenc}
 \usepackage{graphicx} 
 
-% sudo apt-get install texlive
-%\usepackage[font=small,format=plain,labelfont=bf,up,textfont=it,up]{caption}
 \usepackage[font=footnotesize,format=plain,labelfont=bf,up,textfont=it,up]{caption}
 
 
@@ -52,22 +49,8 @@
 \usepackage{amsthm}
 \newtheorem{mydef}{Definition}
 
-
-%\usepackage{pstricks} % For teikning. 		FOR mykje styr å lære..
-%\usepackage{pstricks-add}
- %\let\psgrid\relax %XXX Fjærner GRID på alle pstricks teikninger. (global removal)
-
-%\usepackage{epstopdf} % for å få med eps i pdf-latex (?)    funkerIkkje.. Gjør det manuellt for filene..
-
-
-
-%Kanskje dette er naudsynt? For metapost:
-%\DeclareGraphicsRule{*}{mps}{*}{}
-
-
-
-
-
+%For å la \cite{a,b,c} gi f.eks. [12-14] i output..
+\usepackage[sort&compress]{natbib}
 
 
 
@@ -98,212 +81,147 @@ breaklines=true,                % sets automatic line breaking
 \date{\today}     
 
 
-
 \begin{document}   
 
 
 
 % TODO Neste linje skal kanskje være over abstract og maketitle? TODO
-\pagestyle{empty} %get rid of header/footer for toc page
+
+\pagenumbering{roman} %get rid of header/footer for toc page
 
 \maketitle
 
-%\begin{abstract}
-%abstract: Her.
-%\end{abstract}
+\begin{abstract}
+When simulating a spiking neuron, numerical integration of synaptic input is often utilized to compute the neuron's depolarization.
+This report shows that the Numerical Integration Model($NIM$) for spiking neuron simulations have a cumulative error that diverges unless the expectancy value for the local truncation error is zero.
+% An alternative neuron simulation scheme, $\kappa M$, has been developed and is presented in this text. %was developed and is presented in this text.
+An alternative neuron simulation scheme, $\kappa M$, was developed and is presented in this text.
+Experimental and theoretical results shows that the $\kappa M$ error varies within a bounded domain.
+
+Experiments have been conducted on sample--and--hold implementations of the two models.
+% Experiments were done on sample--and--hold implementations of the two models.
+% Experiments done with a sample--and--hold implementation of the two models show that $\kappa M$ is significantly more effective than a $NIM$ simulation.
+A $\kappa M_{100}$ simulation, a $\kappa M$ simulation with $100$ iterations per forcing function period, was compared with $NIM$ simulations with finer temporal resolutions.
+It is shown that before $15$ periods of a sinusoidal depolarizing input current has been simulated, the $\kappa M_{100}$ simulation produced a smaller error than a $NIM_{10.000}$ simulation.
+%All results indicate that this effect becomes larger after longer simulations, and is blamed on the cumulative error of $NIM$ simulations.
+Since the $NIM$ simulation has a number of time steps that is two orders of magnitude larger than the $\kappa M$ simulation, this represents a significant efficiency improvement.
+% This represents a significant efficiency improvement, as the $NIM$ simulation has a number of time steps that is two orders of magnitude larger than the $\kappa M$ simulation.
+
+
+\end{abstract}
 
 
 
 
 
 
-\pagestyle{empty} 
-
-\tableofcontents %put toc in
+\tableofcontents 
 \cleardoublepage %start new page %TODO Brukes dersom [report] brukes for dokumentet.
-%\clearpage
 
 \listoffigures
 %\listoftables
 
+\cleardoublepage
+
+\pagenumbering{arabic}
 \setcounter{page}{1} %reset the page counter
-\pagestyle{plain} % put headers/footers back on
+%\pagestyle{plain} % put headers/footers back on
 
 
 
 
 
 
-
-
-
-
-
-
-
-\include{introduction}
+\chapter{Introduction}
+\input{introduction}
 
 \chapter{Background Theory}
-	Before introducing the considered spiking neuron simulation models, a minimal of background theory has to be introduced.
-	This chapter is reserved for this purpose, and starts by introducing the most important aspects of neural signal processing mechanics.
-	After the biological neuron has been introduced, artificial neural systems(neural simulations) is introduced.
-	Section \ref{secSpikingANNBackgroundInfo} goes through the history of Artificial Neural Networks(ANNs) and finally the artificial neuron model that carry out a direct simulation of the neuron's depolarization.
+\label{chBackgroundTheory}
 
-	This chapter is intended to introduce the reader to the necessary background information to make the theory in this work comprehensible.
-	It is recommended that the reader utilize this chapter as a reference work when the considered spiking ANN models are presented and analyzed.
+	The biological brain can be thought of as the computational system of an animal.
+	It receives information from sensors located at various locations in the body and sends output to its various manipulators.
+	This includes e.g. muscles and the being's endocrine system.
 
-	%First, theory about the simulated system is ... OSV (sjå FDP)...
+	A biological computational system is fundamentally different from digital technology.
+	Instead of having a few, computationally powerful processing units, the biological brain has a huge amount of weak processing units, called neurons.
+	The neuron processes information by doing a leaky integration of input, and sending output when the value goes beyond some threshold\cite{TrevesNeuralNetworks}.
+	Large networks of such cells, with dynamic connections between them, comprise the biological brain and is seen as the basis of memory, thought and intelligence.
+	
+
+	Biological neural systems can in some respects outperform the digital computer.
+	Tasks that involve associative computations or learning are performed much better by a neural network than by algorithms. %in the digital computer.
+	An example of this is the pattern recognition of a two week old baby that recognizes the mother's face, a task that only recently has been accomplished by digital computational systems. % by the computer.
+	In the computer, this can be accomplished by an Artificial Neural Network, $ANN$.
+
+	Before the mechanisms of neural simulators and $ANN$s can be discussed, the original system has to be introduced.
+	This chapter is reserved for this purpose, and starts by introducing the most important aspects of neural signal processing mechanisms.
+ 	After the biological neuron has been introduced, a short review of the history of $ANN$s is presented.
+	This section concludes with introducing Spiking Artificial Neural Networks, neural network simulators with nodes where the neuron's depolarization is considered. %is simulated.
+% MORTEN MEINER NESTE SETNING ER OVERFLØDIG. XXX Ta vekk?
+% 	It is recommended that the reader utilize this chapter as a reference work, when different neuron simulation models are presented and analysed. %, in the remainder of this text.
+
 
 	\input{biologicalNeuralSystems}
 	\input{artificialNeuralSystms}
-% 	\input{NIM-simulations}
-
 
 
 
 %TODO Mindre fokus på at det er en Neuron Simulation Model! Meir på at det er en matematisk formalisme!
 \chapter{Neural Modelling}
 %\chapter{Development of A Novel Neuron Simulation Model}
-	\label{chapDevelopmentOfANovelModel}
-%\chapter{Development of $\kappa M$}
-%\section{Mathematical Modelling}
-	% TODO Write an intro to this chapter
-% 	The subthreshold build--up of membrane potential of a LIF node have the form of a general leaky integrator.
-% 	In the preliminary work to the final thesis, the author proposed a novel simulation scheme based on the algebraic solution to the LIF neuron's differential equations.
-% 	In this work, the simulation model has been further developed and tested experimentally.
-% 	The mathematical modelling and necessary consepts for utilizing the resulting equations in a simulator is presented in this chapter.
+	\label{chDevelopmentOfANovelModel}
 
-%TODO TODO TDOO TODO Skriv om første setning! Slutten er dårlig.
-A simulator implemented by numerical integration of input involves an accumulation of truncation errors, as the error is integrated alongside the depolarization value. %also is integrated. %is integrated too. % as well as the value.
-%A simulator implemented by numerical integration of input involves an accumulation of truncation errors, where the error is integrated as well as the value. %also is integrated. %is integrated too. % as well as the value.
-The value is integrated to the firing threshold before an action potential is fired and the depolarization is reset. % to the resting membrane potential.
-An incorrect value of the simulated depolarization gives an erroneous firing time and initiation of the next inter--spike interval.
-%An erroneous simulated depolarization value gives an erroneous firing time and initiation of the next inter--spike interval.
-The depolarization value in that inter--spike interval is therefore affected by the spike time error, and the mechanism is repeated.
-Any systematic local truncation error thus creates an increasing total error defined by the sign of the local truncation error, producing a diverging error for simulations where simulated time $t_n \to \infty$.
-%In an attempt to make a simulation method that have a bounded error, a simulation scheme based on the algebraic solution to the $LIF$ neuron's differential equations is devised.
-%TODO UNDER: 			simulation method that produce a limited error, ... 	Eller noke.
-In an attempt to create simulation method with a bounded error, a simulation scheme based on the algebraic solution to the $LIF$ neuron's differential equations is devised in this chapter.
-%In an attempt to create simulation method with a more stable error, a simulation scheme based on the algebraic solution to the $LIF$ neuron's differential equations is devised in this chapter.
-%%	In the preliminary work to the final thesis, the author proposed a novel simulation technique that utilize the algebraic solution to the LIF neuron's differential equations.
+	Numerical integration involves an accumulation of error, since the error is integrated alongside the considered variable.
+	A simulator based on numerical integration therefore involves an accumulation of local truncation errors, the error from each computational time step.
+	In an attempt to avoid a diverging error, a neural simulator based on algebraic equations is developed and presented in this chapter.
+%%
+% 	Numerical integration involves an accumulation of error, since the error is integrated alongside the considered value.
+% 	Thus, a simulator based on numerical integration of input involves an accumulation of local truncation errors, the error from each computational time step.
+% 	When the artificial neuron fires an action potential, the depolarization is reset, and the neuron starts the next inter--spike interval.
+% 	When there is an error in the node's value, the firing can happen at the wrong time, making the next inter--spike interval start at a correspondingly erroneous time.
+% 	This means that the error is cumulative, and that a systematic error gives a diverging error for the neuron's depolarization.
+% 	In an attempt to create a simulation with a bounded error, a simulation scheme based on the algebraic solution to the $LIF$ neuron's differential equations is presented in this chapter.
 
-To utilize the algebraic solution of the $LIF$ neuron's differential equations for simulating its depolarization value, 
-	it is found in the preliminary project that depolarizing input has to be represented as a continuous flow\cite{FDP_report}.
-	%it is found that depolarizing input has to be represented as a continuous flow.
-	%depolarizing input has to be represented as a continuous flow\cite{FDP_report}.
-%If the solution to the capacitor differential equations are to be used for computing the neuron's depolarization value, it is found that depolarizing input have to be represented as a continuous flow.
-%Instead of considering the discrete synaptic transmissions, 
-After the algebraic solution of the $LIF$ neuron's depolarization have been presented in sec.  \ref{ssecTheAlgebraicSolution} and \ref{ssecTheActionPotential},
-%After the equations for the leaky integrator have been adjusted for simulation of the LIF neuron in sec. \ref{ssecTheAlgebraicSolution} and \ref{ssecTheActionPotential},
-	the concept of synaptic transmission as a continuous flow is discussed in sec. \ref{ssecSynapticFlow}.
-%The last part of this chapter is dedicated to a discussion about the error mechanisms for the two considered simulation models. % ; Simulation by numerical integration and simulation by depolarizing flow.
-The last part of this chapter is dedicated to a discussion about how the introduced mathematics can be utilized for simulating the neuron. 
-											%an analysis of the error mechanisms of the two models and discussion about other necessary concepts for implementing the novel simulation model.
+	To utilize continuous equations in a neural simulator, it is found in the preliminary project that depolarizing input has to be represented as a continuous flow \cite{FDP_report}.
+%  	To utilize the algebraic equations in a neural simulator, it is found in the preliminary project that depolarizing input has to be represented as a continuous flow \cite{FDP_report}.
+	After the algebraic solution to the $LIF$ neuron's depolarization has been presented in sec. \ref{ssecTheAlgebraicSolution} and \ref{ssecTheActionPotential},
+		the concept of synaptic transmission as a continuous flow is discussed in sec. \ref{ssecSynapticFlow}.
 
-	
-	%inkluderer ei fil..
 	\include{theNovelModel}
-		% Skal inneholde:  		\section{The novel model: Modelling}  : 	\label{ssecModellingRefractionTimeToLimitFiringFrequency}
-	%\include{timeAndError} ... eller noke
 
 
 
-
-
-
-
-
-	% Todo finn ut korleis rekkefølgen skal være. Ikkje bestemt enda..
-%	\chapter{Design of an implementation for comparing the two models}
-%		\begin{itemize}
-%			\item Write about how to make the similarities and differences more prominent: Common abstract class, derived [s\_*] and [K\_*] classes.
-%		 	\item Time, pWorkTaskQue.
-%		 	\item 
-%		\end{itemize}
 
 	\chapter{Design/Implementation and Theoretical Comparison} % of the two Models}
 	\label{chDesignAndTheroeticalComparison}
 	%\chapter{Design of Software to Compare the Models}
 
-		To assess whether the $\kappa$ formalism can be used to simulate the neuron and to compare the resulting simulation 
-			model with the traditional simulation model that utilize numerical integration, %a simulation utilizing numerical integration, 
-			both models are designed and implemented from scratch.
-		The Numerical Integration Model($NIM$), and $\kappa M$ differ in how they compute the neuron's depolarization, 
-			how information is propagated, and how spike times are computed. %decided.
-		%In this chapter, the design and implementation of software intended to make differences and similarities between the models is presented.
-		The design of software intended for theoretical comparison of the design and implementation of these models is presented in this chapter.
-% 		The main discussion of the two models is delayed to section \ref{secComparisonOfTheTwoModels},
-% 			but some of the differences in implementation are inadvertently presented as the simulation models are designed. 
-		%%									%%										% as the implementation is designed.
-		%%% Some of the differences in implementation are inadvertently presented as elements are presented, but the main discussion can be found in section \ref{secComparisonOfTheTwoModels}. % chapter \ref{chDiscussion}.
+		To assess whether $\kappa M$ can be used to simulate a spiking neuron, and to compare the resulting design/implementation with one that utilize numerical integration,
+			both models were designed and implemented by the author. 
+		The Numerical Integration Model($NIM$) and $\kappa M$ differ in how they compute the neuron's depolarization, how information is propagated, and how spike times are computed.
+		The design of the software intended for a theoretical comparison of the two models is presented in this chapter.
+ 		This software, referred to as $auroSim$, is later used in experiments that consider the comparative efficiency of the two simulation models.
 
-
-
-% 		Two simulation methods have been presented in this text,
-% 			the Numerical Integration Method($NIM$) that utilize numerical integration of input,
-% 			and a novel model($\kappa M$) that utilize the algebraic solution to the $LIF$ neuron's differential equations.
-% 		%The traditional method of simulating the $LIF$ neuron's depolarization by numerical integration ($NIM$), % utilize numerical integration of all change in depolarization.
-% 		%	and the novel model that utilize the algebraic solution to the $LIF$ neuron's differential equations($\kappa_M$).
-% 		%	%and the novel model that computes each node's depolarization by the algebraic solution to the $LIF$ neuron's differential equations($\kappa M$).
-% 		The two models differ in how they compute the neuron's depolarization, what values are propagated, and how the neuron's spike times are decided.
-% 		%These two models differ in how they simulate the neuron's depolarization. 
-% 		%The traditional model($NIM$) computes the neuron's depolarization by numerical integration of discrete synaptic input, while the novel model($\kappa M$) achieves a higher time resolution by computing the future spike time.
-% 		%The two models are thus very different in how they can be implemented and in the error produced.
-% %%
-% 		%In this chapter, a theoretical analysis and comparison between the two models is conducted. %performed.
-% 		Software intended for a theoretical analysis have been designed and is presented in this chapter.
-% 		Some of the differences in implementation are inadvertently presented as elements are presented, but the main discussion can be found in section \ref{secComparisonOfTheTwoModels}. % chapter \ref{chDiscussion}.
-% 		%%%A more thorough discussion of the differences will be discussed in chapter \ref{chDiscussion}.
- 
-		To make the comparison as comprehensive and accurate as possible, both models are implemented from scratch.
- 		The main discussion is delayed to section \ref{secComparisonOfTheTwoModels},
- 			but some of the differences in implementation are inadvertently presented as the simulation models are designed. 
-%		The design of software intended to make differences between the two models prominent is discussed in this chapter.
-%		Some of the most important differences of the two simulation models are discussed in section \ref{secComparisonOfTheTwoModels}.
-		The resulting software $auroSim$ is later used for an experimental comparison of the efficiency of the two simulation models,
-		%The resulting program is later used for an experimental comparison of the efficiency of the two simulation models,
-%%%
- 		The design and results of these experiments can be found in chapter \ref{chExperimentalEfficiencyMeasurement}.
-%		The design and results of these experiments is presented in section \ref{chExperimentalEfficiencyMeasurement}.
-% 		This software is later used for comparing the efficiency of the two simulation models, 
-		
-
-
-%TODO TODO TODO TODO Har korrekturlest til HER. Fortsett her! TODO TODO TODO TODO  (TA DETTE KAPITTELET FØRST!)
-
-		%The resulting observations are presented in the second half of this chapter.
-		%The first part is about the general design of the implementation, and how best to achieve an insight into the differences and similarities between the two models. 
-
-		%In chapter \ref{chExperimentalEfficiencyMeasurement}, experiments are designed to test the accuracy or efficiency of the two models.
-		%The implementation utilized for these experiments is based on the design presented in this chapter. %XXX Based on .. er feil!
-		
 		\include{designOfTheImplementation}
-		\include{analysisOfTheTwoModels}
+		\input{analysisOfTheTwoModels}
 
 
 
 	
-	\chapter{Efficiency; Experimental Comparison} %Mesurements}
+	\chapter{Efficiency; Experimental Comparison} %Measurements}
 	\label{chExperimentalEfficiencyMeasurement}
-		The primary motivation behind a simulator is to produce accurate simulation results.
-		%The goal of a simulator is to produce accurate simulation results of to the neuron model used.
-		As introduced in section \ref{ssecAnalysisOfErrorsForTheTwoModels}, the simulation error of a neural simulator can be minimized by letting the temporal resolution be fine.
+		The primary design criteria for a simulator is to produce accurate simulation results.
+		As introduced in section \ref{ssecAnalysisOfErrorsForTheTwoModels}, the simulation error of a neural simulator can be decreased by increasing the temporal resolution of the simulation.
 		This also greatly increases the computational load of the simulation, as more computations have to be conducted for the same simulated time domain.
 		A relative efficiency comparison can therefore be performed by comparing the accuracy of two simulations for a given temporal resolution, or the resolution needed to accomplish the same accuracy.
-		%A good measure of efficiency can therefore be the accuracy of the simulation model for a given temporal resolution or the relative temporal resolution needed to accomplish the same accuracy.
-		%One measure of efficiency can therefore be the accuracy of the given simulation model for a given temporal resolution or the relative temporal resolution needed to accomplish the same accuracy.
 
-		%The computational complexity of $\kappa M$, as discussed in section \ref{ssecOnComputationalComlexity} give large requirements for the novel model.
-		Because the run time of the $\kappa M$ simulation in sec. \ref{ssecOnComputationalComlexity} was almost the double of the $NIM$ simulation, large requirements are lain upon the novel model.
-		% for it to be as efficient at the $NIM$ model.
-		If the hypothesized accuracy improvement is large enough, $\kappa M$ can still be as efficient or even more efficient than the $NIM$ simulation model.
+		Since the run time of the $\kappa M$ simulation presented in sec. \ref{ssecOnComputationalComlexity} is almost the double of that of the $NIM$ simulation, large requirements are lain upon $\kappa M$'s accuracy. %%%	% for it to be as efficient at the $NIM$ model.
+%		Since the run time of the $\kappa M$ simulation in sec. \ref{ssecOnComputationalComlexity} is almost the double of that of the $NIM$ simulation, large requirements are lain upon the novel models accuracy. %%%	% for it to be as efficient at the $NIM$ model.
+		If the hypothesized accuracy improvement is large enough, $\kappa M$ can still be as efficient, or even more efficient, than the $NIM$ simulation model.
 		%If the simulation produce the hypothesized accuracy improvement, it might still be as efficient of even more efficient than the $NIM$ simulation model.
 		%The hypothesized stability property of the $\kappa M$ error might also be important in this context, and could show important for the global error after long simulations.
-		The purpose of this chapter is to assess the comparative efficiency of the two models by considering the absolute simulation error of similar situations.
-
-
-
-%		In digital simulations, where time is divided into discrete time steps, numerical errors comes as a consequence of having a bounded temporal accuracy. %TODO Cite ?
+		The purpose of this chapter is to assess the comparative efficiency of the two models, by considering the absolute simulation error for simulations done by $\kappa M$ and $NIM$. %of similar situations.
+% 		The purpose of this chapter is to assess the comparative efficiency of the two models by considering the absolute simulation error of similar situations.
 
 
 
@@ -316,56 +234,25 @@ The last part of this chapter is dedicated to a discussion about how the introdu
 % %The results from this high--resolution simulation will be referred to as the simulated solution in the remainder of this text. %, and considered the true time course.
 % 
 
-% %TODO Ta vekk resten av intro. Skriv om dette i første section i {experimentalEfficiancyComparison}
-% In this work, the simulated solution have a high temporal resolution of $1.000.000$ time steps per sensory function period. %, the simulation takes long time to complete.
-% The simulation produce results with small error, but is very inefficient.
-% The high--resolution simulation's depolarization time course is considered the true time course, and referred to as the simulated solution in the remainder of this text.
-% The results from low--resolution simulations with a temporal resolution of $100$ or $1000$ can therefore be compared to the depolarization of the simulated solution to find the accuracy of the two models, $\kappa M$ and $NIM$.
-% %Because of the high accuracy of the simulated solution, it is considered the correct depolarization curve for the $LIF$ neuron for the experiments conducted in this work.
-
-		%TODO Eller hent fra "theory" i artikkelen. Intro til den section er bedre strevet..
-
 		\include{experimentalEfficiancyComparison}
 
 
-%	\chapter{Discussion: Theoretical Analysis of the Two Models} 
-%		Her skal eg skrive om forskjeller i design og implementasjon.
-%			Prøv å gjøre det slik at lite blir introdusert i Discussion!
-%		Enten skal eg ha inn bare teoretisk sammenligning, her, eller så kan eg også få inn results fra Efficiency Comparison: her! (mest ryddig, mest arbeid(?) )
 
-	\chapter{Discussion and Concluding Remarks}
+
+	\chapter{Discussion and Conclusion}
 	\label{chDiscussion}
 
 		\input{discussion}
 
-% \chapter{Design of Software to compare the Efficiency of the Two Models}
-% 	% Før dette må eg analysere error, slik at eg kan skrive "for å teste analysen fra \ref.., er spesiallaget software designet for dette."
-% 	The two simulations models mentioned in this text have been designed from scratch, and implemented in a common framework to enable a better comparison.
-% 	In the preliminary project to this MS thesis, the two simulations models were compared theoretically.
-% 	The analysis was supported by the design and implementation of the two models from scrach.
-% 	The two models are therefore implemented using a common framework, where the the subelements of a neuron for the two models are inherited from a common ancestor class.
-% 	...
-% 	\include{generalDesign}
-% 	%\include{designSANN}
-% 	%\include{designKANN}
 
 \appendix
+	%TODO TODO TODO Ask Amund whether it is OK to cite the NEVR reports! TODO TODO TODO
 	%TODO TODO TODO TODO TA VEKK appendixSynapticPlasticity. REferer til NEVR-rapporten! Fjærn alle ref. til {appendixSynapticPlasticity} TODO TODO TODO TODO TODO TODO
 	%\include{appendixSynapticPlasticity} TODO Fjærn alle ref. til {appendixSynapticPlasticity} TODO TODO TODO TODO TODO TODO
 	\include{appendixMathematicalDerivations}
 	\include{appendixImplementationDetails}
 	\include{appendixUMLofAllNodeSubelementClasses}
 
-%\chapter{Articles}
-%	\input{artikkel_06.02.2012/introduction}
-%	\input{artikkel_06.02.2012/theory}
-%	\input{artikkel_06.02.2012/metode}
-%	\input{artikkel_06.02.2012/results}
-%	\input{artikkel_06.02.2012/discussion}
-%	\input{artikkel_06.02.2012/concludingRemarks}
-%
-% 	\appendix
-% 	\include{artikkel_06.02.2012/appendix}
 
 
 

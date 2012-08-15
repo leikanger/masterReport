@@ -6,20 +6,10 @@
 	% Test denne for større og mindre aktivitetsnivå! for større aktivitetsnivå vil KM komme bedre ut!
 	% 	Faila, fordi NIM nodene ikkje får synaptisk input, men sensory function. This almost the same as the activation level of a $\kappa M-node
 
-
-
-	%TODO TODO Fra nedst på artificialNeuralSystms.tex TODO TODO Fjærn derifra! TODO
-		If all nodes are updated each time step, the computational load scale linearly with the number of nodes and the inverse of the size of the computational time step.
-		By halving the size of the computational time step, the computational load increase as if the number of nodes are doubled.
-		By having precise simulation algorithms, fewer time iterations can be utilized to accomplish the same accuracy for the simulation.
-		This explains that the accuracy of simulation algorithms can be used as a good measure of efficiency, and establish the motivation for having precise simulation algorithms.
-		More sophisticated numerical integration techniques are therefore often used to accomplish a high accuracy in numerical simulations\cite{PlesserStraubeMorrisonPlesser2007}.
-
-
 	%TODO Eg har lovet at 	the most important elements that differ between the two models will be presented in sec. [THIS SECTION]. TODO Gjør dette TODO
 
- 	\subsection{On Implementation Complexity} TODO TODO
-	TODO %TODO Her skal hovudresultatet i forskjellen i implementasjon stå. Også: Write about $\kappa M$ as a Moore automata and that a Moore automata generally gives a more efficient implementation, but is harder to implement.
+% 	\subsection{On Implementation Complexity} TODO TODO
+%	TODO %TODO Her skal hovudresultatet i forskjellen i implementasjon stå. Også: Write about $\kappa M$ as a Moore automata and that a Moore automata generally gives a more efficient implementation, but is harder to implement.
 %	%	Skriv en-eller-annen--plass at når man gjekk fra 1. og 2. generasjon ANN til 3. generasjon ANN, det er mulig å sei at man begynte å "consider a Moore automata of the neuron".
 %	%	(Dette er en litt løs tolking, siden ouput er gitt som discrete pulser. Eg trur likevel at den er gyldig..)
 %	%	(Her er det bare state som gir ouput).
@@ -27,227 +17,189 @@
 %	%	I min nye modell, tar eg dette videre, og innfører at output også er gitt av present input til neuronet. Dette gir oss en Mealy automata av neuronet.
 %	%	Skriv litt om Moore vs. Mealy automata!
 
+
+
+%TODO TODO TODO Flytt neste greiene til kap 3.4 TODO TODO TODO
+%TODO SLETT! Dette står nå 3.3.1 og 3.3.2 TODO
+%	\subsection{Spatio-Temporal Delay for the Two Models} %TODO TODO TODO Skriv denne, bra! (Har nå kopiert den over fra "designOfTheImplementation.tex"
+% 			\subsubsection{Spatiotemporal simulation in $NIM$}
+% 			In a $NIM$ simulation, synaptic transmission is simulated by \emph{s\_synapse::doTask()} calling the postsynaptic node's \emph{newInputSignal(\emph{double})}, located in the dendrite. %\emph{s\_dendrite}.
+% 			This function adds the size of the transmission to the node's depolarization variable and checks whether it crossed the firing threshold.
+% 			If the depolarization is beyond the firing threshold, the node's \emph{s\_auron} pointer is pushed to the back of \emph{pWorkTaskQueue}.
+% % 			In this case it inserts the node's \emph{s\_auron} pointer to the back of \emph{pWorkTaskQueue}.
+% 			%Synaptic transmission is simulated by \emph{synapse::doTask()} calling the postsynaptic node's \emph{s\_dendrite::newInputSignal(\emph{double})}, located in the dendrite.
+% 			%In the $NIM$ implementation, this function adds the size of the transmission to the node's activation variable and when the node's depolarization crosses the firing threshold, 
+% 				%its \emph{s\_auron} pointer is pushed to the back of \emph{pWorkTaskQueue}.
+% 			%%% Eller:
+% 			%In the $NIM$ implementation, this function adds the size of the transmission defined by the synaptic weight to the node's depolarization variable.
+% 			%When the node's depolarization crosses the firing threshold, the node is scheduled for firing by the dendrite element inserting its auron pointer to the back of \mbox{\emph{pWorkTaskQueue}}.
+% 			%If the node's depolarization crosses the firing threshold, the \emph{s\_auron} subelement is scheduled for execution by letting \emph{s\_dendrite} push its pointer to the back of \mbox{\emph{pWorkTaskQueue}}.
+% 			
+% 			The \emph{s\_auron::doTask()} function resets the node's depolarization, and inserts the address of the first \emph{s\_axon} element to \emph{pWorkTaskQueue}.
+% 			The neuron's axon can be implemented as a linked list of \emph{s\_axon} subelements, representing a series of axon compartments.
+% 			%This enables a precise simulation of the axon's spatiotemporal delay as there is a delay of one time step per axon compartment.
+% 			Small computational time steps and a large number of serially linked axon elements create a more precise simulation of the spatio--temporal delay before any particular synapse.
+% 			%This enables a precise simulation of the axon's spatiotemporal delay by simulating a delay of one iteration per axon compartment.
+% 			When the pointer to a synapse is located in the axon compartment, that pointer is also inserted into \emph{pWorkTaskQueue}.
+% 			Thus, a synaptic transmission is initiated after the synapse's predefined spatio--temporal delay.
+% % 			Synaptic transmission is thus initiated after the synapse's predefined spatiotemporal delay.
+
+% 			\subsubsection{Spatiotemporal simulation in $\kappa M$}
+% 			In a $\kappa M$ simulation, spatio--temporal delay can be simulated by utilizing the native task scheduling capabilities of $\kappa M$;
+% 			As the task scheduler use a member variable from \emph{class timeInterface}, task scheduling can be used for objects of any class derived from \emph{timeInterface}.
+% 			When the neuron fires, the auron object of the node can write to all the node's output synapses' \emph{dEstimatedTaskTime} variable.
+% 			It is written to be the present time plus the predefined spatio--temporal delay.
+% 			In this way, axonic delay can be simulated in a more efficient manner.
+% 			This method also gives a temporal resolution defined by the floating point data format.  %In this way, a more efficient axonic delay can be simulated with floating point accuracy.
+% 
+% 			This way of simulating spatio--temporal delay can also be implemented for a $NIM$ simulation.
+% 			The ability to define intra--iteration times of transmission will not be as advantageous for $NIM$ as for the $\kappa M$ simulation method, 
+% 				and it is unknown whether the introduction of a task scheduler improves the computational efficiency of a $NIM$ simulation. %can be used to create a more effective simulation.
+
+%TODO TODO TODO Flytt section'en over TIL 3.4: A theoretical comparison of the two models TODO TODO TODO
+
+
 	\subsection{On Computational Complexity}
 	\label{ssecOnComputationalComlexity}
-		The execution of a simulator utilizing the $\kappa M$ model involves more complex operations than one that utilize the simplest form of numerical integration, and gives a little slower execution for the same temporal resolution.
-		Two runs of $auroSim$ have been executed to compare the run time of the executions that produce the simulated solution in experiment 2(see \ref{ssecExperiment2Design}).
-		%Two runs of $auroSim$ have been executed to compare the run time of the execution of the simulated solution in experiment 2(see \ref{ssecExperiment2Design}).
-		Both runs were executed with the same call, but compiled with either only the $\kappa M$ or the $NIM$ simulation model.
+		A $\kappa M$ simulation involves more complex operations than in a $NIM$ simulation.
+		To assess whether it takes longer time to simulate, a quick experiment was set up. 
+%%%%
+		A set of runs of $auroSim$ have been executed to compare the run time of the experiment that produced the simulated solution in experiment 2 (see section \ref{ssecExperiment2Design}).
+		All simulations were conducted with the same parameters, using either the $\kappa M$ or the $NIM$ simulation model.
+% 		Both runs were conducted with the same call, but compiled with either only the $\kappa M$ or the $NIM$ simulation model.
+		The run time of the two variants of $auroSim$ was found by the command
 \begin{quote}
 	\emph{time ./auroSim.out -r1000000 -n1.5}
 \end{quote}
+		This executes a simulation with $1.5$ forcing function periods, each with $10^6$ time steps.
+		The mean output of the $time$ shell command, for $\kappa M$ and $NIM$, is presented in table \ref{tabRunTimesForImplementationOfSANNandKM}.
+% 		Representative output of the $time$ shell command for the two compilations are presented in table \ref{tabRunTimesForImplementationOfSANNandKM}.
+%		A representative output of the $time$ shell command for the two compilations is presented in table \ref{tabRunTimesForImplementationOfSANNandKM}.
 
-		The output of the $time$ shell command is presented in table \ref{tabRunTimesForImplementationOfSANNandKM}, and shows that the $\kappa M$ simulation requires almost the double amount of 'wall clock time' for simulating a neuron with the same temporal resolution as the $NIM$ simulation.
-%% 		%%		
-%%		Table \ref{tabRunTimesForImplementationOfSANNandKM} shows that the $\kappa M$ implementation use almost the double amount of `wall clock time' for simulating the sensory node with the same temporal accuracy as the $NIM$ simulation.
-	%	The $\kappa M$ implementation thus use almost the double amount of `wall clock time' for simulating a single sensory node with the same temporal accuracy as the $NIM$ simulation.
-		This is most probably due to the computational complexity of the $\kappa M$.
-%		The number of complex floating point operations like $\ln()$ and $exp()$ functions in the $\kappa M$ implementation might be the reason why the execution of the $\kappa M$ simulation is slower. %can make the execution slower.
-		If simulated on specialized hardware for floating point operations like a Graphical Processing Unit, the figures may be improved.
-
-\begin{table} %[hbt!p]
-	\centering
-	\begin{tabular}{|lc|lc|}
-		\hline 
-		%TODO Oppdater denne for versjonen av auroSim som eg leverer, slik at tallene kan sjekkes av sensor.
-		$NIM_{1.000.000}$ &  & $\kappa M_{1.000.000}$ & \\
-		\hline
-		run 	& 0m0.527s 	& run 	& 0m0.916s \\
-		user 	& 0m0.428s 	& user 	& 0m0.840s \\
-		sys 	& 0m0.004s 	& sys 	& 0m0.004s 
-		\\ \hline 
-	\end{tabular}
-	\caption{Run time for the $NIM$ and $\kappa M$ version of $auroSim$. }
-	\label{tabRunTimesForImplementationOfSANNandKM}
-\end{table}
-
-%TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO 
-%TODO TODO TODO TODO                Lag eit diagram for korleis prog.flyten er. Det karl viste: pseudokode!              TODO TODO TODO TODO TODO TODO TODO TODO TODO 
-%TODO TODO DOTO TODO 					Lag pseudokode for kva som skjer kvar iter for de to modellene, og legg det i en tabell, slik at det kan studeres av sensor! 				(TRENGER FIGUR, her)
-%TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO 
+	\begin{table}[hbp!t]
+		\centering
+		\begin{tabular}{|l|cc|cc|}
+			\hline 
+			& $NIM_{1.000.000}$ &  & $\kappa M_{1.000.000}$ & \\
+			& Mean & Std. dev. & Mean & Std. dev.  \\
+			\hline
+			run 	& 0.434s 	& 	0.104 	& 0.800s 	& 0.088 \\
+			user 	& 0.336s 	&	0.337 	& 0.703s  & 0.079 \\
+			sys 	& 0.007s 	& 	0.003	& 0.009s  & 0.007
+			\\ \hline 
+		\end{tabular}
+		\caption[Mean run time for ten runs of the $NIM$ and $\kappa M$ version of $auroSim$]{
+			Mean run time for ten runs of the $NIM$ and the $\kappa M$ version of $auroSim$.
+			The standard deviation for all items is also listed.
+			The interested reader is referred to appendix \ref{appendixOutputOfTimeCommand} for the run time of all runs in the experiment.
+			}
+		\label{tabRunTimesForImplementationOfSANNandKM}
+	\end{table}
 
 
-		The simulation time results might be the reason why the $\kappa M$ have not been implemented before;
-			It is unintuitive that a slower implementation can give a more effective simulation of a system.
-		Because the goal of a simulator is to produce the most accurate results of the original system, and that more accurate results can be achieved by increasing the temporal resolution of the simulation,
-			the run time of the simulation for a given temporal resolution is not all that matters for simulator efficiency.
-			%the efficiency of the novel simulation model might still be more efficient than $NIM$.
-			%%the accuracy of the simulation model is more important than the absolute run time of the simulator.
-		These results still put large requirements on the simulation, as the $\kappa M$ have to be more than twice as accurate as the $NIM$ implementation to achieve the same simulator efficiency.
-		%The next section will discuss the error mechanisms of the two models.
-		A comparative efficiency analysis of the two simulation models has been conducted and is presented in chapter \ref{chExperimentalEfficiencyMeasurement}.
-		%It is referred to chapter \ref{chExperimentalEfficiencyMeasurement} for an efficiency analysis of the two simulation models implemented in $auroSim$.
-
-% 		Foreslå at dette kanskje er en grunn til at det ikkje har vore gjort før, at computeren var treig på ln-operasjoner og at man tenkte at denne fremgangsmåten dermed er mindre effektiv.
-% 			Nyere Computere har ikkje dette problemet (cite!), osv..
-% 		(For kvar enkelt operasjon er det intuitivt at float-operasjoner er mindre effektivt. Nå er ikkje dette så gyldig lenger. Vil nå teste effektiviteten av simuleringen ved å bruke accuracy som mål).
+		The $\kappa M$ simulations required almost the double amount of `wall clock time' in these particular runs of auroSim.
+%  		The $\kappa M$ simulations required almost the double amount of 'wall clock time' in the runs conducted to assess run--time efficiency of the two implementations. %for this particular run. 
+% 		A representative output of the $time$ shell command is presented in table \ref{tabRunTimesForImplementationOfSANNandKM}, and shows that the $\kappa M$ simulation required almost the double amount of 'wall clock time' for this particular run. %for simulating a neuron with the same temporal resolution as the $NIM$ simulation.
+		A comprehensive study of the run time of the two simulation models has not been conducted, since the relative run times of the two models is hardware--dependent and would only give an example for this specific architecture.
+		The results still indicate that the $\kappa M$ implementation requires more computational resources than the $NIM$ implementation.
+		This is most probably due to the computational complexity of $\kappa M$.
+% 		If executed on specialized hardware for floating point operations, like a Graphical Processing Unit, the relative run time may be improved. %the figures may be improved.
 
 
 
-%	\subsection{On Work Load}
-% 		Skrive om at for NIM er workload veldig dynamisk: Dersom det er høg aktivitet for ANN, er det stor work load for systemet.
-% 		For KM er dette meir konstant: Alle neuron gjennomfører en $\ln$ operasjon kvar iter, overfører kvar iter, ??? Er dette bare at ANN kjører på konstant HØG aktivitet? Sjekk!
+% 		These results could represent the reason why the $\kappa M$ simulation scheme has not been implemented before;
+% 			it is un--intuitive that a slower implementation can give more effective simulations. % of a system.
+
+		Because the principal goal of a simulation is to produce accurate results, and the error can be decreased by making the computational time steps smaller, 
+			it is possible to measure efficiency by the simulation method's error\cite{PlesserStraubeMorrisonPlesser2007}.
+% 			the accuracy of a simulation method can be used as a measure on its efficiency\cite{PlesserStraubeMorrisonPlesser2007}.
+		The run times in table \ref{tabRunTimesForImplementationOfSANNandKM} put large requirements on $\kappa M$ in order for this method to be more effective than $NIM$.
+%		The run time indicated in table \ref{tabRunTimesForImplementationOfSANNandKM} put large requirements on $\kappa M$ in order for this method to be more effective than $NIM$.
+		A comparative efficiency analysis, based on simulation accuracy, is presented in chapter \ref{chExperimentalEfficiencyMeasurement}.
+% 		A comparative efficiency analysis based on experimental results is presented in chapter \ref{chExperimentalEfficiencyMeasurement}.
 
 
- 		%\subsection{Spatio--temporal Delay} %Skriv om at måten KM er designa opner for muligheten for å simulere spatiotemporal effects heilt uten ekstra arbeid. 
-											%(synapser kan få en arbitrær overføringstidspkt. uten å simulere dette og "uten time grid")
-											% Dette er i stil med near--continuous time accuracy i KM!
+
+
+
+
 	
 
 	\subsection{Time and Error for the Two Models}
 	 	\label{ssecAnalysisOfErrorsForTheTwoModels}
-% TODO TODO TODO Skriv på nytt! TODO TODO TODO Introen er litt dårlig.
-% TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO 
-% TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO 
-% TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO 
-% Repetisjon fra introen om ANN.tex
-% F.eks. ta vekk første 3 linjene, under. Skriv om det under det igjen!
-% 	Digital simulations are conducted with discrete time, that is with a finite temporal resolution.
-% 	The computational load of a simulator increase with the temporal resolution, and a finite temporal resolution enables a simulation to have finite computational load.
-% 	This simplification also introduce the truncation error to the simulation.
-% %	This simplification enables the simulation with finite computational resources, but also limits the accuracy of the simulation.
-% 
-% 	%From the discretization of time, truncation errors arise
-% 	%From the discretization of time comes the truncation error.
-% 	As the variable in question is updated explicitly every iteration, the value utilized for computing effects like leakage is the previously computed value.
-% 	This cause a delay of up to one time iteration, and is the background of the local truncation error(the truncation error from each time step) for the simulation.
-% 	Because the Numerical Integration Method($NIM$) is fundamentally different from the simulation model based on synaptic flow($\kappa M$), as presented in sec. \ref{secDevelopmentOfTheNovelANNmodel},
-% 		 the two models are analyzed separately.
-% 	%As the Numerical Integration Method($NIM$) is fundamentally different from the simulation model based on synaptic flow($\kappa M$), introduced in this text, the two models will be analyzed separately.
-% 	%Because the two simulation models considered in this text is fundamentally different, the error mechanisms of the two models will be analyzed separately.
-% 	All analysis done in this text are of the unimproved model, where numerical computations are executed by a simple sample--and--hold technique.
-% 	Optimization by e.g. estimating intermediate values can be utilized for both models, but will not be considered in this text.
 	
-%not from the article, any more.. FRA ARTIKKELEN: (KOPIER TILBAKE TIL ARTIKKELEN!)
-        When simulating time variant variables in discrete--time environments such as the digital computer, truncation errors arise from the discretization of time.
+        When simulating time variant variables in discrete--time environments, truncation errors arise from the discretization of time.
 		Mechanisms than make the variable time variant are computed based on the previously updated value instead of continuously updating the  value.
-		%Mechanisms that cause the variable to change as a consequence of time alone are computed based on the previously updated value instead of continuously updating the value. %a continuously updated value.
-		%%This implies that all depolarizing input and the leakage during the time step does not influence that time step's simulated leakage.
-		For a $NIM$ simulation, this implies that all depolarizing input and the effect of leakage during the time step does not influence the total size of that time step's leakage.
-%%		The leakage is computed based on the depolarization value at the initiation of the computational time step.
-		The size of this discretization error increase for larger computational time steps.
-		%As this effect becomes larger for larger computational time steps, it can be stated that the size of this error vary with the size of the computational time step.
+		For a $NIM$ simulation, this means that all depolarizing input and the effect of leakage during a time step does not influence the total size of that time step's leakage.
+		This effect is larger for simulations with longer computational time steps.
+% 		The effect of this is larger for simulations with longer computational time steps.
 		As mentioned in section \ref{secSpikingANNBackgroundInfo}, a simulation with a smaller error can therefore easily be designed by increasing the temporal resolution of the simulation.
-			%but this is not a preferable solution as it also increases the computational load. 
-		This is not a preferable solution as it also greatly increases the computational load of the simulation. 
+		This is not a good solution, as it also greatly increases the computational load of the simulation. 
 
-
-        %When simulating time variant variables in discrete--time  environments such as the digital computer, truncation errors arise from the discretization of time.
-        %The variable is updated based on the previous time step's value, delayed up to $\Delta t$ time units.
-        %This introduces an error that vary with the size of the computational time step.
-%%%
-        %Because the Numerical Integration Model($NIM$) is fundamentally different from a simulation model that considers depolarizing flow($\kappa M$) as the one presented in sec. \ref{secDevelopmentOfTheNovelANNmodel}, 
         Because the Numerical Integration Model($NIM$) is fundamentally different from a simulation model that considers depolarizing flow($\kappa M$),
 			the two models' error mechanisms are analyzed separately.
-%
-        All analysis done in this text are of the unimproved models, implemented with a simple sample--and--hold numerical integration technique.
-        Optimization by e.g. estimating the intermediate values in each time step can be utilized for both models, but will not be covered in this text.
-% TODO 										 (KOPIER TILBAKE TIL ARTIKKELEN!)
+        All analysis done in this text are of the un--improved models, implemented with a simple sample--and--hold numerical technique.
+        Optimization by estimating the intermediate values in each time step can be utilized for both models, but this is outside the scope of this work.
 
 
 
-%TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO 
-%TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO  Find citations(references) for the above section.
-%TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO 
 	\subsubsection{Numerical Integration Method($NIM$)}
-%	\label{sssec ErrorForNIM}
-		The considered variable in $NIM$ is the depolarization value of the neuron.
-		An inter--spike interval is completed when the this value goes to suprathreshold levels, causing the initiation of the next spike. % to fire the next spike. %action potential.
-		The neuron's depolarization is reset to $v_r < \tau$ after the spike, meaning that the considered variable goes through a net rising phase in the course of an inter--spike interval. 
-		%The neuron's depolarization is reset to $v_r < \tau$ after the spike.
-		%%An inter--spike interval is completed when the depolarization goes to suprathreshold levels, causing the initiation of the next spike. % to fire the next spike. %action potential.
-		%The considered variable therefore goes through a net rising phase in the course of an inter--spike interval. 
+		The considered variable in a $NIM$ simulation is the depolarization value of the neuron.
+		An inter--spike interval is completed when this value goes to suprathreshold levels, causing the initiation of the next spike. 
+		The neuron's depolarization is reset to $v_r < \tau$ after a spike, meaning that the considered variable goes through a net rising phase in the course of an inter--spike interval. 
 
 		A rising phase means that earlier values are smaller than the current value.
 		Equation \ref{eqLeakageForLIF} shows that leakage is proportional to the depolarization value, and that the previous value is utilized for computing the current leakage.
-		The simulated leakage in $NIM$ thus generally produce a positive depolarization error, causing the depolarization value to be larger than it should be.
-		%The simulated leakage in $NIM$ therefore generally has a to small value, causing a smaller decrease in depolarization value.
-	% 	%
-		In the course of an inter--spike interval, all local truncation errors caused by this effect are integrated to what will be referred to as the inter--spike error.
-		For the simplest form of numerical integration, sample--and--hold integration, this error is predictable and always cause the neuron to fire to early.
+		The simulated leakage in $NIM$ thus generally produces a positive depolarization error, i.e. it causes the depolarization value to be larger than it should be.
+		In the course of an inter--spike interval, all local truncation errors caused by this effect are integrated to what will be referred to as the inter--spike truncation error.
+		When utilizing the sample--and--hold integrated technique, this error is predictable and always causes the neuron to fire to early.
 %% 		%%
-		An early firing gives an earlier start of the next inter--spike interval, meaning that the neuron's depolarization is integrated for too long.
-		In most cases, this further increase the positive depolarization error and is the rationale behind the cumulative property of the $NIM$ error.
-	%% TODO Skriv om forrige setning, slik at det glir bedre inn (lettere å forstå)
-		%In most cases, this further increase the positive depolarization error in that isi-interval and is the rationale behind the cumulative property of the $NIM$ error.
-		%In most cases, this cause the simulated depolarization to be larger than it should be.
-
+		An early firing gives an earlier start of the next inter--spike interval, meaning that the neuron's depolarization is integrated over an interval that is too long. %for a too long interval.
+		In most cases, this further increases the positive depolarization error and is the background of the cumulative property of the $NIM$ error.
 
 	
-% 	An error with opposite sign ...
-		An opposite error comes as a consequence of having discrete possible firing times.
-		The action potential is defined to happen as a consequence of the depolarization crossing the firing threshold from below.
-		To preserve causality in a network of artificial neurons, the action potential has to be delayed to the time step after the threshold crossing.
+		An opposite error comes as a direct consequence of having discrete time.
+		The \emph{action potential} is defined to happen when the depolarization crosses the firing threshold from below.
+		To preserve causality in a network of artificial neurons, the \emph{action potential} has to be delayed to the time step after the threshold crossing.
 		% TODO Skriv om forsøka som er gjort med å ha mindre time steps inni kvart computational time step. Lest det i en artikkel, en gang.. (ALL Citing er BRA CITING!)
 		This introduces a small delay before firing, causing a delayed transmission and a delayed initiation of the subsequent inter--spike interval.
-		As previously described, an erroneous firing time cause an error for the simulated depolarization for all inter--spike intervals after that firing.
-		This error have the opposite effect of the previously described error, and gives a negative error for the neuron's depolarization.
-	%As previously described, an erroneous time of initiation of an inter--spike interval will cause an error for the simulated depolarization for all inter--spike intervals after that firing.
-	%As previously described, an erroneous time of initiation of an inter--spike interval will cause an error for the simulated depolarization for all time after that instant. 
+		As previously described, this gives an initial depolarization error for that inter--spike interval.
+		The error from having discrete possible firing times has the opposite effect of the inter--spike truncation error. %, and gives a negativ error for the neuron's depolarization.
 
 
-
-%	An opposite error comes from having discrete possible firing times for the neuron.
-%	To implement causality in a neural network and assure that synaptic transmissions comes after firing, the firing of an action potential can be delayed to the subsequent time iteration after the threshold crossing.
-%	This cause a small delay before the initiation of the next inter--spike interval and therefore a negative error for the depolarization in that inter--spike interval. 
-%	%This cause a small delay before the initiation of the next inter--spike interval, and cause an opposite effect for the neuron's depolarization than the previously mentioned error. %erroneous leakage.
-
-%TODO TODO  The cumulative property of the $NIM$ error is the result. TODO TODO Skriv om akkumulering av feil! Positiv feil + stokastisk negativ feil.
- 		The net inter--spike truncation error is given by the relative size of the two mentioned mechanisms.
-		%The size of the two error mechanisms varies, and the net inter--spike truncation error is given by the relative size of the two mechanisms.
-		The error from an erroneous leakage caused by the discretization of time vary from having a size of $e_l=0$ if the neuron uses an eternity to reach the firing threshold,
-		%The error from the first error mechanisms vary from having a size of $e_l=0$ if the neuron uses an eternity to reach the firing threshold,
+ 		The net inter--spike simulation error is defined by the relative size of these mechanisms.
+		The error from having an erroneous leakage varies from having a size of $e_l=0$, if the neuron uses an eternity to reach the firing threshold,
+%		The error from an erroneous leakage caused by the discretization of time varies from having a size of $e_l=0$ if the neuron uses an eternity to reach the firing threshold,
 			 to the size of the correct leakage if the depolarization goes all the way from $v_r$ to $\tau$ in one iteration.
-		The error caused by having discrete possible firing times varies from $e_d=0$ if the threshold crossing happens at the very end of the iteration to 
-			having a size given by the size of a full computational time step if the threshold crossing happens    at the very beginning of the time step. %immediately after the initiation of that time step.
-		%The global truncation error is thus very hard to predict, and its differential have an appearance of being stochastic.
-		%The differential of the global truncation error is therefore very hard to predict, especially as the second error mechanism have an appearance of being stochastic.
-	% TODO TODO Skriv om neste poeng, slik at det er motsatt: Begynn med å definere global truncation error, så sei at isi-truncation error gir den deriverte av global truncation error. TODO
-		The derivative of the accumulated truncation error(referred to as the increase in the global truncation error) is therefore hard to predict and avoid. %, especially as the second error mechanism have an appearance of being stochastic.
-		%If the inter--spike truncation error is systematic in any way, the global truncation error will diverge for $t\to\infty$ as the error after one inter--spike period can be seen as the differential of the global truncation error.
-		As the global truncation error is given as the integral of all previous inter--spike truncation errors, 
-		%As the global truncation error can be defined as the sum of all previous inter--spike truncation errors, 
-			any systematic local truncation error(with an expectancy value different from zero) thus cause the global truncation error to diverge for $t\to\infty$.
-	%This is not preferable.
+		The error caused by having discrete possible firing times varies from $e_d=0$, if the threshold crossing happens at the very end of the time step,
+			to having a magnitude defined by the size of one full computational time step if the threshold crossing happens immediately after the initiation of that time step.
+		The derivative of the accumulated truncation error(the change in global truncation error) is therefore hard to predict and supress. %control. %avoid.
+		Since the global truncation error in $NIM$ is defined by the integral of all previous depolarization errors, 
+			any systematic local error causes the global truncation error to diverge for $t\to\infty$.
+			%any systematic local error (with an expectancy value different from zero) causes the global truncation error to diverge for $t\to\infty$.
 	
-
-
 
 
 
 		\subsubsection{Algebraic Simulation Model($\kappa M$)} %Eller noke..
 
-		In $\kappa M$, the considered variable is the \emph{synaptic flow} of activation level, visualized as a stream to a leaky bucket in the gutter analogy in sec. \ref{secDevelopmentOfTheNovelANNmodel}.
-		This value does not have a rising phase during each inter--spike interval, but varies around some bounded value.
-		%The flow of activation level is unaffected by the time itself, and the considered variable can be perceived as time--invariant.
-		The flow of activation level is invariant in time, and an unlimited growth of simulation error can be avoided.
-		A delayed computation of the neuron's activation therefore produce an error that varies with the derivative of the neuron's input flow.
-		%A delayed computation of the neuron's state therefore produce a bounded error that varies as a function of the derivative of the depolarizing flow.
+		In $\kappa M$, the considered variable is the \emph{synaptic flow} of activation level, visualized as a stream in the gutter analogy in sec. \ref{secDevelopmentOfTheNovelANNmodel}.
+		This flow varies as a continuous function within a bounded domain, and does not have a net rising phase during each inter--spike interval.
+		The flow of activation level is invariant of time, and a delayed computation of the neuron's activation level only delays its response.
+		Thus, the $\kappa M$ error is bounded and varies as a function of the derivative of the neuron's input flow.
 
-		The neuron's depolarization is computation by eq. \eqref{eqValueEquation} by utilizing the concept of time windows.
-		%The depolarization of the neuron is computed by eq. \eqref{eqValueEquation}, by utilizing the concept of time windows and considering the neuron's activation level $\kappa$.
-		%The depolarization of the neuron is computed by eq. \eqref{eqValueEquation}, considering the models activation variable $\kappa$.
-		The total input flow to a neuron can not become to large, as limitations in the presynaptic firing frequency dictates that the depolarizing inflow is bounded. %and elements like exitoxicity
-		This implies that the considered variable, and thus the simulation error varies around some value.
-		The $\kappa M$ therefore produce a bounded error for the depolarization value, something the author refers to as the stability property of the $\kappa M$ error. %TODO ikkje refers to. Blir litt rart!
 
-		The second discussed error property of $NIM$ can also be avoided.
-		If the $\kappa M$ simulator is implemented with intra--iteration time accuracy(see section \ref{ssecTheActionPotential}), 
-			the next inter--spike interval can be initiated at the computed time and no delay is needed to ensure causality.
+		If the $\kappa M$ simulator is implemented with intra--iteration time accuracy (see section \ref{ssecTheActionPotential}), the next inter--spike interval can be initiated at the computed time instance.
+		If all tasks are executed according to estimated spike times, a task planned slightly before another will be initiated before that task. %, despite being scheduled in the same computational time step.
 %%
-		If all tasks are executed according to estimated spike times, a task planned slightly before another will be initiated before that task despite being scheduled in the same computational time step.
-%%
-		This effect is only limited by the format used, and the double precision floating point variable is utilized in $auroSim$.
-		%Time resolution is only limited by the format used. %, and e.g. the double precision floating point data variable can be used.
-		%In $auroSim$, the double precision floating point data variable is utilized.
-		The IEEE standard defines the smallest exponent of this data format to be $-308$, giving an accuracy where two numbers are separated by steps down to $10^{-308}$ time units\cite{kreyszig8edKAP17}.
-		This makes it possible to have almost infinitesimal sizes for the delay meant to ensure causality, 
-			and the next inter--spike interval can be initiated immediately without disrupting causality in the simulation.
-		%The next inter--spike interval can be initiated immediately(after the predefined absolute refraction period) without disrupting causality in the simulation.
-	%%  %%
-		%This makes it possible to have a very small size of of the delay meant to ensure causality.
-		%This enables the use of a very small size of the delay meant to ensure causality.
-		%This enables the use of almost infinitesimal sizes of the delay meant to ensure causality.
+		This effect is only limited by the data format used, and a double precision floating point variable is utilized in $auroSim$.
+		The IEEE standard defines the smallest exponent of this data format to be $-308$, giving an accuracy where two numbers can be separated by steps down to $10^{-308}$ \cite{kreyszig8edKAP17}.
+		This makes it possible to have almost infinitesimal sizes for the delay meant to assure causality, and the next inter--spike interval can be initiated immediately.
+		In this way, also the second discussed error mechanism of $NIM$ is avoided in $\kappa M$.
+% 		Thus, also the second discussed cumulative error mechanism of a $NIM$ simulation is avoided in $\kappa M$.
+		Because the $\kappa M$ error only comes from the delayed update of a bounded variable, the error varies within a bounded domain. %, something that will be referred to as the stability property of the $\kappa M$ error.
+ 		This will be referred to as the stability property of the $\kappa M$ error.
+
 
 %	
 %------ Tatt ut av "The Action Potential" asdf@jeje12
@@ -260,7 +212,6 @@
 	%For a discussion about what this results in for the simulation error, it is referred to sec. \ref{ssecAnalysisOfErrorsForTheTwoModels}.
 	%This will have a large effect on mechanisms defined by the relative spike times of two neurons, e.g. Spike--Time Dependent Plasticity as mentioned in appendix \ref{appendixSynapticPlasticity:postsynapticMechanisms}. 
 %
-%TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO  Finn figur som viser AP. Skriv at dette er formen på det biologiske AP.
 %
 %		Probably the most important effect of having near--continuous temporal resolution with respect to the simulation error is therefore that the next inter--spike interval can be initiated at the right time. %computed time instant.
 %	After an action potential(and the predefined absolute refraction period), the neuron can start charging the membrane potential without delay. %at the right time. %computed time instant.  
